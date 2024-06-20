@@ -1,0 +1,12 @@
+{
+  "python.analysis.extraPaths": ["./server"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.validate": ["javascript", "typescript"],
+  "typescript.tsdk": "./client/node_modules/typescript/lib",
+  "shellcheck.ignorePatterns": {
+    "**/.env*": true
+  }
+}
