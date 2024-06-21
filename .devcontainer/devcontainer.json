@@ -16,9 +16,9 @@
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3000, 8000, 8080],
+  "forwardPorts": [3000, 8000, 8080]
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // Note: Useful for when they open it and want everything to just start
-  "postCreateCommand": "docker compose up -d"
+  // "postCreateCommand": "docker compose up -d"
 }
