@@ -1,6 +1,5 @@
 services:
   db:
-    container_name: db
     image: postgres
     restart: unless-stopped
     volumes:
@@ -13,9 +12,8 @@ services:
     env_file:
       - ./server/.env
     ports:
-      - ${POSTGRES_PORT}:5432
+      - 5432:5432
 #   server:
-#     container_name: server
 #     build:
 #       context: .
 #       dockerfile: ./docker/server/Dockerfile
@@ -27,7 +25,6 @@ services:
 #       - ./server:/app
 
 #   client:
-#     container_name: client
 #     build:
 #       context: .
 #       dockerfile: ./docker/client/Dockerfile
