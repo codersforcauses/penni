@@ -1,9 +1,9 @@
 {
   "extends": [
-    "next/babel",
-    "next/core-web-vitals",
+    "plugin:@next/next/recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
   "plugins": ["simple-import-sort", "import"],
   "rules": {
     "simple-import-sort/imports": "warn",
