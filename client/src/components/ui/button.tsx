@@ -4,6 +4,8 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+const hoverStyles =
+  "hover:bg-white hover:text-customPrimary hover:border hover:border-2 hover:border-customPrimary hover:rounded-lg hover:border-solid";
 // rounded-lg corresponds to 8px border radius
 // added hover variant
 const buttonVariants = cva(
@@ -11,8 +13,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-customPrimary text-white hover:bg-white hover:text-customPrimary hover:border hover:border-customPrimary hover:rounded-md", // Default blue
+        default: `bg-customPrimary text-white ${hoverStyles}`, // Default blue
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:

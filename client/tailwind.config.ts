@@ -23,8 +23,7 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
-        customPrimary: "#0051CA",
-        customPrimaryHover: "#0041A8",
+        customPrimary: "hsl(var(--customPrimary))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -58,6 +57,9 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      borderWidth: {
+        2: "var(--borderWidth)",
       },
       borderRadius: {
         lg: "var(--radius)",
