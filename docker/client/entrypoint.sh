@@ -9,20 +9,20 @@ echo "Image Build Date/Time: " "$(cat /app/build_timestamp.txt)" "UTC"
 echo "-----------------------------------------------------------"
 echo "APP_ENV: ${APP_ENV}"
 
-# ====================================================================================
-# Debug / Sanity check info
-# ====================================================================================
-echo "  "
-echo "======= Current Dir / Files (Debug) ============================================================================="
-pwd
-ls -al
+# # ====================================================================================
+# # Debug / Sanity check info
+# # ====================================================================================
+# echo "  "
+# echo "======= Current Dir / Files (Debug) ============================================================================="
+# pwd
+# ls -al
 
-echo "  "
-echo "======= Env Vars (Debug) ========================================================================================"
-if [ "${APP_ENV^^}" != "PRODUCTION" ]; then
-  # Only print environment vars in non-prod environments to prevent sensitive variables being sent to logging system
-  printenv
-fi
+# echo "  "
+# echo "======= Env Vars (Debug) ========================================================================================"
+# if [ "${APP_ENV^^}" != "PRODUCTION" ]; then
+#   # Only print environment vars in non-prod environments to prevent sensitive variables being sent to logging system
+#   printenv
+# fi
 
 echo "  "
 echo "======= Linux version (Debug) ==================================================================================="
@@ -40,17 +40,6 @@ if [[ -z "${APP_ENV}" ]]; then
     echo "APP_ENV=" $APP_ENV
     echo "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░"
     exit
-fi
-
-# ====================================================================================
-# Install extra dependencies if ENV is LOCAL
-# ====================================================================================
-if [ "${APP_ENV^^}" = "DEVELOPMENT" ]; then
-
-    # Install some extras
-    echo "  "
-    echo "======= Installing extra libraries just for DEVELOPMENT env ======================================================="
-    npm install --production=false
 fi
 
 # CI TEST DOWN THE TRACK
