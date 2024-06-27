@@ -23,7 +23,7 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
-        penniMain: "#0051CA", // penni blue
+        "penni-main": "#0051CA", // penni blue
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
