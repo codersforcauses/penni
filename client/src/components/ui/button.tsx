@@ -41,10 +41,10 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
-  label?: string; // Added label attribute, should be type, and it's optional
+  label?: string; // Optional label for the button
   children?: React.ReactNode; // If there is no label, use children
 }
-// Use label attribute
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, asChild = false, label, children, ...props },
