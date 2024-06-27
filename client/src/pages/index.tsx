@@ -1,6 +1,7 @@
 import { Inter as FontSans } from "next/font/google";
 import { useState } from "react";
 
+import Onboarding from "@/components/OnBoarding/OnBoarding";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
@@ -24,6 +25,8 @@ export default function Home() {
         fontSans.variable,
       )}
     >
+      <Onboarding /> {/* Complete onboarding before showing main page content */}
+
       <h1 className="text-3xl text-primary">Test title</h1>
       <Button onClick={() => setClicked(true)}>
         {isLoading ? "Loading" : "Ping"}
@@ -34,3 +37,4 @@ export default function Home() {
     </main>
   );
 }
+
