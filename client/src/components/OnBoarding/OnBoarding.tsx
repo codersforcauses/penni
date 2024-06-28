@@ -1,3 +1,4 @@
+import Image from "next/image"; // Use more efficient image tag
 import React, { useEffect, useState } from "react";
 
 import { Button } from "../ui/button";
@@ -14,17 +15,17 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
     {
       title: "Penni jobs for some extra cash",
       description: "",
-      img: "../../../public/img/OnBoarding/carousel-1.svg",
+      img: "/img/OnBoarding/carousel-1.svg",
     },
     {
       title: "Give back to someone who has given a lot",
       description: "",
-      img: "../../../public/img/OnBoarding/carousel-2.svg",
+      img: "/img/OnBoarding/carousel-2.svg",
     },
     {
       title: "Extra spare time with the loves ones",
       description: "",
-      img: "../../../public/img/OnBoarding/carousel-3.svg",
+      img: "/img/OnBoarding/carousel-3.svg",
     },
   ];
 
@@ -49,32 +50,37 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
   };
 
   const handlePrev = () => {
+    // Unused... (not in design)
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
     }
   };
 
   return showOnBoarding ? (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full flex-col items-center justify-center bg-white">
-      <Button
-        onClick={handleSkip}
-        className="absolute right-5 top-5 text-blue-600" // Hide the button if its on the first slide
-        variant="ghost"
+    <div id="onboarding" className="flex h-screen flex-col">
+      <div className="relative h-[82vh] w-full flex-grow-0">
+        <Image
+          src={slides[currentSlide].img}
+          alt="" // Dont need alt as title covers it.
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
+      <div
+        id="onboarding-controls"
+        className="flex h-[18vh] flex-grow flex-col items-center justify-center bg-white"
       >
-        Skip
-      </Button>
-      <div className="mx-auto w-full max-w-md">
-        <div className="text-center">
+        <div className="p-4 text-center">
           <h2 className="text-2xl font-bold">{slides[currentSlide].title}</h2>
-          <p className="mt-2 text-lg">{slides[currentSlide].description}</p>
+          {/* <p className="mt-2 text-lg">{slides[currentSlide].description}</p>   ....Unused...*/}
         </div>
-        <div className="mt-4 flex justify-between">
+        <div className="mt-3 flex w-full justify-between px-4">
           <Button
-            onClick={handlePrev}
-            className={`text-blue-600 ${currentSlide === 0 ? "invisible" : ""}`} // Hide the button if its on the first slide
+            onClick={handleSkip}
+            className={`text-blue-600`}
             variant="ghost"
           >
-            Previous
+            Skip
           </Button>
           <Button
             onClick={handleNext}
