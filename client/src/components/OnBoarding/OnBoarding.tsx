@@ -72,7 +72,11 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
       >
         <div className="p-4 text-center">
           <h2 className="text-2xl font-bold">{slides[currentSlide].title}</h2>
-          {/* <p className="mt-2 text-lg">{slides[currentSlide].description}</p>   ....Unused...*/}
+          {slides[currentSlide].description === "" ? (
+            ""
+          ) : (
+            <p className="mt-2 text-lg">{slides[currentSlide].description}</p>
+          )}
         </div>
         <div className="mt-3 flex w-full justify-between px-4">
           <Button
