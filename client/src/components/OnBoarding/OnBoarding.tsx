@@ -1,8 +1,8 @@
+import { AlignCenter, Bold } from "lucide-react";
 import Image from "next/image"; // Use more efficient image tag
 import React, { useEffect, useState } from "react";
 
 import { Button } from "../ui/button";
-import { AlignCenter, Bold } from "lucide-react";
 
 interface OnBoardingProps {
   followingContent: React.ReactNode;
@@ -69,20 +69,63 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
       </div>
       <div
         id="onboarding-controls"
-        style={{display: "flow", height: "25vh", flexGrow: "1", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFFFFF"}}
+        style={{
+          display: "flow",
+          height: "25vh",
+          flexGrow: "1",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#FFFFFF",
+        }}
       >
-        <div style={{paddingLeft: "5.788vh", paddingRight: "5.788vh", paddingBottom: "3.5vh", paddingTop: "1vh", textAlign: "center", display: "flex"}}>
-          <p style={{color: "#081428", fontSize: "1.6rem", lineHeight: "2.125rem", fontWeight: 650, maxWidth: "36vh"}}>{slides[currentSlide].title}</p>
+        <div
+          style={{
+            paddingLeft: "5.788vh",
+            paddingRight: "5.788vh",
+            paddingBottom: "3.5vh",
+            paddingTop: "1vh",
+            textAlign: "center",
+            display: "flex",
+          }}
+        >
+          <p
+            style={{
+              color: "#081428",
+              fontSize: "1.6rem",
+              lineHeight: "2.125rem",
+              fontWeight: 650,
+              maxWidth: "36vh",
+            }}
+          >
+            {slides[currentSlide].title}
+          </p>
           {slides[currentSlide].description === "" ? (
             ""
           ) : (
             <p className="text-lg">{slides[currentSlide].description}</p>
           )}
         </div>
-        <div style={{marginTop: "0.5rem", display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", paddingLeft: "2.5vh", paddingRight: "2.5vh", paddingBottom: "2.5vh"}}>
+        <div
+          style={{
+            marginTop: "0.5rem",
+            display: "flex",
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingLeft: "2.5vh",
+            paddingRight: "2.5vh",
+            paddingBottom: "2.5vh",
+          }}
+        >
           <Button
             onClick={handleSkip}
-            style={{color: "#0051CA", fontSize: "0.95rem", lineHeight: "1.438rem", fontWeight: 550}}
+            style={{
+              color: "#0051CA",
+              fontSize: "0.95rem",
+              lineHeight: "1.438rem",
+              fontWeight: 550,
+            }}
             variant="ghost"
           >
             Skip
@@ -101,7 +144,12 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
           </div>
           <Button
             onClick={handleNext}
-            style={{color: "#0051CA", fontSize: "0.95rem", lineHeight: "1.438rem", fontWeight: 550}}
+            style={{
+              color: "#0051CA",
+              fontSize: "0.95rem",
+              lineHeight: "1.438rem",
+              fontWeight: 550,
+            }}
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
