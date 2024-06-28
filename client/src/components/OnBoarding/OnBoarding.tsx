@@ -87,7 +87,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
       </div>
     </div>
   ) : (
-    followingContent
+    <>{followingContent}</> // Ensure following content is direct child of parent
   );
 };
 

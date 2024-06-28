@@ -12,6 +12,25 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
+const Ping = () => {
+  const [clicked, setClicked] = useState(false);
+  const { data, isLoading } = usePings({
+    enabled: clicked,
+  });
+
+  return (
+    <>
+      <h1 className="text-3xl text-primary">Test title</h1>
+      <Button onClick={() => setClicked(true)}>
+        {isLoading ? "Loading" : "Ping"}
+      </Button>
+      <p>
+        Response from server: <span>{data as string}</span>
+      </p>
+    </>
+  );
+};
+
 export default function Home() {
   const [clicked, setClicked] = useState(false);
   const { data, isLoading } = usePings({
@@ -25,15 +44,7 @@ export default function Home() {
         fontSans.variable,
       )}
     >
-      <OnBoarding followingContent="" />{" "}
-      {/* Complete onboarding before showing main page content */}
-      <h1 className="text-3xl text-primary">Test title</h1>
-      <Button onClick={() => setClicked(true)}>
-        {isLoading ? "Loading" : "Ping"}
-      </Button>
-      <p>
-        Response from server: <span>{data as string}</span>
-      </p>
+      <OnBoarding followingContent={<Ping />} />
     </main>
   );
 }
