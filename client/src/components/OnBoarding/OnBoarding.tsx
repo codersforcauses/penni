@@ -2,6 +2,7 @@ import Image from "next/image"; // Use more efficient image tag
 import React, { useEffect, useState } from "react";
 
 import { Button } from "../ui/button";
+import { AlignCenter, Bold } from "lucide-react";
 
 interface OnBoardingProps {
   followingContent: React.ReactNode;
@@ -68,20 +69,20 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
       </div>
       <div
         id="onboarding-controls"
-        className="flex h-[18vh] flex-grow flex-col items-center justify-center bg-white"
+        style={{display: "flow", height: "25vh", flexGrow: "1", flexDirection: "column", alignItems: "center", justifyContent: "center", backgroundColor: "#FFFFFF"}}
       >
-        <div className="p-4 text-center">
-          <h2 className="text-2xl font-bold">{slides[currentSlide].title}</h2>
+        <div style={{paddingLeft: "5.788vh", paddingRight: "5.788vh", paddingBottom: "3.5vh", paddingTop: "1vh", textAlign: "center", display: "flex"}}>
+          <p style={{color: "#081428", fontSize: "1.6rem", lineHeight: "2.125rem", fontWeight: 650, maxWidth: "36vh"}}>{slides[currentSlide].title}</p>
           {slides[currentSlide].description === "" ? (
             ""
           ) : (
-            <p className="mt-2 text-lg">{slides[currentSlide].description}</p>
+            <p className="text-lg">{slides[currentSlide].description}</p>
           )}
         </div>
-        <div className="mt-3 flex w-full items-center justify-between px-4">
+        <div style={{marginTop: "0.5rem", display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between", paddingLeft: "2.5vh", paddingRight: "2.5vh", paddingBottom: "2.5vh"}}>
           <Button
             onClick={handleSkip}
-            className={`text-blue-600`}
+            style={{color: "#0051CA", fontSize: "0.95rem", lineHeight: "1.438rem", fontWeight: 550}}
             variant="ghost"
           >
             Skip
@@ -100,7 +101,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
           </div>
           <Button
             onClick={handleNext}
-            className="text-blue-600"
+            style={{color: "#0051CA", fontSize: "0.95rem", lineHeight: "1.438rem", fontWeight: 550}}
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
