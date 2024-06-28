@@ -78,7 +78,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
             <p className="mt-2 text-lg">{slides[currentSlide].description}</p>
           )}
         </div>
-        <div className="mt-3 flex w-full justify-between px-4">
+        <div className="mt-3 flex w-full items-center justify-between px-4">
           <Button
             onClick={handleSkip}
             className={`text-blue-600`}
@@ -86,6 +86,18 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
           >
             Skip
           </Button>
+          <div className="flex items-center space-x-2">
+            {slides.map((_, index) => (
+              <div
+                key={index}
+                className={`h-3 w-3 rounded-full transition-all duration-300 ${
+                  currentSlide === index
+                    ? "w-5 rounded-full bg-blue-600"
+                    : "bg-gray-300"
+                }`}
+              />
+            ))}
+          </div>
           <Button
             onClick={handleNext}
             className="text-blue-600"
