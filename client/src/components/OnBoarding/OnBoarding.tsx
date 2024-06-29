@@ -83,7 +83,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                   />
                 </div>
                 <p className="max-w-[36vh] pt-6 text-center text-[1.62rem] font-[650] leading-[2.2rem] text-penni-dark">
-                  {slides[currentSlide]?.title}
+                  {slide.title}
                 </p>
               </div>
             </CarouselItem>
