@@ -95,7 +95,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           </div>
           <Button
             onClick={handleNext}
-            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550] hover:text-[#0b1920] hover:bg-background"}
+            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550] hover:text-penni-dark hover:bg-background"}
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
