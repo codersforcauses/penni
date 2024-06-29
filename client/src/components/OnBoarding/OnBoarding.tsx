@@ -4,31 +4,22 @@ import React, { useEffect, useState } from "react";
 
 import { Button } from "../ui/button";
 
-interface OnBoardingProps {
-  followingContent: React.ReactNode;
+interface Slide {
+  title: string;
+  img: string;
 }
 
-const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
+interface OnBoardingProps {
+  followingContent: React.ReactNode;
+  slides: Slide[];
+}
+
+const OnBoarding: React.FC<OnBoardingProps> = ({
+  followingContent,
+  slides,
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showOnBoarding, setShowOnBoarding] = useState(true);
-
-  const slides = [
-    {
-      title: "Penni jobs for some extra cash",
-      description: "",
-      img: "/img/OnBoarding/carousel-1.svg",
-    },
-    {
-      title: "Give back to someone who has given a lot",
-      description: "",
-      img: "/img/OnBoarding/carousel-2.svg",
-    },
-    {
-      title: "Extra spare time with the loves ones",
-      description: "",
-      img: "/img/OnBoarding/carousel-3.svg",
-    },
-  ];
 
   useEffect(() => {
     const seenOnBoarding = localStorage.getItem("seenOnBoarding");
@@ -100,11 +91,6 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
           >
             {slides[currentSlide].title}
           </p>
-          {slides[currentSlide].description === "" ? (
-            ""
-          ) : (
-            <p className="text-lg">{slides[currentSlide].description}</p>
-          )}
         </div>
         <div
           style={{

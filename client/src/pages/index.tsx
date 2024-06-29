@@ -37,6 +37,21 @@ export default function Home() {
     enabled: clicked,
   });
 
+  const slides = [
+    {
+      title: "Penni jobs for some extra cash",
+      img: "/img/OnBoarding/carousel-1.svg",
+    },
+    {
+      title: "Give back to someone who has given a lot",
+      img: "/img/OnBoarding/carousel-2.svg",
+    },
+    {
+      title: "Extra spare time with the loves ones",
+      img: "/img/OnBoarding/carousel-3.svg",
+    },
+  ];
+
   return (
     <main
       className={cn(
@@ -44,7 +59,7 @@ export default function Home() {
         fontSans.variable,
       )}
     >
-      <OnBoarding followingContent={<Ping />} />
+      <OnBoarding followingContent={<Ping />} slides={slides} />
     </main>
   );
 }
