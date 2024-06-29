@@ -96,6 +96,9 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        "penni-border": "8px",
+        "penni-card": "8px",
+        "penni-sheet": "8px",
       },
       keyframes: {
         "accordion-down": {
