@@ -90,7 +90,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
         >
           <Button
             onClick={handleSkip}
-            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550]"}
+            className={"text-[#858D9C] text-[0.95rem] leading-[1.438rem] font-[550] hover:text-penni-main hover:bg-background"}
             variant="ghost"
           >
             Skip
@@ -109,7 +109,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
           </div>
           <Button
             onClick={handleNext}
-            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550]"}
+            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550] hover:text-[#0b1920] hover:bg-background"}
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
