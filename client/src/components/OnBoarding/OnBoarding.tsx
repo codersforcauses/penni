@@ -1,8 +1,13 @@
-import { AlignCenter, Bold } from "lucide-react";
 import Image from "next/image"; // Use more efficient image tag
 import React, { useEffect, useState } from "react";
 
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 interface Slide {
   title: string;
@@ -20,24 +25,34 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showOnBoarding, setShowOnBoarding] = useState(true);
+  const [api, setApi] = useState<CarouselApi | undefined>(undefined);
 
   useEffect(() => {
-    const seenOnBoarding = localStorage.getItem("seenOnBoarding");
-    if (seenOnBoarding) {
-      setShowOnBoarding(false);
-    }
-  }, []);
+    if (!api) return;
+
+    const updateCurrentSlide = () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    };
+
+    setCurrentSlide(api.selectedScrollSnap());
+    api.on("select", updateCurrentSlide);
+
+    return () => {
+      api.off("select", updateCurrentSlide);
+    };
+  }, [api]);
 
   const handleSkip = () => {
     setShowOnBoarding(false);
-    localStorage.setItem("seenOnBoarding", "true");
   };
 
   const handleNext = () => {
-    if (currentSlide < slides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    } else {
-      handleSkip();
+    if (api) {
+      if (currentSlide < slides.length - 1) {
+        api.scrollNext();
+      } else {
+        handleSkip();
+      }
     }
   };
 
@@ -50,33 +65,37 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
 
   return showOnBoarding ? (
     <div id="onboarding" className="flex h-screen flex-col">
-      <div className="relative h-[82vh] w-full flex-grow-0">
-        <Image
-          src={slides[currentSlide].img}
-          alt="" // Dont need alt as title covers it.
-          layout="fill"
-          objectFit="cover"
-        />
-      </div>
+      <Carousel setApi={setApi}>
+        <CarouselContent>
+          {slides.map((slide, index) => (
+            <CarouselItem key={index}>
+              <div className="flex flex-col items-center justify-center">
+                <div className="relative h-[78vh] w-full">
+                  <Image
+                    src={slide.img}
+                    alt="" // No alt as title handles that
+                    fill
+                    style={{ objectFit: "contain" }}
+                  />
+                </div>
+                <p className="max-w-[36vh] pt-6 text-center text-[1.62rem] font-[650] leading-[2.2rem] text-penni-dark">
+                  {slides[currentSlide]?.title}
+                </p>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
       <div
         id="onboarding-controls"
-        className="flex flex-col grow-[1] justify-center items-center h-[25vh] bg-background"
+        className="flex grow-[1] flex-col items-center justify-center bg-background"
       >
-        <div
-        className="flex pl-[5.788vh] pr-[5.788vh] pb-[3.5vh] pt-[1vh] text-center"
-        >
-          <p
-            className="text-penni-dark text-[1.62rem] leading-[2.2rem] font-[650] max-w-[36vh]"
-          >
-            {slides[currentSlide].title}
-          </p>
-        </div>
-        <div
-          className="flex mt-[0.5rem] w-[100%] items-center justify-between pl-[2.5vh] pr-[2.5vh] pb-[2.5vh]"
-        >
+        <div className="mt-[0.5rem] flex w-[100%] items-center justify-between pb-[2.5vh] pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
-            className={"text-[#858D9C] text-[0.95rem] leading-[1.438rem] font-[550] hover:text-penni-main hover:bg-background"}
+            className={
+              "text-[0.95rem] font-[550] leading-[1.438rem] text-[#858D9C] hover:bg-background hover:text-penni-main"
+            }
             variant="ghost"
           >
             Skip
@@ -95,7 +114,9 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           </div>
           <Button
             onClick={handleNext}
-            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550] hover:text-penni-dark hover:bg-background"}
+            className={
+              "text-[0.95rem] font-[550] leading-[1.438rem] text-penni-main hover:bg-background hover:text-penni-dark"
+            }
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
