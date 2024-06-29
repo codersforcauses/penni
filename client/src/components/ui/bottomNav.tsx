@@ -1,10 +1,5 @@
 import Image from "next/image";
 
-import icon1 from "/img/bottomNavIcon1.svg";
-
-import icon2 from "../../../public/img/bottomNavIcon2.svg";
-import icon3 from "../../../public/img/bottomNavIcon3.svg";
-
 const iconLists = [
   {
     ref: "/img/bottomNavIcon1.svg",
