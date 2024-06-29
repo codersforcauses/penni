@@ -24,6 +24,7 @@ const config = {
       },
       colors: {
         "penni-main": "#0051CA", // penni blue
+        "penni-dark": "#081428", // penni dark blue (onboarding carousel title)
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
