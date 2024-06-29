@@ -23,7 +23,38 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       colors: {
-        "penni-main": "#0051CA", // penni blue
+        penni: {
+          main: "#0051CA", // penni blue
+          "main-shade1": "#AACCFF",
+          "main-shade2": "#FAFCFF",
+          secondary: "#5A489B",
+          alert: {
+            warning: "#FFD20C",
+            success: "#72D62A",
+            error: "#FA4856",
+          },
+          grey: {
+            inactive: "#B6BABC",
+            "border-light-mode": "#E7E8E9",
+            "border-dark-mode": "#B6BABC",
+          },
+          background: {
+            "light-mode": "#FFFFFF",
+            "dark-mode": "#040B17",
+          },
+          sheet: {
+            "light-mode": "#FFFFFF",
+            "dark-mode": "#00040C",
+          },
+          text: {
+            "regular-light-mode": "#0B1920",
+            "regular-dark-mode": "#FAFAFA",
+            "secondary-light-mode": "#485358",
+            "secondary-dark-mode": "#BCBCBC",
+            "tertiary-light-mode": "#858C8F",
+            "tertiary-dark-mode": "#77797D",
+          },
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
