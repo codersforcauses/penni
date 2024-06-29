@@ -75,7 +75,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({ followingContent }) => {
         className="flex pl-[5.788vh] pr-[5.788vh] pb-[3.5vh] pt-[1vh] text-center"
         >
           <p
-            className="text-penni-dark text-[1.6rem] leading-[2.125rem] font-[650] max-w-[36vh]"
+            className="text-penni-dark text-[1.62rem] leading-[2.2rem] font-[650] max-w-[36vh]"
           >
             {slides[currentSlide].title}
           </p>
