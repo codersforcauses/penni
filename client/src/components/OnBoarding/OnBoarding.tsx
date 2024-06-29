@@ -9,14 +9,15 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 
+// Contents of a slide
 interface Slide {
   title: string;
   img: string;
 }
 
 interface OnBoardingProps {
-  followingContent: React.ReactNode;
-  slides: Slide[];
+  followingContent: React.ReactNode; // Content to follow onboarding carousel
+  slides: Slide[]; // Slides used for onboarding to be passed as a prop
 }
 
 const OnBoarding: React.FC<OnBoardingProps> = ({
@@ -25,11 +26,12 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showOnBoarding, setShowOnBoarding] = useState(true);
-  const [api, setApi] = useState<CarouselApi | undefined>(undefined);
+  const [api, setApi] = useState<CarouselApi | undefined>(undefined); // Allow no state when initialised
 
   useEffect(() => {
     if (!api) return;
 
+    // Move current slide with transition
     const updateCurrentSlide = () => {
       setCurrentSlide(api.selectedScrollSnap());
     };
@@ -42,10 +44,12 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
     };
   }, [api]);
 
+  // Skip onboarding carousel
   const handleSkip = () => {
     setShowOnBoarding(false);
   };
 
+  // Move to next slide or finish if on last slide
   const handleNext = () => {
     if (api) {
       if (currentSlide < slides.length - 1) {
@@ -56,8 +60,8 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
     }
   };
 
+  // Move to previous slide if not at first slide (....not used in design)
   const handlePrev = () => {
-    // Unused... (not in design)
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
     }
@@ -96,7 +100,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
             className={
               "text-[0.95rem] font-[550] leading-[1.438rem] text-[#858D9C] hover:bg-background hover:text-penni-main"
             }
-            variant="ghost"
+            variant="ghost" // Button variant
           >
             Skip
           </Button>
@@ -125,7 +129,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
       </div>
     </div>
   ) : (
-    <>{followingContent}</> // Ensure following content is direct child of parent
+    <>{followingContent}</> // Ensure following content is direct child of parent (completely remove onboarding related tags)
   );
 };
 
