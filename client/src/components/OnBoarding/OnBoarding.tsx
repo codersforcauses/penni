@@ -60,82 +60,42 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
       </div>
       <div
         id="onboarding-controls"
-        style={{
-          display: "flow",
-          height: "25vh",
-          flexGrow: "1",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#FFFFFF",
-        }}
+        className="flex flex-col grow-[1] justify-center items-center h-[25vh] bg-background"
       >
         <div
-          style={{
-            paddingLeft: "5.788vh",
-            paddingRight: "5.788vh",
-            paddingBottom: "3.5vh",
-            paddingTop: "1vh",
-            textAlign: "center",
-            display: "flex",
-          }}
+        className="flex pl-[5.788vh] pr-[5.788vh] pb-[3.5vh] pt-[1vh] text-center"
         >
           <p
-            style={{
-              color: "#081428",
-              fontSize: "1.6rem",
-              lineHeight: "2.125rem",
-              fontWeight: 650,
-              maxWidth: "36vh",
-            }}
+            className="text-penni-dark text-[1.62rem] leading-[2.2rem] font-[650] max-w-[36vh]"
           >
             {slides[currentSlide].title}
           </p>
         </div>
         <div
-          style={{
-            marginTop: "0.5rem",
-            display: "flex",
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingLeft: "2.5vh",
-            paddingRight: "2.5vh",
-            paddingBottom: "2.5vh",
-          }}
+          className="flex mt-[0.5rem] w-[100%] items-center justify-between pl-[2.5vh] pr-[2.5vh] pb-[2.5vh]"
         >
           <Button
             onClick={handleSkip}
-            style={{
-              color: "#0051CA",
-              fontSize: "0.95rem",
-              lineHeight: "1.438rem",
-              fontWeight: 550,
-            }}
+            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550]"}
             variant="ghost"
           >
             Skip
           </Button>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5">
             {slides.map((_, index) => (
               <div
                 key={index}
-                className={`h-3 w-3 rounded-full transition-all duration-300 ${
+                className={`h-[0.6rem] w-[0.6rem] rounded-full transition-all duration-300 ${
                   currentSlide === index
-                    ? "w-5 rounded-full bg-blue-600"
-                    : "bg-gray-300"
+                    ? "w-[1.1rem] rounded-full bg-penni-main"
+                    : "bg-[#F3F3F5]"
                 }`}
               />
             ))}
           </div>
           <Button
             onClick={handleNext}
-            style={{
-              color: "#0051CA",
-              fontSize: "0.95rem",
-              lineHeight: "1.438rem",
-              fontWeight: 550,
-            }}
+            className={"text-penni-main text-[0.95rem] leading-[1.438rem] font-[550]"}
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
