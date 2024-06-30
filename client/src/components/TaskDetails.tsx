@@ -1,5 +1,8 @@
 import React from "react";
 
+// Change this to modify the default placeholder
+const default_emptyContentPlaceholder: string = "N/A";
+
 // The following section names need to be modified to final database column names to allow straight import into this component without further data processing
 const SectionNames = [
   "Task Category",
@@ -26,15 +29,21 @@ const SectionNames = [
 //
 // then use this map function in TaskDetailsSection: `{Object.keys(sectionNamesMap).map((dbName, index) => (`
 
+// Type of the section data to be passed
 type SectionData = {
   [key: string]: string | null; // Allow database column to have null for item (prints 'N/A')
 };
 
+// Props for TaskDetails (and the sections)
 type TaskDetailsProps = {
   data: SectionData;
+  emptyContentPlaceholder?: string; // OPTIONAL: What to show if missing content for a subheading.
 };
 
-const TaskDetailsSection = ({ data }: { data: SectionData }) => {
+const TaskDetailsSection = ({
+  data,
+  emptyContentPlaceholder = default_emptyContentPlaceholder,
+}: TaskDetailsProps) => {
   return (
     <>
       {SectionNames.map((name, index) => (
@@ -48,7 +57,7 @@ const TaskDetailsSection = ({ data }: { data: SectionData }) => {
               data[name] === null ||
               data[name] === undefined ||
               data[name] === ""
-                ? "N/A"
+                ? emptyContentPlaceholder
                 : data[name] /* Handle null, undefined and empty section data */
             }
           </p>
@@ -58,13 +67,16 @@ const TaskDetailsSection = ({ data }: { data: SectionData }) => {
   );
 };
 
-const TaskDetails = ({ data }: TaskDetailsProps) => {
+const TaskDetails = ({ data, emptyContentPlaceholder }: TaskDetailsProps) => {
   return (
     <div className="fontSans.variable max-w-screen-sm overflow-hidden px-[1.3rem]">
       <div className="mb-2 pb-2 pt-8 text-[1.3rem] font-[450] leading-[1.375rem]">
         Task Details
       </div>
-      <TaskDetailsSection data={data} />
+      <TaskDetailsSection
+        data={data}
+        emptyContentPlaceholder={emptyContentPlaceholder}
+      />
     </div>
   );
 };
