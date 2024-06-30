@@ -13,6 +13,18 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
+const sampleTaskData = {
+  "Task Category": "Cleaning",
+  "Task Title": "Cleaning Up My House",
+  Date: "10 Dec, 2022",
+  Suburb: "Richmond",
+  State: "VIC",
+  "Estimated Time": "4 Hours",
+  "Estimated Price": "$250",
+  "Task Details":
+    "I need someone to help me clean my 2 bedroom apartment. I am moving out and I need to make sure it’s all clean.",
+};
+
 export default function Home() {
   const [clicked, setClicked] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
@@ -30,16 +42,13 @@ export default function Home() {
   if (showSplash) {
     return <SplashScreen />;
   }
-  return(
+  return (
     <main
-      className={cn(
-        "flex min-h-screen flex-col font-sans",
-        fontSans.variable,
-      )}
+      className={cn("flex min-h-screen flex-col font-sans", fontSans.variable)}
     >
-      <TaskDetails></TaskDetails>
+      <TaskDetails data={sampleTaskData} />
     </main>
-  )
+  );
 
   /*
   return (
