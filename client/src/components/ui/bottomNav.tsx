@@ -1,7 +1,7 @@
 import * as React from "react";
 
 interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
-  className?: string;
+  className?: string; // use to change color of the svg pic
   alt?: string;
 }
 
@@ -79,7 +79,14 @@ const BottomNavIcon3: React.FC<BottomNavIconProps> = ({
 
 export { BottomNavIcon1, BottomNavIcon2, BottomNavIcon3 };
 
-const iconLists = [
+interface Icon {
+  IconComponent: React.FC<BottomNavIconProps>;
+  alt: string;
+  text: string;
+  link?: string; // in case link to other page when the component is used in the page
+}
+
+const iconLists: Icon[] = [
   {
     IconComponent: BottomNavIcon1,
     alt: "Icon of my tasks",
