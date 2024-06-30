@@ -14,14 +14,14 @@ const fontSans = FontSans({
 });
 
 const sampleTaskData = {
-  "Task Category": "Cleaning",
-  "Task Title": "Cleaning Up My House",
-  Date: "10 Dec, 2022",
-  Suburb: "Richmond",
-  State: "VIC",
-  "Estimated Time": "4 Hours",
-  "Estimated Price": "$250",
-  "Task Details":
+  category: "Cleaning",
+  title: "Cleaning Up My House",
+  created_at: "10 Dec, 2022",
+  suburb: "Richmond",
+  state: "VIC",
+  estimated_time: "4 Hours",
+  budget: "$250",
+  description:
     "I need someone to help me clean my 2 bedroom apartment. I am moving out and I need to make sure it’s all clean.",
 };
 

@@ -3,31 +3,17 @@ import React from "react";
 // Change this to modify the default placeholder
 const default_emptyContentPlaceholder: string = "N/A";
 
-// The following section names need to be modified to final database column names to allow straight import into this component without further data processing
-const SectionNames = [
-  "Task Category",
-  "Task Title",
-  "Date",
-  "Suburb",
-  "State",
-  "Estimated Time",
-  "Estimated Price",
-  "Task Details",
-];
-
-// Mapping between database column names and display subheading titles - if database column name and display subheading differs (remove above sectionnames)
-// const sectionNamesMap: { [key: string]: string } = {
-//   task_category: "Task Category",
-//   task_title: "Task Title",
-//   date: "Date",
-//   suburb: "Suburb",
-//   state: "State",
-//   estimated_time: "Estimated Time",
-//   estimated_price: "Estimated Price",
-//   task_details: "Task Details",
-// };
-//
-// then use this map function in TaskDetailsSection: `{Object.keys(sectionNamesMap).map((dbName, index) => (`
+// Mapping between database column names and display subheading titles to reduce further data processesing
+const sectionNamesMap: { [key: string]: string } = {
+  category: "Task Category",
+  title: "Task Title",
+  created_at: "Date",
+  suburb: "Suburb",
+  state: "State",
+  estimated_time: "Estimated Time", // Missing ERD column name (fix later when db added)
+  budget: "Estimated Price",
+  description: "Task Details",
+};
 
 // Type of the section data to be passed
 type SectionData = {
@@ -46,19 +32,21 @@ const TaskDetailsSection = ({
 }: TaskDetailsProps) => {
   return (
     <>
-      {SectionNames.map((name, index) => (
+      {Object.keys(sectionNamesMap).map((dbName, index) => (
         <div
           key={index}
           className="py-[0.65rem] text-[1rem] font-[350] leading-[1.125rem] text-[#485358]"
         >
-          {name}
+          {dbName}
           <p className="py-[0.5rem] text-[1.25rem] font-[350] leading-[1.7rem] text-[#000000]">
             {
-              data[name] === null ||
-              data[name] === undefined ||
-              data[name] === ""
+              data[dbName] === null ||
+              data[dbName] === undefined ||
+              data[dbName] === ""
                 ? emptyContentPlaceholder
-                : data[name] /* Handle null, undefined and empty section data */
+                : data[
+                    dbName
+                  ] /* Handle null, undefined and empty section data */
             }
           </p>
         </div>
