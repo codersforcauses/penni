@@ -1,4 +1,4 @@
-import { EditIcon,InfoIcon } from "./icons";
+import { EditIcon, InfoIcon } from "./icons";
 
 interface CalloutProp {
   text: string;
@@ -68,4 +68,4 @@ function ErrorCallout({ text, onClick }: CalloutProp) {
   );
 }
 
-export { ErrorCallout,InfoCallout, SuccessCallout, WarningCallout };
+export { ErrorCallout, InfoCallout, SuccessCallout, WarningCallout };
