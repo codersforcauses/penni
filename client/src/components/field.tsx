@@ -3,11 +3,11 @@ import { useState } from "react";
 // Using tailwind 'jit" so can't use string concatenation
 // TODO: For bg-black bg-opacity-5 no colour is defined in Figma, change this possibly?
 const inputStyleNoLabel =
-  "m-4 flex h-14 w-full flex-col rounded-penni-border bg-black bg-opacity-5 py-4 pl-4 pr-3";
+  "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 py-4 pl-4 pr-3";
 const inputStyleWithLabel =
-  "m-4 flex h-14 w-full flex-col rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3";
+  "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3";
 const inputValueStyle =
-  "h-full w-full bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode";
+  "h-full w-full bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode focus:outline-none overflow-hidden resize-none";
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
 interface InputProp {
@@ -28,12 +28,7 @@ function InputLabel({ label, id }: { label: string; id: string }) {
   );
 }
 
-export function SingleLineInput({
-  value,
-  onChange,
-  label,
-  defaultValue = "Enter here",
-}: InputProp) {
+export function SingleLineInput({ value, onChange, label }: InputProp) {
   const [id] = useState(uniqueId());
   return (
     <>
