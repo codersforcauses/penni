@@ -1,9 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from rest_framework.test import APITestCase
-from django.contrib.auth.models import User, Profiles
-from .models import User
-from django.urls import reverse
+from .models import User, Profiles
 
 
 # Stub testing of the db models
@@ -40,7 +37,7 @@ class UserModelTest(TestCase):
         self.assertEqual(cm.exception.message_dict['status'][0], 'Status must not be empty')
 
     def test_user_retrieval(self):
-        user = User.objects.get(mobile='testuser')
+        user = User.objects.get(mobile='0450000000')
         self.assertEqual(user.email, 'testuser@example.com')
 
     def test_default_fields(self):
