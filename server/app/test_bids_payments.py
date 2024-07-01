@@ -2,6 +2,7 @@
 # Test CRUD on table Bids and Payments; 
 # Assume user and task are already created with no problems before testing Bids and Payments.
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 from .models import Users, Tasks, Bids, Payments
 from datetime import datetime, timedelta
 
@@ -35,7 +36,12 @@ class BidsPaymentsTestCase(TestCase):
             message="This is a bid message",
             status="pending"
         )
-        
+
+        try:
+            bid.clean()
+            bid.save()
+        except ValidationError as e:
+            self.fail(f'ValidationError raised: {e}')
         self.assertEqual(bid.price, "100")
         self.assertEqual(bid.message, "This is a bid message")
         self.assertEqual(bid.status, "pending")
@@ -67,7 +73,12 @@ class BidsPaymentsTestCase(TestCase):
         
         bid.price = "150"
         bid.status = "accepted"
-        bid.save()
+
+        try:
+            bid.clean()
+            bid.save()
+        except ValidationError as e:
+            self.fail(f'ValidationError raised: {e}')
         
         updated_bid = Bids.objects.get(pk=bid.bid_id)
         self.assertEqual(updated_bid.price, "150")
@@ -99,6 +110,12 @@ class BidsPaymentsTestCase(TestCase):
             status="completed"
         )
         
+        try:
+            payment.clean()
+            payment.save()
+        except ValidationError as e:
+            self.fail(f'ValidationError raised: {e}')
+
         self.assertEqual(payment.amount, 150.00)
         self.assertEqual(payment.payment_method, "Credit Card")
         self.assertEqual(payment.status, "completed")
@@ -130,7 +147,12 @@ class BidsPaymentsTestCase(TestCase):
         
         payment.amount = 200.00
         payment.status = "refunded"
-        payment.save()
+        
+        try:
+            payment.clean()
+            payment.save()
+        except ValidationError as e:
+            self.fail(f'ValidationError raised: {e}')
         
         updated_payment = Payments.objects.get(pk=payment.payment_id)
         self.assertEqual(updated_payment.amount, 200.00)
