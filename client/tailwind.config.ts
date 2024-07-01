@@ -20,7 +20,36 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["Inter", "sans-serif", ...fontFamily.sans],
+      },
+      fontSize: {
+        lgt: "34px", //large title
+        t1: "28px", //title 1 and so on
+        t2: "22px",
+        t3: "20px",
+        hb: "17px", //headline and body
+        co: "16px", //callout
+        sh: "15px", //subheadline
+        fn: "13px", //footnote
+        ct: "11px", //caption
+        nl: "10px", //navigation label
+      },
+      lineHeight: {
+        lgt: "41px",
+        t1: "34px",
+        t23: "28px", //title2 and title3
+        hb: "22px",
+        co: "21px",
+        sh: "20px",
+        fn: "18px",
+        ct: "13px",
+        nl: "12px",
+      },
+      fontWeight: {
+        bold: "700",
+        semibold: "600",
+        medium: "500",
+        regular: "400",
       },
       colors: {
         penni: {
