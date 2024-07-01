@@ -9,6 +9,12 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
+  safelist: [
+    {
+      // Callouts use format string to determine colour, not rendered if 'jit'
+      pattern: /(bg|text|stroke)-penni-(alert|text-regular)/,
+    },
+  ],
   prefix: "",
   theme: {
     container: {
