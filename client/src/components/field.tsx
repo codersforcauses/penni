@@ -3,6 +3,7 @@ import { useState } from "react";
 /*
 TODOS: 
 - style scroll bar in textarea?
+- Style dropdown list
 - fix priceInput to 2 decimals?
 */
 
@@ -206,6 +207,18 @@ function ParagraphInput({
   );
 }
 
+function DropdownMenu({ options, onChange }: DropdownInputProp) {
+  return (
+    <div>
+      {options.map((option) => (
+        <a href="#" key={option} onClick={() => onChange(option)}>
+          {option}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 /**
  * Input component with a list of options.
  
@@ -248,7 +261,7 @@ function DropdownInput({ value, options, onChange, label }: DropdownInputProp) {
         }
       >
         {options.map((option) => (
-          <option key={option} value={option}>
+          <option className={valueStyle} key={option} value={option}>
             {option}
           </option>
         ))}
