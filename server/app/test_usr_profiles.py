@@ -93,12 +93,16 @@ class ProfilesModelTest(TestCase):
         self.assertEqual(saved_profile.avatar_url, 'http://example.com/avatar.jpg')
         self.assertEqual(saved_profile.bio, 'This is a test bio.')
 
-        numerical_full_name = saved_profile.full_name = "Tim 123"
+        saved_profile.full_name = "Tim 123"
+        saved_profile.save()
+        numerical_full_name = Profiles.objects.get(profile_id=profile.profile_id)
         with self.assertRaises(ValidationError) as cm:
             numerical_full_name.clean()  # This will call the clean method and raise ValidationError if the first name contains numbers
         self.assertEqual(cm.exception.message_dict['full_name'][0], 'Full name must not contain numbers.')
 
-        url_test = saved_profile.avatar_url = "www.google.com"
+        saved_profile.avatar_url = "www.google.com"
+        saved_profile.save()
+        url_test = Profiles.objects.get(profile_id=profile.profile_id)
         with self.assertRaises(ValidationError) as cm:
             url_test.clean()  # This will call the clean method and raise ValidationError if the first name contains numbers
         self.assertEqual(cm.exception.message_dict['avatar_url'][0], 'Avatar URL must startwith http:// or https://')
