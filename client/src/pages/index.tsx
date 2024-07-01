@@ -37,6 +37,9 @@ export default function Home() {
         fontSans.variable,
       )}
     >
+      <h1 className="title1 text-primary">Test</h1>
+      {/* Test for font */}
+      {/*
       <h1 className="largetitle text-primary">Largetitle</h1>
       <h1 className="title1 text-primary">Title1</h1>
       <h2 className="title2 text-primary">Title2</h2>
@@ -49,7 +52,7 @@ export default function Home() {
       <p className="footnote text-primary">Footnote</p>
       <p className="caption-semibold text-primary">Caption - Semibold</p>
       <p className="caption text-primary">Caption</p>
-      <p className="navigationlabel text-primary">Navigation Label</p>
+      <p className="navigationlabel text-primary">Navigation Label</p> */}
       <Button onClick={() => setClicked(true)}>
         {isLoading ? "Loading" : "Ping"}
       </Button>
