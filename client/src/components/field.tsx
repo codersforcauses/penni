@@ -8,6 +8,8 @@ const inputStyleWithLabel =
   "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3";
 const inputValueStyle =
   "h-full w-full bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode focus:outline-none overflow-hidden resize-none";
+const inputDefaultValueStyle =
+  "h-full w-full bg-transparent text-base font-normal leading-5 text-penni-text-tertiary-light-mode focus:outline-none overflow-hidden resize-none";
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
 interface InputProp {
@@ -29,6 +31,7 @@ function InputLabel({ label, id }: { label: string; id: string }) {
 }
 
 export function SingleLineInput({ value, onChange, label }: InputProp) {
+  const [valueChanged, setValueChanged] = useState(false);
   const [id] = useState(uniqueId());
   return (
     <>
@@ -38,8 +41,11 @@ export function SingleLineInput({ value, onChange, label }: InputProp) {
           id={id}
           type="text"
           value={value}
-          onChange={onChange}
-          className={inputValueStyle}
+          onChange={(e) => {
+            onChange(e);
+            setValueChanged(true);
+          }}
+          className={valueChanged ? inputValueStyle : inputDefaultValueStyle}
         />
       </div>
     </>

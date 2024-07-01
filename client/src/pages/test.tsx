@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SingleLineInput } from "@/components/field";
 
 export default function Test() {
-  const [val, setVal] = useState("");
+  const [val, setVal] = useState("Entere stuff here");
   return (
     <>
       <SingleLineInput
