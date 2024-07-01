@@ -1,6 +1,6 @@
 services:
   db:
-    container_name: penni-db
+    container_name: db
     image: postgres
     restart: unless-stopped
     volumes:
@@ -14,7 +14,7 @@ services:
     ports:
       - 5432:5432
   server:
-    container_name: penni-server
+    container_name: server
     build:
       context: .
       dockerfile: ./docker/server/Dockerfile
@@ -25,7 +25,7 @@ services:
     volumes:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/server:/app
   client:
-    container_name: penni-client
+    container_name: client
     build:
       context: .
       dockerfile: ./docker/client/Dockerfile
