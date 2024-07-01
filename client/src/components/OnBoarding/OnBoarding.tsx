@@ -74,7 +74,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
               <div className="flex flex-col items-center justify-center">
-                <div className="relative h-[78vh] w-full">
+                <div className="relative h-[79vh] w-full">
                   <Image
                     src={slide.img}
                     alt="" // No alt as title handles that
@@ -82,7 +82,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="max-w-[36vh] pt-6 text-center text-[1.62rem] font-[650] leading-[2.2rem] text-penni-dark">
+                <p className="max-w-[36vh] mt-[-0.5rem] text-center text-[1.6rem] font-[610] leading-[2.1rem] text-penni-dark">
                   {slide.title}
                 </p>
               </div>
@@ -94,7 +94,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
         id="onboarding-controls"
         className="flex grow-[1] flex-col items-center justify-center bg-background"
       >
-        <div className="mt-[0.5rem] flex w-[100%] items-center justify-between pb-[2.5vh] pl-[2.5vh] pr-[2.5vh]">
+        <div className="mt-[2rem] flex w-[100%] items-center justify-between pb-[2.5vh] pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
             className={
