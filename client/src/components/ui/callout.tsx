@@ -3,7 +3,7 @@ import { EditIcon, InfoIcon } from "./icons";
 interface CalloutProp {
   text: string;
   // If provided, edit icon will be shown
-  onClick?: (...args: any[]) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 interface GenericCalloutProp extends CalloutProp {
