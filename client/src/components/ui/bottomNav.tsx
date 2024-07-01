@@ -1,4 +1,6 @@
+import Link from "next/link";
 import * as React from "react";
+import { useState } from "react";
 
 interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string; // use to change color of the svg pic
@@ -104,25 +106,35 @@ const iconLists: Icon[] = [
   },
 ];
 
-export default function BottomNav() {
+const BottomNav = () => {
+  const [changeColor, setChangeColor] = useState(0);
+  const handleItemClick = (idx: number) => {
+    setChangeColor(idx);
+  };
+
   return (
-    <div className="border-t-penni-border-light-mode h-[83px] border-t-2">
-      <div className="flex h-[49px] cursor-pointer text-[10px] leading-3">
+    <div className="border-t-penni-border-light-mode fixed bottom-0 h-[83px] w-full border-t-2">
+      <ul className="flex h-[49px] cursor-pointer text-[10px] leading-3">
         {iconLists.map((iconItem, index) => (
-          <div
+          <li
             key={index}
-            className="flex w-1/3 flex-col items-center pt-[6px] text-penni-text-tertiary-light-mode"
+            className={`${changeColor === index ? "text-penni-main" : "text-penni-text-tertiary-light-mode"} w-1/3`}
+            onClick={() => handleItemClick(index)}
           >
-            <div>
-              <iconItem.IconComponent
-                className="text-penni-text-tertiary-light-mode"
-                alt={iconItem.alt}
-              />
-            </div>
-            <p>{iconItem.text}</p>
-          </div>
+            <Link
+              href={iconItem.link || ""}
+              className="flex flex-col items-center pt-[6px]"
+            >
+              <div>
+                <iconItem.IconComponent alt={iconItem.alt} />
+              </div>
+              <p>{iconItem.text}</p>
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
-}
+};
+
+export default BottomNav;
