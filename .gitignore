@@ -292,3 +292,6 @@ dist
 .DS_Store
 
 opt/
+
+# Test page for visualising components, don't actually push to main
+test_sandbox.tsx
