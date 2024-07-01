@@ -37,7 +37,7 @@ const TaskDetailsSection = ({
           key={index}
           className="py-[0.65rem] text-[1rem] font-[350] leading-[1.125rem] text-[#485358]"
         >
-          {dbName}
+          {sectionNamesMap[dbName]}
           <p className="py-[0.5rem] text-[1.25rem] font-[350] leading-[1.7rem] text-[#000000]">
             {
               data[dbName] === null ||
