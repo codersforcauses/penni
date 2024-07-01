@@ -1,6 +1,7 @@
 import { Inter as FontSans } from "next/font/google";
 import { useEffect, useState } from "react";
 
+import TaskCard from "@/components/ui/TaskCard";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +12,15 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
+const sampleTask = [
+  "Clean up my house",
+  "CLEANING",
+  "BIDDING",
+  "21 Aud, 2022",
+  "4",
+  "300",
+];
 
 export default function Home() {
   const [clicked, setClicked] = useState(false);
@@ -44,6 +54,16 @@ export default function Home() {
       <p>
         Response from server: <span>{data as string}</span>
       </p>
+      <br />
+      <TaskCard
+        title="Clean up my house"
+        category="cleaning"
+        state="expired"
+        time="21 Aug, 2022"
+        location="Richmond, VIC"
+        duration="4"
+        price="300"
+      />
     </main>
   );
 }
