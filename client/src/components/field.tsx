@@ -1,20 +1,24 @@
 import { useState } from "react";
 
 // Using tailwind 'jit" so can't use string concatenation
-// TODO: For bg-black bg-opacity-5 no colour is defined in Figma, change this possibly?
 const inputStyleNoLabel =
   "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 py-4 pl-4 pr-3";
 const inputStyleWithLabel =
   "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3";
-const inputValueStyle =
-  "h-full w-full bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode focus:outline-none overflow-hidden resize-none";
-const inputDefaultValueStyle =
-  "h-full w-full bg-transparent text-base font-normal leading-5 text-penni-text-tertiary-light-mode focus:outline-none overflow-hidden resize-none";
+// colour added to safelist so can concatenate colour in function
+const valueStyle =
+  "h-full w-full bg-transparent text-base font-normal leading-5 focus:outline-none overflow-hidden resize-none";
+// Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
+
+type HTMLEventTargetElement =
+  | HTMLInputElement
+  | HTMLTextAreaElement
+  | HTMLSelectElement;
 
 interface InputProp {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
   label?: string;
   defaultValue?: string;
 }
@@ -30,40 +34,106 @@ function InputLabel({ label, id }: { label: string; id: string }) {
   );
 }
 
-export function SingleLineInput({ value, onChange, label }: InputProp) {
-  const [valueChanged, setValueChanged] = useState(false);
+function TextInput({ value, onChange, label }: InputProp) {
+  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
   return (
-    <>
-      <div className={label ? inputStyleWithLabel : inputStyleNoLabel}>
-        {label && <InputLabel label={label} id={id} />}
+    <div className={label ? inputStyleWithLabel : inputStyleNoLabel}>
+      {label && <InputLabel label={label} id={id} />}
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={(e) => {
+          onChange(e);
+          setValueChanged(true);
+        }}
+        className={
+          valueStyle +
+          (valueChanged
+            ? " text-penni-text-regular-light-mode"
+            : " text-penni-text-tertiary-light-mode")
+        }
+      />
+    </div>
+  );
+}
+
+function PriceInput({ value, onChange, label }: InputProp) {
+  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
+  const [id] = useState(uniqueId());
+  return (
+    <div className={label ? inputStyleWithLabel : inputStyleNoLabel}>
+      {label && <InputLabel label={label} id={id} />}
+      <div className="item-center flex size-full flex-row">
+        <span className="size-4">$</span>
         <input
           id={id}
-          type="text"
+          type="number"
           value={value}
           onChange={(e) => {
             onChange(e);
             setValueChanged(true);
           }}
-          className={valueChanged ? inputValueStyle : inputDefaultValueStyle}
+          className={
+            valueStyle +
+            (valueChanged
+              ? " text-penni-text-regular-light-mode"
+              : " text-penni-text-tertiary-light-mode")
+          }
         />
       </div>
-    </>
+    </div>
   );
 }
 
-/*
-export default function Search() {
-  function search(formData) {
-    const query = formData.get("query");
-    alert(`You searched for '${query}'`);
-  }
+function ParagraphInput({ value, onChange, label }: InputProp) {
+  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
+  const [id] = useState(uniqueId());
   return (
-    <form action={search}>
-      <input name="query" />
-      <button type="submit">Search</button>
-    </form>
+    <div className={label ? inputStyleWithLabel : inputStyleNoLabel}>
+      {label && <InputLabel label={label} id={id} />}
+      <textarea
+        id={id}
+        value={value}
+        onChange={(e) => {
+          onChange(e);
+          setValueChanged(true);
+        }}
+        className={
+          valueStyle +
+          (valueChanged
+            ? " text-penni-text-regular-light-mode"
+            : " text-penni-text-tertiary-light-mode")
+        }
+      />
+    </div>
   );
 }
 
-*/
+function DropdownInput({ value, onChange, label }: InputProp) {
+  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
+  const [id] = useState(uniqueId());
+  return (
+    <div className={label ? inputStyleWithLabel : inputStyleNoLabel}>
+      {label && <InputLabel label={label} id={id} />}
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={(e) => {
+          onChange(e);
+          setValueChanged(true);
+        }}
+        className={
+          valueStyle +
+          (valueChanged
+            ? " text-penni-text-regular-light-mode"
+            : " text-penni-text-tertiary-light-mode")
+        }
+      />
+    </div>
+  );
+}
+
+export { DropdownInput,ParagraphInput, PriceInput, TextInput };
