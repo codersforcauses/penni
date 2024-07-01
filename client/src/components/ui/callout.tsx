@@ -1,71 +1,71 @@
-/*
-warning
-alert
-success
-default/info
+import { EditIcon,InfoIcon } from "./icons";
 
-color, icon
-
-callout:
-    width: 343px, 
-    height: 56px,
-    radius=8px
-    padding=16px
-    gap??? = 15px
-
-text:
-    weight: 500
-    size: 15px
-    lineheight: 20px
-    font: SF Pro Text
-
-*/
-
-function InfoIcon({ strokeColour }: { strokeColour: string }) {
-  return (
-    <svg
-      className={`size-6 fill-none stroke-${strokeColour}`}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v4M12 16h.01"
-        stroke="current"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+interface CalloutProp {
+  text: string;
+  // If provided, edit icon will be shown
+  onClick?: (...args: any[]) => void;
 }
 
-function GenericCallout({ text, colour }: { text: string; colour: string }) {
+interface GenericCalloutProp extends CalloutProp {
+  colour: string;
+}
+
+function GenericCallout({ text, colour, onClick }: GenericCalloutProp) {
   return (
-    <div className="px-4 py-3">
+    <div className="px-4 py-3" onClick={onClick}>
       <div
         className={`flex h-14 w-full flex-row items-center rounded-penni-border bg-${colour} bg-opacity-5 p-4`}
       >
         <div className="mr-4 size-6">
           <InfoIcon strokeColour={colour} />
         </div>
-        <span className={`text-sm font-medium text-${colour}`}>{text}</span>
+        <span className={`w-full text-sm font-medium text-${colour}`}>
+          {text}
+        </span>
+        {onClick && (
+          <div className="ml-4 size-6">
+            <EditIcon strokeColour={colour} />
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export function InfoCallout({ text }: { text: string }) {
-  return <GenericCallout text={text} colour="penni-text-regular-light-mode" />;
+function InfoCallout({ text, onClick }: CalloutProp) {
+  return (
+    <GenericCallout
+      text={text}
+      colour="penni-text-regular-light-mode"
+      onClick={onClick}
+    />
+  );
 }
 
-export function SuccessCallout({ text }: { text: string }) {
-  return <GenericCallout text={text} colour="penni-alert-success" />;
+function SuccessCallout({ text, onClick }: CalloutProp) {
+  return (
+    <GenericCallout
+      text={text}
+      colour="penni-alert-success"
+      onClick={onClick}
+    />
+  );
 }
 
-export function WarningCallout({ text }: { text: string }) {
-  return <GenericCallout text={text} colour="penni-alert-warning" />;
+function WarningCallout({ text, onClick }: CalloutProp) {
+  return (
+    <GenericCallout
+      text={text}
+      colour="penni-alert-warning"
+      onClick={onClick}
+    />
+  );
 }
 
-export function ErrorCallout({ text }: { text: string }) {
-  return <GenericCallout text={text} colour="penni-alert-error" />;
+function ErrorCallout({ text, onClick }: CalloutProp) {
+  return (
+    <GenericCallout text={text} colour="penni-alert-error" onClick={onClick} />
+  );
 }
+
+export { ErrorCallout,InfoCallout, SuccessCallout, WarningCallout };

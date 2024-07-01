@@ -11,7 +11,7 @@ const config = {
   ],
   safelist: [
     {
-      // Callouts use format string to determine colour, not rendered if 'jit'
+      // Callouts and icons use format string to determine colour, not rendered if 'jit'
       pattern: /(bg|text|stroke)-penni-(alert|text-regular)/,
     },
   ],

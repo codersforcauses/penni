@@ -9,9 +9,15 @@ export default function Test() {
   return (
     <>
       <ErrorCallout text="Hwldwadwadawdadwdwdlo!" />
+      <ErrorCallout text="Hwldwadwadawdadwdwdlo!" />
       <SuccessCallout text="Hwllo!" />
       <InfoCallout text="Hwllo!" />
-      <WarningCallout text="Hwllo!" />
+      <WarningCallout
+        text="Hwllo!"
+        onClick={() => {
+          console.log("HELLO");
+        }}
+      />
     </>
   );
 }
