@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils.timezone import now
 
 
 class Users(models.Model):
@@ -84,7 +85,7 @@ class Tasks(models.Model):
 
     description = models.TextField()
     location = models.CharField(max_length=255)
-    estimated_price = models.CharField(max_length=255, default='')
+    budget = models.CharField(max_length=255, default='')
     estimated_time = models.CharField(max_length=255, default='')
     deadline = models.DateTimeField()
     status = models.CharField(max_length=50)
@@ -104,10 +105,14 @@ class Tasks(models.Model):
         """
         super().clean()
         # Example validation: Ensure budget is positive
-        if self.budget <= 0:
-            raise ValidationError('Budget must be a positive value.')
+        try:
+            budget_value = float(self.budget)
+            if budget_value <= 0:
+                raise ValidationError('Budget must be a positive value.')
+        except ValueError:
+            raise ValidationError('Price must be a valid number.')
         # Example validation: Ensure deadline is in the future
-        if self.deadline <= self.created_at:
+        if self.deadline <= now():
             raise ValidationError('Deadline must be in the future.')
 
     class Meta:
@@ -130,7 +135,7 @@ class Bids(models.Model):
 
     def __str__(self):
         return (f"Bid {self.bid_id}: task_id={self.task_id},"
-                f"bidder_id={self.bidder_id}, amount={self.amount}, "
+                f"bidder_id={self.bidder_id}, price={self.price}, "
                 f"message={self.message}, status={self.status}, "
                 f"created_at={self.created_at}, updated_at={self.updated_at}")
 
