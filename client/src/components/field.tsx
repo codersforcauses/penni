@@ -32,10 +32,24 @@ interface InputProp {
   label?: string;
 }
 
-interface DropdownInputProp extends InputProp {
+interface DropdownInputProp {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
+  label?: string;
   options: string[];
 }
 
+interface DropdownMenuProp {
+  menuId: string;
+  options: string[];
+  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
+}
+/*
+Type '(e: ChangeEventHandler<HTMLOptionElement>) => void' is not assignable to type 'ChangeEventHandler<HTMLSelectElement>'.
+  Types of parameters 'e' and 'event' are incompatible.
+    Type 'ChangeEvent<HTMLSelectElement>' is not assignable to type 'ChangeEventHandler<HTMLOptionElement>'.
+      Type 'ChangeEvent<HTMLSelectElement>' provides no match for the signature '(event: ChangeEvent<HTMLOptionElement>): void'.ts(2322)
+*/
 interface FreeTextInputProp extends InputProp {
   placeholder?: string;
 }
@@ -214,13 +228,31 @@ function ParagraphInput({
   );
 }
 
-function DropdownMenu({ options, onChange }: DropdownInputProp) {
+function DropdownMenu({ menuId, options, onChange }: DropdownMenuProp) {
   return (
-    <div>
-      {options.map((option) => (
-        <a href="#" key={option} onClick={() => {}}>
+    <div
+      className="absolute right-0 z-10 mx-4 -mt-3 flex w-56 origin-top-right flex-col rounded-penni-card bg-black bg-opacity-5 shadow-lg focus:outline-none"
+      role="menu"
+      aria-orientation="vertical"
+      aria-labelledby={menuId}
+      tabIndex={-1}
+    >
+      {options.map((option, index) => (
+        <button
+          value={option}
+          className={`${valueStyle} select-none px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive ${index === 0 ? "hover:rounded-t-penni-border" : ""} ${index === options.length - 1 ? "hover:rounded-b-penni-border" : ""}`}
+          role="menuitem"
+          tabIndex={-1}
+          key={index}
+          onClick={() => {
+            const dummyEvent = {
+              target: { value: option },
+            } as React.ChangeEvent<HTMLEventTargetElement>;
+            onChange(dummyEvent);
+          }}
+        >
           {option}
-        </a>
+        </button>
       ))}
     </div>
   );
@@ -230,7 +262,7 @@ function DropdownMenu({ options, onChange }: DropdownInputProp) {
  * Input component with a list of options.
  
  * @param props - The properties for the DropdownInput component.
- * @param props.value - The current selected value of the dropdown, tracked by `react.setState()`
+ * @param props.value - Value of the selected option, tracked by `react.setState()`.
  * @param props.options - List of possible values for `value`, displayed in dropdown.
  * @param props.onChange - Called when the selected value changes, should update `value`.
  * @param props.label - (*Optional*) Label for the field, displayed above input.
@@ -249,26 +281,49 @@ function DropdownMenu({ options, onChange }: DropdownInputProp) {
  */
 function DropdownInput({ value, options, onChange, label }: DropdownInputProp) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
-  const [id] = useState(uniqueId());
+  const [menuId] = useState(uniqueId());
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <button className="m-4 flex h-14 w-full flex-row items-center rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3">
-      <div className="flex w-full flex-col items-start">
-        {label && <InputLabel label={label} id={id} />}
-        <span
-          className={
-            valueStyle +
-            (valueChanged
-              ? " text-penni-text-regular-light-mode"
-              : " text-penni-text-tertiary-light-mode")
-          }
+    <>
+      <div className="m-4 w-auto">
+        <button
+          id={menuId}
+          className="flex h-14 w-full flex-row items-center rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3"
+          aria-haspopup={true}
+          aria-expanded={true}
+          onClick={() => setExpanded(!expanded)}
         >
-          {value}
-        </span>
+          <div className="flex w-full flex-col items-start">
+            {label && <InputLabel label={label} id={menuId} />}
+            <span
+              className={
+                valueStyle +
+                (valueChanged
+                  ? " text-penni-text-regular-light-mode"
+                  : " text-penni-text-tertiary-light-mode")
+              }
+            >
+              {value}
+            </span>
+          </div>
+          <div className="ml-3 flex size-6 items-center justify-center">
+            <DropdownIcon />
+          </div>
+        </button>
       </div>
-      <div className="ml-3 flex size-6 items-center justify-center">
-        <DropdownIcon />
-      </div>
-    </button>
+      {expanded && (
+        <DropdownMenu
+          menuId={menuId}
+          options={options}
+          onChange={(e) => {
+            setValueChanged(true);
+            setExpanded(false);
+            onChange(e);
+          }}
+        />
+      )}
+    </>
   );
 }
 
