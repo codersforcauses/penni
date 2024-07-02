@@ -4,22 +4,18 @@ import { useState } from "react";
 TODOS: 
 - style scroll bar in textarea?
 - Style dropdown list
-- fix priceInput to 2 decimals?
 */
 
-// Tailwind 'jit' don't support str concatenation so duplicating styles here... lord forgive my sins
-const textStyleNoLabel =
-  "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 py-4 pl-4 pr-3 overflow-hidden";
-const textStyleWithLabel =
-  "m-4 flex h-14 w-auto flex-col rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3 overflow-hidden";
-const paragraphStyleNoLabel =
-  "m-4 flex h-auto w-auto flex-col rounded-penni-border bg-black bg-opacity-5 py-4 pl-4 pr-3 overflow-y-auto";
-const paragraphStyleWithLabel =
-  "m-4 flex h-auto w-auto flex-col rounded-penni-border bg-black bg-opacity-5 py-4 pl-4 pr-3 overflow-y-auto";
-
+// Tailwind 'jit' don't support str concatenation so stick to string templates
+const inputBaseStyle =
+  "m-4 flex w-auto flex-col rounded-penni-border bg-black bg-opacity-5";
+const textStyleWithLabel = `${inputBaseStyle} px-4 pb-2 pt-3 h-14 overflow-hidden`;
+const textStyleNoLabel = `${inputBaseStyle} py-4 pl-4 pr-3 h-14 overflow-hidden`;
+const paragraphStyle = `${inputBaseStyle} h-auto py-4 pl-4 pr-3 overflow-y-auto`;
 // colour added to safelist so can concatenate colour in function
 const valueStyle =
   "h-full w-full bg-transparent text-base font-normal leading-5 focus:outline-none  resize-none";
+
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
@@ -129,6 +125,16 @@ function PriceInput({
 }: FreeTextInputProp) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
+  const handleOnClick = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+    onChange(e);
+    setValueChanged(true);
+  };
+  // Fix decimal places to 2 when clicking out of input
+  const handleOnBlur = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+    const fixedValue = parseFloat(e.target.value).toFixed(2);
+    onChange({ ...e, target: { ...e.target, value: fixedValue } });
+  };
+
   return (
     <div className={label ? textStyleWithLabel : textStyleNoLabel}>
       {label && <InputLabel label={label} id={id} />}
@@ -139,10 +145,8 @@ function PriceInput({
           type="number"
           value={value}
           placeholder={placeholder}
-          onChange={(e) => {
-            onChange(e);
-            setValueChanged(true);
-          }}
+          onChange={handleOnClick}
+          onBlur={handleOnBlur}
           className={
             valueStyle +
             (valueChanged
@@ -185,7 +189,7 @@ function ParagraphInput({
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
   return (
-    <div className={label ? paragraphStyleWithLabel : paragraphStyleNoLabel}>
+    <div className={paragraphStyle}>
       {label && <InputLabel label={label} id={id} />}
       <textarea
         id={id}
@@ -211,7 +215,7 @@ function DropdownMenu({ options, onChange }: DropdownInputProp) {
   return (
     <div>
       {options.map((option) => (
-        <a href="#" key={option} onClick={() => onChange(option)}>
+        <a href="#" key={option} onClick={() => {}}>
           {option}
         </a>
       ))}
