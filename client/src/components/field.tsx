@@ -16,7 +16,7 @@ const textStyleNoLabel = `${inputBaseStyle} py-4 pl-4 pr-3 h-14 overflow-hidden`
 const paragraphStyle = `${inputBaseStyle} h-auto py-4 pl-4 pr-3 overflow-y-auto`;
 // colour added to safelist so can concatenate colour in function
 const valueStyle =
-  "h-full w-full bg-transparent text-base font-normal leading-5 focus:outline-none  resize-none";
+  "h-full bg-transparent text-base font-normal leading-5 focus:outline-none  resize-none";
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
@@ -44,7 +44,7 @@ function InputLabel({ label, id }: { label: string; id: string }) {
   return (
     <label
       htmlFor={id}
-      className="w-full text-xs font-normal leading-3 text-penni-text-secondary-light-mode"
+      className="text-xs font-normal leading-3 text-penni-text-secondary-light-mode"
     >
       {label}
     </label>
@@ -150,7 +150,7 @@ function PriceInput({
           onChange={handleOnChange}
           onBlur={handleOnBlur}
           className={
-            valueStyle +
+            `${valueStyle} w-full` + // Align right spinner to end of input
             (valueChanged
               ? " text-penni-text-regular-light-mode"
               : " text-penni-text-tertiary-light-mode")
@@ -250,31 +250,25 @@ function DropdownMenu({ options, onChange }: DropdownInputProp) {
 function DropdownInput({ value, options, onChange, label }: DropdownInputProp) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
-
   return (
-    <div className={label ? textStyleWithLabel : textStyleNoLabel}>
-      {label && <InputLabel label={label} id={id} />}
-      <select
-        id={id}
-        value={value}
-        onChange={(e) => {
-          onChange(e);
-          setValueChanged(true);
-        }}
-        className={
-          valueStyle +
-          (valueChanged
-            ? " text-penni-text-regular-light-mode"
-            : " text-penni-text-tertiary-light-mode")
-        }
-      >
-        {options.map((option) => (
-          <option className={valueStyle} key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-    </div>
+    <button className="m-4 flex h-14 w-full flex-row items-center rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3">
+      <div className="flex w-full flex-col items-start">
+        {label && <InputLabel label={label} id={id} />}
+        <span
+          className={
+            valueStyle +
+            (valueChanged
+              ? " text-penni-text-regular-light-mode"
+              : " text-penni-text-tertiary-light-mode")
+          }
+        >
+          {value}
+        </span>
+      </div>
+      <div className="ml-3 flex size-6 items-center justify-center">
+        <DropdownIcon />
+      </div>
+    </button>
   );
 }
 

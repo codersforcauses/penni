@@ -1,7 +1,7 @@
 export function EditIcon({
   strokeColour = "penni-text-regular-light-mode",
 }: {
-  strokeColour: string;
+  strokeColour?: string;
 }) {
   return (
     <svg
@@ -30,7 +30,7 @@ export function EditIcon({
 export function InfoIcon({
   strokeColour = "penni-text-regular-light-mode",
 }: {
-  strokeColour: string;
+  strokeColour?: string;
 }) {
   return (
     <svg
@@ -52,7 +52,7 @@ export function InfoIcon({
 export function DropdownIcon({
   strokeColour = "penni-text-regular-light-mode",
 }: {
-  strokeColour: string;
+  strokeColour?: string;
 }) {
   return (
     <svg

@@ -12,7 +12,7 @@ const config = {
   safelist: [
     {
       // Some components use str template to determine colour, not rendered if 'jit'
-      pattern: /(bg|text|stroke)-penniformat string-(alert|text-regular)/,
+      pattern: /(bg|text|stroke)-penni-(alert|text-regular)/,
     },
   ],
   prefix: "",
