@@ -20,20 +20,20 @@ type HTMLEventTargetElement =
   | HTMLTextAreaElement
   | HTMLSelectElement;
 
-interface InputProp {
+interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
   label?: string;
 }
 
-interface DropdownInputProp {
+interface DropdownInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
   label?: string;
   options: string[];
 }
 
-interface DropdownMenuProp {
+interface DropdownMenuProps {
   menuId: string;
   options: string[];
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
@@ -44,7 +44,7 @@ Type '(e: ChangeEventHandler<HTMLOptionElement>) => void' is not assignable to t
     Type 'ChangeEvent<HTMLSelectElement>' is not assignable to type 'ChangeEventHandler<HTMLOptionElement>'.
       Type 'ChangeEvent<HTMLSelectElement>' provides no match for the signature '(event: ChangeEvent<HTMLOptionElement>): void'.ts(2322)
 */
-interface FreeTextInputProp extends InputProp {
+interface FreeTextInputProps extends InputProps {
   placeholder?: string;
 }
 
@@ -80,7 +80,12 @@ function InputLabel({ label, id }: { label: string; id: string }) {
  *   placeholder="Type here..."
  * />
  */
-function TextInput({ value, onChange, label, placeholder }: FreeTextInputProp) {
+function TextInput({
+  value,
+  onChange,
+  label,
+  placeholder,
+}: FreeTextInputProps) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
@@ -138,7 +143,7 @@ function PriceInput({
   onChange,
   label,
   placeholder,
-}: FreeTextInputProp) {
+}: FreeTextInputProps) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
@@ -207,7 +212,7 @@ function ParagraphInput({
   onChange,
   label,
   placeholder,
-}: FreeTextInputProp) {
+}: FreeTextInputProps) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
@@ -239,7 +244,7 @@ function ParagraphInput({
   );
 }
 
-function DropdownMenu({ menuId, options, onChange }: DropdownMenuProp) {
+function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
   return (
     <div
       className="absolute right-0 z-10 mx-4 -mt-3 flex w-56 origin-top-right flex-col rounded-penni-card bg-black bg-opacity-5 shadow-lg focus:outline-none"
@@ -290,7 +295,12 @@ function DropdownMenu({ menuId, options, onChange }: DropdownMenuProp) {
  *   label="Choose an option"
  * />
  */
-function DropdownInput({ value, options, onChange, label }: DropdownInputProp) {
+function DropdownInput({
+  value,
+  options,
+  onChange,
+  label,
+}: DropdownInputProps) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [menuId] = useState(uniqueId());
   const [expanded, setExpanded] = useState(false);
