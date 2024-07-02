@@ -10,7 +10,7 @@ const textStyleNoLabel = `${inputBaseStyle} py-4 pl-4 pr-3 h-14 overflow-hidden`
 const paragraphStyle = `${inputBaseStyle} h-auto py-4 pl-4 pr-3 overflow-y-auto`;
 // colour added to safelist so can concatenate colour in function
 const valueStyle =
-  "h-full bg-transparent text-base font-normal leading-5 focus:outline-none  resize-none";
+  "caret-penni-main h-full bg-transparent text-base font-normal leading-5 focus:outline-none  resize-none";
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
