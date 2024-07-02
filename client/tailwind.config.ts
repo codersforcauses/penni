@@ -37,7 +37,8 @@ const config = {
       lineHeight: {
         lgt: "41px",
         t1: "34px",
-        t23: "28px", //title2 and title3
+        t2: "28px",
+        t3: "28px",
         hb: "22px",
         co: "21px",
         sh: "20px",
@@ -49,7 +50,6 @@ const config = {
         bold: "700",
         semibold: "600",
         medium: "500",
-        regular: "400",
       },
       colors: {
         penni: {

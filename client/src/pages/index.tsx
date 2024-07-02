@@ -37,7 +37,7 @@ export default function Home() {
         fontSans.variable,
       )}
     >
-      <h1 className="title1 text-primary">Test</h1>
+      <h1 className="title1 text-primary">Test title</h1>
       {/* Test for font */}
       {/*
       <h1 className="largetitle text-primary">Largetitle</h1>
