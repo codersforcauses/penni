@@ -48,3 +48,27 @@ export function InfoIcon({
     </svg>
   );
 }
+
+export function DropdownIcon({
+  strokeColour = "penni-text-regular-light-mode",
+}: {
+  strokeColour: string;
+}) {
+  return (
+    <svg
+      className={`fill-none stroke-${strokeColour}`}
+      width={14}
+      height={9}
+      viewBox="0 0 14 9"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 1.5l6 6 6-6"
+        stroke="current"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}

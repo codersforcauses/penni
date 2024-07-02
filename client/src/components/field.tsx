@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { DropdownIcon } from "./ui/icons";
+
 /*
 TODOS: 
 - style scroll bar in textarea?
@@ -112,7 +114,7 @@ function TextInput({ value, onChange, label, placeholder }: FreeTextInputProp) {
  * const [priceValue, setPriceValue] = useState(0);
  * <PriceInput
  *   value={priceValue}
- *   onChange={(e) => setPriceValue(parseFloat(e.target.value))}
+ *   onChange={(e) => setPriceValue(e.target.value)}
  *   label="Enter price"
  *   placeholder="0.00"
  * />
@@ -125,7 +127,7 @@ function PriceInput({
 }: FreeTextInputProp) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
-  const handleOnClick = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
     onChange(e);
     setValueChanged(true);
   };
@@ -145,7 +147,7 @@ function PriceInput({
           type="number"
           value={value}
           placeholder={placeholder}
-          onChange={handleOnClick}
+          onChange={handleOnChange}
           onBlur={handleOnBlur}
           className={
             valueStyle +
@@ -188,6 +190,7 @@ function ParagraphInput({
 }: FreeTextInputProp) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
+
   return (
     <div className={paragraphStyle}>
       {label && <InputLabel label={label} id={id} />}
@@ -247,6 +250,7 @@ function DropdownMenu({ options, onChange }: DropdownInputProp) {
 function DropdownInput({ value, options, onChange, label }: DropdownInputProp) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
+
   return (
     <div className={label ? textStyleWithLabel : textStyleNoLabel}>
       {label && <InputLabel label={label} id={id} />}
