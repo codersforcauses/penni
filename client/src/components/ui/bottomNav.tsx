@@ -2,128 +2,65 @@ import Link from "next/link";
 import * as React from "react";
 import { useState } from "react";
 
-interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
+import {
+  BidderNavIconMarket,
+  BidderNavIconMe,
+  BidderNavIconTasks,
+} from "./icons";
+
+interface BidderNavIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string; // use to change color of the svg pic
   alt?: string;
 }
 
-const BottomNavIcon1: React.FC<BottomNavIconProps> = ({
-  className,
-  ...props
-}) => {
-  return (
-    <svg
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
-const BottomNavIcon2: React.FC<BottomNavIconProps> = ({
-  className,
-  ...props
-}) => {
-  return (
-    <svg
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M10 3H3v7h7V3zM21 3h-7v7h7V3zM21 14h-7v7h7v-7zM10 14H3v7h7v-7z"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
-const BottomNavIcon3: React.FC<BottomNavIconProps> = ({
-  className,
-  ...props
-}) => {
-  return (
-    <svg
-      width={24}
-      height={24}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <path
-        d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-};
-
-export { BottomNavIcon1, BottomNavIcon2, BottomNavIcon3 };
-
 interface Icon {
-  IconComponent: React.FC<BottomNavIconProps>;
+  IconComponent: React.FC<BidderNavIconProps>;
   alt: string;
   text: string;
   link?: string; // in case link to other page when the component is used in the page
+  id: 0 | 1 | 2;
 }
 
 const iconLists: Icon[] = [
   {
-    IconComponent: BottomNavIcon1,
+    IconComponent: BidderNavIconTasks,
     alt: "Icon of my tasks",
     text: "My Tasks",
+    id: 0,
   },
   {
-    IconComponent: BottomNavIcon2,
+    IconComponent: BidderNavIconMarket,
     alt: "Icon of market",
     text: "Market",
+    id: 1,
   },
   {
-    IconComponent: BottomNavIcon3,
+    IconComponent: BidderNavIconMe,
     alt: "Icon of me",
     text: "Me",
+    id: 2,
   },
 ];
 
-const BottomNav = () => {
-  const [changeColor, setChangeColor] = useState(0);
-  const handleItemClick = (idx: number) => {
+// navIndex prop can only be 0,1,2, representing the index of these icons. Can be used to define the initial color of the ui
+const BottomNav = ({ navIndex }: { navIndex: 0 | 1 | 2 }) => {
+  const [changeColor, setChangeColor] = useState(navIndex);
+  const handleItemClick = (idx: 0 | 1 | 2) => {
     setChangeColor(idx);
   };
 
   return (
-    <div className="border-t-penni-border-light-mode fixed bottom-0 h-[83px] w-full border-t-2">
-      <ul className="flex h-[49px] cursor-pointer text-[10px] leading-3">
-        {iconLists.map((iconItem, index) => (
+    <div className="border-t-penni-border-light-mode fixed bottom-0 h-20 w-full border-t-2">
+      <ul className="flex h-12 cursor-pointer text-[10px] leading-3">
+        {iconLists.map((iconItem) => (
           <li
-            key={index}
-            className={`${changeColor === index ? "text-penni-main" : "text-penni-text-tertiary-light-mode"} w-1/3`}
-            onClick={() => handleItemClick(index)}
+            key={iconItem.id}
+            className={`${changeColor === iconItem.id ? "text-penni-main" : "text-penni-text-tertiary-light-mode"} w-1/3`}
+            onClick={() => handleItemClick(iconItem.id)}
           >
             <Link
               href={iconItem.link || ""}
-              className="flex flex-col items-center pt-[6px]"
+              className="flex flex-col items-center pt-2"
             >
               <div>
                 <iconItem.IconComponent alt={iconItem.alt} />
