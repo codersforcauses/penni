@@ -292,3 +292,8 @@ dist
 .DS_Store
 
 opt/
+
+.idea/ 
+pyproject.toml
+.vscode/*
+.vscode/settings.json
