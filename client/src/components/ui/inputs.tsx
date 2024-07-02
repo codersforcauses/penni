@@ -38,12 +38,7 @@ interface DropdownMenuProps {
   options: string[];
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
 }
-/*
-Type '(e: ChangeEventHandler<HTMLOptionElement>) => void' is not assignable to type 'ChangeEventHandler<HTMLSelectElement>'.
-  Types of parameters 'e' and 'event' are incompatible.
-    Type 'ChangeEvent<HTMLSelectElement>' is not assignable to type 'ChangeEventHandler<HTMLOptionElement>'.
-      Type 'ChangeEvent<HTMLSelectElement>' provides no match for the signature '(event: ChangeEvent<HTMLOptionElement>): void'.ts(2322)
-*/
+
 interface FreeTextInputProps extends InputProps {
   placeholder?: string;
 }
