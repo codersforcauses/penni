@@ -1,9 +1,13 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-from django.contrib.auth.hashers import make_password, check_password
+from django.utils.timezone import now
 
 
 class Users(models.Model):
+    """
+    Model class: Users
+    Represents users in the system.
+    """
     user_id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=255)
     mobile = models.CharField(max_length=20)
@@ -14,9 +18,6 @@ class Users(models.Model):
     status = models.CharField(max_length=50)
     user_role = models.CharField(max_length=50, default='')
 
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-
     def __str__(self):
         return (f"User {self.user_id}: email={self.email}, "
                 f"mobile={self.mobile}, "
@@ -26,17 +27,16 @@ class Users(models.Model):
                 f"status={self.status}")
 
     def clean(self):
+        """
+        Perform custom validation.
+        """
         super().clean()
+        # Example validation: Ensure mobile number contains only digits
         if not self.mobile.isdigit():
-            raise ValidationError({'mobile': 'Mobile must contain only digits.'})
+            raise ValidationError('Mobile number must contain only digits.')
+        # Example validation: Ensure status is not empty
         if not self.status:
-            raise ValidationError({'status': 'This field cannot be blank.'})
-
-    def set_password(self, raw_password):
-        self.password_hash = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.password_hash)
+            raise ValidationError('Status must not be empty.')
 
 
 class Profiles(models.Model):
@@ -62,10 +62,12 @@ class Profiles(models.Model):
         super().clean()
         # Example validation: Ensure full_name does not contain numbers
         if any(char.isdigit() for char in self.full_name):
-            raise ValidationError({'full_name': 'Full name must not contain numbers.'})
+            raise ValidationError('Full name must not contain numbers.')
         # Example validation: Ensure avatar_url is a valid URL (basic check)
-        if not self.avatar_url.startswith('http://') and not self.avatar_url.startswith('https://'):
-            raise ValidationError({'avatar_url': 'Avatar URL must start with http:// or https://'})
+        if self.avatar_url and \
+           not self.avatar_url.startswith(('http://', 'https://')):
+            raise ValidationError('Avatar URL must start' +
+                                  'with http:// or https://')
 
     class Meta:
         verbose_name_plural = "Profiles"
@@ -83,7 +85,7 @@ class Tasks(models.Model):
 
     description = models.TextField()
     location = models.CharField(max_length=255)
-    estimated_price = models.CharField(max_length=255, default='')
+    budget = models.CharField(max_length=255, default='')
     estimated_time = models.CharField(max_length=255, default='')
     deadline = models.DateTimeField()
     status = models.CharField(max_length=50)
@@ -103,10 +105,14 @@ class Tasks(models.Model):
         """
         super().clean()
         # Example validation: Ensure budget is positive
-        if self.budget <= 0:
-            raise ValidationError('Budget must be a positive value.')
+        try:
+            budget_value = float(self.budget)
+            if budget_value <= 0:
+                raise ValidationError('Budget must be a positive value.')
+        except ValueError:
+            raise ValidationError('Price must be a valid number.')
         # Example validation: Ensure deadline is in the future
-        if self.deadline <= self.created_at:
+        if self.deadline <= now():
             raise ValidationError('Deadline must be in the future.')
 
     class Meta:
@@ -129,7 +135,7 @@ class Bids(models.Model):
 
     def __str__(self):
         return (f"Bid {self.bid_id}: task_id={self.task_id},"
-                f"bidder_id={self.bidder_id}, amount={self.amount}, "
+                f"bidder_id={self.bidder_id}, price={self.price}, "
                 f"message={self.message}, status={self.status}, "
                 f"created_at={self.created_at}, updated_at={self.updated_at}")
 
