@@ -68,13 +68,13 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
   };
 
   return showOnBoarding ? (
-    <div id="onboarding" className="flex h-screen flex-col">
+    <div id="onboarding" className="flex min-h-screen flex-col">
       <Carousel setApi={setApi}>
         <CarouselContent>
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
               <div className="flex flex-col items-center justify-center">
-                <div className="relative h-[79vh] w-full">
+                <div className="relative h-[82vh] w-[100%] ml-1 -mt-4">
                   <Image
                     src={slide.img}
                     alt="" // No alt as title handles that
@@ -82,7 +82,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="max-w-[36vh] mt-[-0.5rem] text-center text-[1.6rem] font-[610] leading-[2.1rem] text-penni-dark">
+                <p className="-mt-4 ml-1 max-w-[36vh] text-center text-[1.63rem] font-[620] leading-[2.1rem] text-penni-dark">
                   {slide.title}
                 </p>
               </div>
@@ -92,13 +92,13 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
       </Carousel>
       <div
         id="onboarding-controls"
-        className="flex grow-[1] flex-col items-center justify-center bg-background"
+        className="flex grow-[1] flex-col items-center justify-center bg-background h-full"
       >
-        <div className="mt-[2rem] flex w-[100%] items-center justify-between pb-[2.5vh] pl-[2.5vh] pr-[2.5vh]">
+        <div className="mt-[1.56rem] flex w-[100%] items-center justify-between pb-[2.5vh] pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
             className={
-              "text-[0.95rem] font-[550] leading-[1.438rem] text-[#858D9C] hover:bg-background hover:text-penni-main"
+              "text-[0.98rem] font-[550] leading-[1.438rem] text-[#858D9C] hover:bg-background hover:text-penni-main"
             }
             variant="ghost" // Button variant
           >
@@ -119,7 +119,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           <Button
             onClick={handleNext}
             className={
-              "text-[0.95rem] font-[550] leading-[1.438rem] text-penni-main hover:bg-background hover:text-penni-dark"
+              "text-[0.98rem] font-[550] leading-[1.438rem] text-penni-main hover:bg-background hover:text-penni-dark"
             }
             variant="ghost"
           >

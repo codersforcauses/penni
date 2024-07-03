@@ -55,7 +55,7 @@ export default function Home() {
   return (
     <main
       className={cn(
-        "flex min-h-screen flex-col items-center font-sans", // removed: flex min-h-screen flex-col items-center
+        "flex min-h-full min-w-full flex-col items-center font-sans", // removed: flex min-h-screen flex-col items-center
         fontSans.variable,
       )}
     >
