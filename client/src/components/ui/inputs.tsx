@@ -4,13 +4,14 @@ import { DropdownIcon } from "./icons";
 
 // Tailwind 'jit' don't support str concatenation so stick to string templates
 const inputBaseStyle =
-  "m-4 flex w-auto flex-col rounded-penni-border bg-black bg-opacity-5";
+  "m-4 flex w-auto flex-col rounded-penni-border bg-penni-background-input-light-mode";
 const textStyleWithLabel = `${inputBaseStyle} px-4 pb-2 pt-3 h-14 overflow-hidden`;
 const textStyleNoLabel = `${inputBaseStyle} py-4 pl-4 pr-3 h-14 overflow-hidden`;
 const paragraphStyle = `${inputBaseStyle} h-auto py-4 pl-4 pr-3 overflow-y-auto`;
 // colour added to safelist so can concatenate colour in function
 const valueStyle =
-  "caret-penni-main h-full bg-transparent text-base font-normal leading-5 focus:outline-none  resize-none";
+  "h-full text-base font-normal leading-5 focus:outline-none  resize-none text-penni-text-regular-light-mode";
+const textValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-tertiary-light-mode w-full`;
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
@@ -26,22 +27,22 @@ interface InputProps {
   label?: string;
 }
 
-interface DropdownInputProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
-  label?: string;
+interface DropdownInputProps extends InputProps {
   options: string[];
+}
+
+interface FreeTextInputProps extends InputProps {
+  placeholder?: string;
+}
+
+interface SingleLineInputProps extends FreeTextInputProps {
+  type: "text" | "price" | "date";
 }
 
 interface DropdownMenuProps {
   menuId: string;
   options: string[];
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
-}
-
-interface FreeTextInputProps extends InputProps {
-  placeholder?: string;
-  type: "text" | "number" | "date";
 }
 
 function InputLabel({ label, id }: { label: string; id: string }) {
@@ -56,16 +57,14 @@ function InputLabel({ label, id }: { label: string; id: string }) {
 }
 
 /**
- * Input component for single line input.
- * Can choose "text" | "number" | "date" type
- * "number" is for entering price, with a dollar sign and two decimal places.
+ * Input component for single line input for text, price, or date.
  *
  * @param props - The properties for the PriceInput component.
  * @param props.value - The current numeric value of the input, tracked by `react.setState()`.
  * @param props.onChange - Called when the numeric value changes, should update `value`.
  * @param props.label - (*Optional*) Label for the field, displayed above the input.
  * @param props.placeholder - (*Optional*) Placeholder text for the input field.
- * @param props.type - type of the input field. can be "text" | "number" | "date".
+ * @param props.type - Type of the input field, can be "text" | "price" | "date".
  *
  * @returns Input component for entering price values.
  *
@@ -77,7 +76,7 @@ function InputLabel({ label, id }: { label: string; id: string }) {
  *   onChange={(e) => setPriceValue(e.target.value)}
  *   label="Enter price"
  *   placeholder="0.00"
- *   type="number"
+ *   type="price"
  * />
  */
 function SingleLineInput({
@@ -86,45 +85,35 @@ function SingleLineInput({
   label,
   placeholder,
   type,
-}: FreeTextInputProps) {
-  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
+}: SingleLineInputProps) {
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
 
-  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
-    onChange(e);
-    setValueChanged(true);
-  };
-  // Fix decimal places to 2 when clicking out of input
   const handleOnBlur = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
-    const fixedValue = parseFloat(e.target.value).toFixed(2);
+    // Fix decimal places to 2 when clicking out of input
+    if (type == "price" && e.target.value !== "") {
+      const fixedValue = parseFloat(e.target.value).toFixed(2);
+      onChange({ ...e, target: { ...e.target, value: fixedValue } });
+    }
     setIsSelected(false);
-    onChange({ ...e, target: { ...e.target, value: fixedValue } });
   };
 
   return (
     <div
-      className={`${isSelected ? "bg-opacity-0" : "bg-opacity-5"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
+      className={`${isSelected ? "bg-penni-background-light-mode" : "bg-penni-background-input-light-mode"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
     >
       {label && <InputLabel label={label} id={id} />}
       <div className="item-center flex size-full flex-row">
-        {type === "number" && <span className="size-4">$</span>}
+        {type === "price" && <span className="size-4">$</span>}
         <input
           id={id}
-          type={type}
+          type={type == "price" ? "number" : type}
           value={value}
           placeholder={placeholder}
-          onChange={handleOnChange}
+          onChange={onChange}
           onFocus={() => setIsSelected(true)}
-          onBlur={(e) =>
-            type === "number" ? handleOnBlur(e) : setIsSelected(false)
-          }
-          className={
-            `${valueStyle} w-full` + // Align right spinner to end of input
-            (valueChanged
-              ? " text-penni-text-regular-light-mode"
-              : " text-penni-text-tertiary-light-mode")
-          }
+          onBlur={handleOnBlur}
+          className={textValueStyle}
         />
       </div>
     </div>
@@ -158,13 +147,12 @@ function ParagraphInput({
   label,
   placeholder,
 }: FreeTextInputProps) {
-  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
 
   return (
     <div
-      className={`${isSelected ? "bg-opacity-0" : "bg-opacity-5"} ${paragraphStyle}`}
+      className={`${isSelected ? "bg-penni-background-light-mode" : "bg-penni-background-input-light-mode"} ${paragraphStyle}`}
     >
       {label && <InputLabel label={label} id={id} />}
       <textarea
@@ -174,16 +162,8 @@ function ParagraphInput({
         onFocus={() => setIsSelected(true)}
         onBlur={() => setIsSelected(false)}
         placeholder={placeholder}
-        onChange={(e) => {
-          onChange(e);
-          setValueChanged(true);
-        }}
-        className={
-          valueStyle +
-          (valueChanged
-            ? " text-penni-text-regular-light-mode"
-            : " text-penni-text-tertiary-light-mode")
-        }
+        onChange={onChange}
+        className={textValueStyle}
       />
     </div>
   );
@@ -192,7 +172,7 @@ function ParagraphInput({
 function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
   return (
     <div
-      className="absolute right-0 z-10 mx-4 -mt-3 flex w-56 origin-top-right flex-col rounded-penni-card bg-black bg-opacity-5 shadow-lg focus:outline-none"
+      className="absolute right-0 z-10 mx-4 -mt-3 flex w-56 origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode shadow-lg focus:outline-none"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby={menuId}
@@ -260,7 +240,7 @@ function DropdownInput({
       <div className="m-4 w-auto">
         <button
           id={menuId}
-          className="flex h-14 w-full flex-row items-center rounded-penni-border bg-black bg-opacity-5 px-4 pb-2 pt-3"
+          className="flex h-14 w-full flex-row items-center rounded-penni-border bg-penni-background-input-light-mode px-4 pb-2 pt-3"
           aria-haspopup={true}
           aria-expanded={true}
           onClick={() => setExpanded(!expanded)}

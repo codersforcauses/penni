@@ -45,6 +45,7 @@ const config = {
             "border-dark-mode": "#B6BABC",
           },
           background: {
+            "input-light-mode": "#f2f2f2",
             "light-mode": "#FFFFFF",
             "dark-mode": "#040B17",
           },
