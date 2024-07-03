@@ -171,30 +171,34 @@ function ParagraphInput({
 
 function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
   return (
-    <div
-      className="absolute right-0 z-10 -m-3 mx-4 flex w-3/4 origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
-      role="menu"
-      aria-orientation="vertical"
-      aria-labelledby={menuId}
-      tabIndex={-1}
-    >
-      {options.map((option, index) => (
-        <button
-          value={option}
-          className={`${valueStyle} select-none rounded-penni-border px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive`}
-          role="menuitem"
+    <div className="relative">
+      <div className="h-auto w-full">
+        <div
+          className="absolute left-0 right-0 z-10 -m-3 mx-4 flex origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby={menuId}
           tabIndex={-1}
-          key={index}
-          onClick={() => {
-            const dummyEvent = {
-              target: { value: option },
-            } as React.ChangeEvent<HTMLEventTargetElement>;
-            onChange(dummyEvent);
-          }}
         >
-          {option}
-        </button>
-      ))}
+          {options.map((option, index) => (
+            <button
+              value={option}
+              className={`${valueStyle} select-none rounded-penni-border px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive`}
+              role="menuitem"
+              tabIndex={-1}
+              key={index}
+              onClick={() => {
+                const dummyEvent = {
+                  target: { value: option },
+                } as React.ChangeEvent<HTMLEventTargetElement>;
+                onChange(dummyEvent);
+              }}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
