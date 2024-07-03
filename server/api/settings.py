@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "api.healthcheck",
     "corsheaders",
     "rest_framework",
+    "app",
 ]
 
 MIDDLEWARE = [
