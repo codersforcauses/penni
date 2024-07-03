@@ -20,7 +20,7 @@ class TaskModelTests(TestCase):
             description="This is a test task",
             location="Test Location",
             estimated_price="100",
-            estimated_time="2 hours",
+            estimated_time="100",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open"
         )
@@ -35,7 +35,7 @@ class TaskModelTests(TestCase):
         self.assertEqual(self.task.estimated_price, "100")
         self.assertEqual(self.task.estimated_time, "2 hours")
         self.assertEqual(self.task.status, "open")
-    
+
     def test_task_str(self):
         self.assertEqual(str(self.task), self.task.title)
 
