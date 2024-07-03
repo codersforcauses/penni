@@ -38,21 +38,6 @@ export default function Home() {
       )}
     >
       <h1 className="title1 text-primary">Test title</h1>
-      {/* Test for font */}
-      {/*
-      <h1 className="largetitle text-primary">Largetitle</h1>
-      <h1 className="title1 text-primary">Title1</h1>
-      <h2 className="title2 text-primary">Title2</h2>
-      <h3 className="title3 text-primary">Title3</h3>
-      <h3 className="headline text-primary">Headline</h3>
-      <body className="body text-primary">Body</body>
-      <p className="callout text-primary">Callout</p>
-      <h3 className="subheadline-medium text-primary">Subheadline - Medium</h3>
-      <h3 className="subheadline text-primary">Subheadline</h3>
-      <p className="footnote text-primary">Footnote</p>
-      <p className="caption-semibold text-primary">Caption - Semibold</p>
-      <p className="caption text-primary">Caption</p>
-      <p className="navigationlabel text-primary">Navigation Label</p> */}
       <Button onClick={() => setClicked(true)}>
         {isLoading ? "Loading" : "Ping"}
       </Button>
