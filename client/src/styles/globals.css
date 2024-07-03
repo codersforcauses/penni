@@ -75,3 +75,39 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Task card CSS */
+
+.task-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.task-card-header h3 {
+  margin: 0;
+}
+
+.task-card-header h5 {
+  margin: 0;
+  color: #666;
+}
+
+.task-card-info p {
+  margin: 5px 0;
+}
+
+.task-card.expired {
+  color: #999;
+}
+
+.task-card.bidding {
+  color: #333;
+}
+
+.task-card-status {
+  font-weight: bold;
+}
+
+/* Task card CSS - end */
