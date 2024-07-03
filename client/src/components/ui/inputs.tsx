@@ -172,7 +172,7 @@ function ParagraphInput({
 function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
   return (
     <div
-      className="absolute right-0 z-10 mx-4 -mt-3 flex w-56 origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode shadow-lg focus:outline-none"
+      className="absolute right-0 z-10 -m-3 mx-4 flex w-3/4 origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
       role="menu"
       aria-orientation="vertical"
       aria-labelledby={menuId}
@@ -181,7 +181,7 @@ function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
       {options.map((option, index) => (
         <button
           value={option}
-          className={`${valueStyle} select-none px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive ${index === 0 ? "hover:rounded-t-penni-border" : ""} ${index === options.length - 1 ? "hover:rounded-b-penni-border" : ""}`}
+          className={`${valueStyle} select-none rounded-penni-border px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive`}
           role="menuitem"
           tabIndex={-1}
           key={index}
@@ -236,7 +236,7 @@ function DropdownInput({
   };
 
   return (
-    <>
+    <div className="relative h-auto w-full">
       <div className="m-4 w-auto">
         <button
           id={menuId}
@@ -271,7 +271,7 @@ function DropdownInput({
           onChange={handleOnChange}
         />
       )}
-    </>
+    </div>
   );
 }
 
