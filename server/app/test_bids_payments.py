@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import make_password
 from .models import Users, Tasks, Bids, Payments
 from datetime import datetime, timedelta
 
+
 class BidsPaymentsTestCase(TestCase):
 
     def setUp(self):
@@ -14,7 +15,7 @@ class BidsPaymentsTestCase(TestCase):
         self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="1234567890",
-            password_hash = make_password("secure_password"),
+            password_hash=make_password("secure_password"),
             status="active"
         )
 
