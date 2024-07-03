@@ -37,13 +37,15 @@ export default function Home() {
         fontSans.variable,
       )}
     >
-      <h1 className="text-3xl text-primary">Test title</h1>
+      <h1 className="text-3xl text-primary">Test title 123</h1>
       <Button onClick={() => setClicked(true)}>
         {isLoading ? "Loading" : "Ping"}
       </Button>
       <p>
         Response from server: <span>{data as string}</span>
       </p>
+      <br />
+      <h1> HELLO </h1>
     </main>
   );
 }
