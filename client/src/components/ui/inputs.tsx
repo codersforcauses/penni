@@ -4,14 +4,15 @@ import { DropdownIcon } from "./icons";
 
 // Tailwind 'jit' don't support str concatenation so stick to string templates
 const inputBaseStyle =
-  "m-4 flex w-auto flex-col rounded-penni-border bg-penni-background-input-light-mode";
-const textStyleWithLabel = `${inputBaseStyle} px-4 pb-2 pt-3 h-14 overflow-hidden`;
+  "m-4 flex w-auto flex-col rounded-penni-border bg-penni-background-input-light-mode justify-center";
+const textStyleWithLabel = `${inputBaseStyle} px-4  h-14 overflow-hidden`;
 const textStyleNoLabel = `${inputBaseStyle} py-4 pl-4 pr-3 h-14 overflow-hidden`;
 const paragraphStyle = `${inputBaseStyle} h-auto py-4 pl-4 pr-3 overflow-y-auto`;
 // colour added to safelist so can concatenate colour in function
 const valueStyle =
   "h-full text-base font-normal leading-5 focus:outline-none  resize-none text-penni-text-regular-light-mode";
 const textValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-tertiary-light-mode w-full`;
+const placeholderValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-text-secondary-light-mode w-full`;
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
@@ -36,7 +37,7 @@ interface FreeTextInputProps extends InputProps {
 }
 
 interface SingleLineInputProps extends FreeTextInputProps {
-  type: "text" | "price" | "date";
+  type: "text" | "price" | "date" | "password";
 }
 
 interface DropdownMenuProps {
@@ -55,6 +56,16 @@ function InputLabel({ label, id }: { label: string; id: string }) {
     </label>
   );
 }
+function DropDownLabel({ label, id }: { label: string; id: string }) {
+  return (
+    <label
+      htmlFor={id}
+      className="text-base font-normal leading-3 text-penni-text-secondary-light-mode"
+    >
+      {label}
+    </label>
+  );
+}
 
 /**
  * Input component for single line input for text, price, or date.
@@ -64,7 +75,7 @@ function InputLabel({ label, id }: { label: string; id: string }) {
  * @param props.onChange - Called when the numeric value changes, should update `value`.
  * @param props.label - (*Optional*) Label for the field, displayed above the input.
  * @param props.placeholder - (*Optional*) Placeholder text for the input field.
- * @param props.type - Type of the input field, can be "text" | "price" | "date".
+ * @param props.type - Type of the input field, can be "text" | "price" | "date" | "password" .
  *
  * @returns Input component for entering price values.
  *
@@ -88,7 +99,7 @@ function SingleLineInput({
 }: SingleLineInputProps) {
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
-
+  const [valueChanged, setValueChanged] = useState(false); // use to change input and label layout
   const handleOnBlur = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
     // Fix decimal places to 2 when clicking out of input
     if (type == "price" && e.target.value !== "") {
@@ -97,23 +108,37 @@ function SingleLineInput({
     }
     setIsSelected(false);
   };
+  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+    onChange(e);
+    if (e.target.value === "") {
+      setValueChanged(false);
+    } else {
+      setValueChanged(true);
+    }
+  };
 
   return (
     <div
-      className={`${isSelected ? "bg-penni-background-light-mode" : "bg-penni-background-input-light-mode"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
+      className={`${isSelected ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
     >
-      {label && <InputLabel label={label} id={id} />}
-      <div className="item-center flex size-full flex-row">
-        {type === "price" && <span className="size-4">$</span>}
+      {label && (isSelected || valueChanged) && (
+        <InputLabel label={label} id={id} />
+      )}
+      <div className="item-center flex flex-row">
+        {type === "price" && (isSelected || valueChanged) && (
+          <span className="w-4">$</span>
+        )}
         <input
           id={id}
-          type={type == "price" ? "number" : type}
+          type={type != "date" ? type : isSelected ? type : "text"}
           value={value}
-          placeholder={placeholder}
-          onChange={onChange}
-          onFocus={() => setIsSelected(true)}
+          placeholder={!label || isSelected ? placeholder : label}
+          onChange={handleOnChange}
+          onFocus={() => {
+            setIsSelected(true);
+          }}
           onBlur={handleOnBlur}
-          className={textValueStyle}
+          className={isSelected ? textValueStyle : placeholderValueStyle}
         />
       </div>
     </div>
@@ -149,21 +174,31 @@ function ParagraphInput({
 }: FreeTextInputProps) {
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
-
+  const [valueChanged, setValueChanged] = useState(false); // use to change input and label layout
+  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+    onChange(e);
+    if (e.target.value === "") {
+      setValueChanged(false);
+    } else {
+      setValueChanged(true);
+    }
+  };
   return (
     <div
-      className={`${isSelected ? "bg-penni-background-light-mode" : "bg-penni-background-input-light-mode"} ${paragraphStyle}`}
+      className={`${isSelected ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} ${paragraphStyle}`}
     >
-      {label && <InputLabel label={label} id={id} />}
+      {(isSelected || valueChanged) && label && (
+        <InputLabel label={label} id={id} />
+      )}
       <textarea
         id={id}
         value={value}
         rows={5}
         onFocus={() => setIsSelected(true)}
         onBlur={() => setIsSelected(false)}
-        placeholder={placeholder}
-        onChange={onChange}
-        className={textValueStyle}
+        placeholder={!label || isSelected ? placeholder : label}
+        onChange={handleOnChange}
+        className={isSelected ? textValueStyle : placeholderValueStyle}
       />
     </div>
   );
@@ -244,13 +279,19 @@ function DropdownInput({
       <div className="m-4 w-auto">
         <button
           id={menuId}
-          className="flex h-14 w-full flex-row items-center rounded-penni-border bg-penni-background-input-light-mode px-4 pb-2 pt-3"
+          type="button"
+          className={`${expanded ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} " pt-3" flex h-14 w-full flex-row items-center rounded-penni-border px-4`}
           aria-haspopup={true}
           aria-expanded={true}
           onClick={() => setExpanded(!expanded)}
         >
           <div className="flex w-full flex-col items-start">
-            {label && <InputLabel label={label} id={menuId} />}
+            {label &&
+              (valueChanged ? (
+                <InputLabel label={label} id={menuId} />
+              ) : (
+                <DropDownLabel label={label} id={menuId} />
+              ))}
             <span
               className={
                 valueStyle +
