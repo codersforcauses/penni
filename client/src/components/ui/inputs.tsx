@@ -41,6 +41,7 @@ interface DropdownMenuProps {
 
 interface FreeTextInputProps extends InputProps {
   placeholder?: string;
+  type: "text" | "number" | "date";
 }
 
 function InputLabel({ label, id }: { label: string; id: string }) {
@@ -55,89 +56,36 @@ function InputLabel({ label, id }: { label: string; id: string }) {
 }
 
 /**
- * Input component for text on a single line.
- *
- * @param props - The properties for the TextInput component.
- * @param props.value - The current text value of the input, tracked by `react.setState()`.
- * @param props.onChange - Called when the text value changes, should update `value`.
- * @param props.label - (*Optional*) Label for the field, displayed above the input.
- * @param props.placeholder - (*Optional*) Placeholder text for the input field.
- *
- * @returns Input component for free text.
- *
- * @example
- * // Example usage:
- * const [textValue, setTextValue] = useState('');
- * <TextInput
- *   value={textValue}
- *   onChange={(e) => setTextValue(e.target.value)}
- *   label="Enter text"
- *   placeholder="Type here..."
- * />
- */
-function TextInput({
-  value,
-  onChange,
-  label,
-  placeholder,
-}: FreeTextInputProps) {
-  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
-  const [id] = useState(uniqueId());
-  const [isSelected, setIsSelected] = useState(false);
-
-  return (
-    <div
-      className={`${isSelected ? "bg-opacity-0" : "bg-opacity-5"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
-    >
-      {label && <InputLabel label={label} id={id} />}
-      <input
-        id={id}
-        type="text"
-        value={value}
-        onFocus={() => setIsSelected(true)}
-        onBlur={() => setIsSelected(false)}
-        onChange={(e) => {
-          onChange(e);
-          setValueChanged(true);
-        }}
-        placeholder={placeholder}
-        className={
-          valueStyle +
-          (valueChanged
-            ? " text-penni-text-regular-light-mode"
-            : " text-penni-text-tertiary-light-mode")
-        }
-      />
-    </div>
-  );
-}
-
-/**
- * Input for price values, with a dollar sign and two decimal places.
+ * Input component for single line input.
+ * Can choose "text" | "number" | "date" type
+ * "number" is for entering price, with a dollar sign and two decimal places.
  *
  * @param props - The properties for the PriceInput component.
  * @param props.value - The current numeric value of the input, tracked by `react.setState()`.
  * @param props.onChange - Called when the numeric value changes, should update `value`.
  * @param props.label - (*Optional*) Label for the field, displayed above the input.
  * @param props.placeholder - (*Optional*) Placeholder text for the input field.
+ * @param props.type - type of the input field. can be "text" | "number" | "date".
  *
  * @returns Input component for entering price values.
  *
  * @example
  * // Example usage:
  * const [priceValue, setPriceValue] = useState(0);
- * <PriceInput
+ * <SingleLineInput
  *   value={priceValue}
  *   onChange={(e) => setPriceValue(e.target.value)}
  *   label="Enter price"
  *   placeholder="0.00"
+ *   type="number"
  * />
  */
-function PriceInput({
+function SingleLineInput({
   value,
   onChange,
   label,
   placeholder,
+  type,
 }: FreeTextInputProps) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [id] = useState(uniqueId());
@@ -160,15 +108,17 @@ function PriceInput({
     >
       {label && <InputLabel label={label} id={id} />}
       <div className="item-center flex size-full flex-row">
-        <span className="size-4">$</span>
+        {type === "number" && <span className="size-4">$</span>}
         <input
           id={id}
-          type="number"
+          type={type}
           value={value}
           placeholder={placeholder}
           onChange={handleOnChange}
           onFocus={() => setIsSelected(true)}
-          onBlur={handleOnBlur}
+          onBlur={(e) =>
+            type === "number" ? handleOnBlur(e) : setIsSelected(false)
+          }
           className={
             `${valueStyle} w-full` + // Align right spinner to end of input
             (valueChanged
@@ -345,4 +295,4 @@ function DropdownInput({
   );
 }
 
-export { DropdownInput, ParagraphInput, PriceInput, TextInput };
+export { DropdownInput, ParagraphInput, SingleLineInput };
