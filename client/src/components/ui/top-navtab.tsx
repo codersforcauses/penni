@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface Tab {
   name: string;
@@ -25,7 +25,7 @@ export default function TopNavtab({ tabs }: TopNavtabProps) {
     }`;
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <div className="flex border-b">
         {tabs.map((tab) => (
           <button
