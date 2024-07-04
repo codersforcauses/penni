@@ -48,12 +48,12 @@ interface InputProps {
 }
 
 interface SingleLineInputProps extends InputProps {
-  placeholder: string;
+  placeholder?: string;
   type: "text" | "price" | "date" | "password";
 }
 
 interface ParagraphInputProps extends InputProps {
-  placeholder: string;
+  placeholder?: string;
 }
 
 interface DropdownInputProps extends InputProps {
@@ -99,7 +99,7 @@ function TextInputContainer({
           htmlFor={id}
           className={`${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
         >
-          {label ? label : placeholder}
+          {label ? label : placeholder ? placeholder : ""}
         </label>
       )}
       {selectedOrNotEmpty && (
@@ -116,7 +116,7 @@ function TextInputContainer({
  * @param props.value - The current numeric value of the input, tracked by `react.setState()`.
  * @param props.onChange - Called when the numeric value changes, should update `value`.
  * @param props.label - (*Optional*) Label for the field, displayed above the input.
- * @param props.placeholder - Placeholder text for the input field.
+ * @param props.placeholder - (*Optional*) Placeholder text for the input field.
  * @param props.type - Type of the input field, can be "text" | "price" | "date" | "password" .
  *
  * @returns Input component for entering price values.
@@ -167,7 +167,7 @@ export function SingleLineInput({
     <TextInputContainer
       value={value}
       label={label}
-      placeholder={placeholder}
+      placeholder={placeholder ? placeholder : ""}
       id={id}
       isSelected={isSelected}
       multiline={false}
@@ -197,7 +197,7 @@ export function SingleLineInput({
  * @param props.value - The current text value of the textarea, tracked by `react.setState()`.
  * @param props.onChange - Called when the text value changes, should update `value`.
  * @param props.label - (*Optional*) Label for the field, displayed above the textarea.
- * @param props.placeholder -  Placeholder text for the textarea.
+ * @param props.placeholder - (*Optional*) Placeholder text for the textarea.
  *
  * @returns Textarea component for entering paragraphs of text.
  *
@@ -224,7 +224,7 @@ export function ParagraphInput({
     <TextInputContainer
       value={value}
       label={label}
-      placeholder={placeholder}
+      placeholder={placeholder ? placeholder : ""}
       id={id}
       multiline={true}
       isSelected={isSelected}
