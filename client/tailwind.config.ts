@@ -11,7 +11,7 @@ const config = {
   ],
   safelist: [
     {
-      // Callouts and icons use format string to determine colour, not rendered if 'jit'
+      // Some components use str template to determine colour, not rendered if 'jit'
       pattern: /(bg|text|stroke)-penni-(alert|text-regular)/,
     },
   ],
@@ -74,6 +74,7 @@ const config = {
             "border-dark-mode": "#B6BABC",
           },
           background: {
+            "input-light-mode": "#f2f2f2",
             "light-mode": "#FFFFFF",
             "dark-mode": "#040B17",
           },
