@@ -100,6 +100,7 @@ function SingleLineInput({
   const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
   const [valueChanged, setValueChanged] = useState(false); // use to change input and label layout
+
   const handleOnBlur = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
     // Fix decimal places to 2 when clicking out of input
     if (type == "price" && e.target.value !== "") {
@@ -117,16 +118,6 @@ function SingleLineInput({
     }
   };
 
-  // Determine input type based on the conditions
-  const inputType =
-    type === "price"
-      ? "number"
-      : type !== "date"
-        ? type
-        : isSelected
-          ? type
-          : "text";
-
   return (
     <div
       className={`${isSelected ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
@@ -140,7 +131,7 @@ function SingleLineInput({
         )}
         <input
           id={id}
-          type={inputType}
+          type={type === "price" ? "number" : type}
           value={value}
           placeholder={!label || isSelected ? placeholder : label}
           onChange={handleOnChange}
