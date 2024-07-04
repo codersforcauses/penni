@@ -72,3 +72,73 @@ export function DropdownIcon({
     </svg>
   );
 }
+
+/* Bottom navBar icons */
+interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
+  className?: string; // use to change color of the svg pic
+  alt?: string;
+}
+const MyTasksIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
+  return (
+    <svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+const MarketIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
+  return (
+    <svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M10 3H3v7h7V3zM21 3h-7v7h7V3zM21 14h-7v7h7v-7zM10 14H3v7h7v-7z"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+const MeIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
+  return (
+    <svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+export { MarketIcon, MeIcon, MyTasksIcon };
