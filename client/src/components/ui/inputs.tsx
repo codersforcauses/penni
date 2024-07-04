@@ -117,6 +117,16 @@ function SingleLineInput({
     }
   };
 
+  // Determine input type based on the conditions
+  const inputType =
+    type === "price"
+      ? "number"
+      : type !== "date"
+        ? type
+        : isSelected
+          ? type
+          : "text";
+
   return (
     <div
       className={`${isSelected ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
@@ -130,7 +140,7 @@ function SingleLineInput({
         )}
         <input
           id={id}
-          type={type != "date" ? type : isSelected ? type : "text"}
+          type={inputType}
           value={value}
           placeholder={!label || isSelected ? placeholder : label}
           onChange={handleOnChange}
