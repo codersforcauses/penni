@@ -2,8 +2,25 @@ import React, { useRef, useState } from "react";
 
 import { DropdownIcon } from "./icons";
 
+// Change background colour and show border when onFocus
+// Uses border-opacity because adding border-2 shifts the content inside div
+const selectedStyle =
+  "border-opacity-100 border-penni-grey-border-light-mode bg-penni-main-shade2";
+const deselectedStyle =
+  "border-transparent bg-penni-background-input-light-mode";
+// Padding changes when onFocus as label size changes and children is rendered
+const expandedStyle = "px-4 justify-center";
+const collapsedStyle = "py-4 pl-4 pr-3";
+
+// Display only the label when onFocus, otherwise display shrinked label and children
+const labelStyleLarge =
+  "select-none hover:cursor-text h-full w-full text-base font-normal leading-5 text-penni-text-secondary-light-mode";
+const labelStyleSmall =
+  "text-xs font-normal leading-3 text-penni-text-secondary-light-mode";
+
+// Style for value that user type in
 const valueStyle =
-  "h-full text-base font-normal leading-5 focus:outline-none  resize-none text-penni-text-regular-light-mode";
+  "placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
@@ -49,46 +66,23 @@ interface DropdownMenuProps {
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
 }
 
-// Label displayed above actual input if onFocus, otherwise displayed as placeholder
-function InputLabel({
-  label,
-  id,
-  className,
-}: {
-  label: string;
-  id: string;
-  className: string;
-}) {
-  return (
-    <label htmlFor={id} className={className}>
-      {label}
-    </label>
-  );
-}
-
-// Container for input components, handles onFocus and onBlur events
+// Container for single-line and paragraph inputs, handles onFocus and onBlur events
 function TextInputContainer({
   value,
   label,
   id,
+  multiline = false, // Changes height of container
   isSelected,
-  multiline = false,
   setIsSelected,
   children,
 }: TextInputContainerProps) {
-  const emptyValue = value === "";
+  const selectedOrNotEmpty = isSelected || value !== "";
 
-  const selectedStyle =
-    "border-opacity-100 border-penni-grey-border-light-mode bg-penni-main-shade2";
-  const deselectedStyle =
-    "border-transparent bg-penni-background-input-light-mode";
-  const expandedStyle = "px-4 justify-center";
-  const collapsedStyle = "py-4 pl-4 pr-3";
-
-  const labelStyleLarge =
-    "select-none hover:cursor-text h-full w-full text-base font-normal leading-5 text-penni-text-secondary-light-mode";
-  const labelStyleSmall =
-    "text-xs font-normal leading-3 text-penni-text-secondary-light-mode";
+  const containerStyle =
+    `duration-50 m-4 flex flex-col rounded-penni-border border-2 transition-all ease-out hover:cursor-text` +
+    ` ${isSelected ? selectedStyle : deselectedStyle} ` +
+    ` ${selectedOrNotEmpty ? expandedStyle : collapsedStyle} ` +
+    ` ${multiline ? "h-36 overflow-y-auto" : `h-14 overflow-hidden`}`;
 
   return (
     <div
@@ -97,15 +91,15 @@ function TextInputContainer({
         setIsSelected(true);
       }}
       onBlur={() => setIsSelected(false)}
-      className={`duration-50 m-4 flex ${multiline ? "h-36 overflow-y-auto" : `h-14 overflow-hidden`} flex-col rounded-penni-border border-2 transition-all ease-out hover:cursor-text ${isSelected ? selectedStyle : deselectedStyle} ${!emptyValue || isSelected ? expandedStyle : collapsedStyle}`}
+      className={containerStyle}
     >
       <label
         htmlFor={id}
-        className={`${isSelected || !emptyValue ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
+        className={`${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
       >
         {label}
       </label>
-      {(isSelected || !emptyValue) && (
+      {selectedOrNotEmpty && (
         <div className="item-center flex flex-row">{children}</div>
       )}
     </div>
@@ -150,11 +144,8 @@ export function SingleLineInput({
     if (type == "price" && e.target.value !== "") {
       const fixedValue = parseFloat(e.target.value).toFixed(2);
       onChange({ ...e, target: { ...e.target, value: fixedValue } });
-    } else if (
-      type == "date" &&
-      e.target.value !== "" &&
-      e.target.value.length > 10
-    ) {
+      // Fix year to length 4
+    } else if (type == "date" && e.target.value.length > 10) {
       const parts = e.target.value.split("-");
       if (parts[0].length !== 4) {
         const correctedYear = parts[0].slice(0, 4);
@@ -189,7 +180,7 @@ export function SingleLineInput({
         placeholder={placeholder}
         onChange={onChange}
         onBlur={handleOnChange}
-        className="placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode caret-penni-main focus:outline-none"
+        className={valueStyle}
       />
     </TextInputContainer>
   );
@@ -241,7 +232,7 @@ export function ParagraphInput({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-        className="placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode caret-penni-main focus:outline-none"
+        className={valueStyle}
       />
     </TextInputContainer>
   );
@@ -310,12 +301,8 @@ export function DropdownInput({
 }: DropdownInputProps) {
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [menuId] = useState(uniqueId());
-  const [expanded, setExpanded] = useState(false);
-
-  const selectedStyle =
-    "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2";
-
-  const textValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-tertiary-light-mode w-full`;
+  const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
+  const expandedOrNotEmpty = isExpanded || value !== "";
 
   function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
     setValueChanged(true);
@@ -323,42 +310,35 @@ export function DropdownInput({
     onChange(e);
   }
 
+  // `${expanded ? selectedStyle : "bg-penni-background-input-light-mode"} " pt-3" flex h-14 w-full flex-row items-center rounded-penni-border px-4`}
+  const containerStyle =
+    `duration-50 flex flex-row h-14 w-full items-center rounded-penni-border px-4 border-2 transition-all ease-out` +
+    ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
+    ` ${expandedOrNotEmpty ? expandedStyle : collapsedStyle} `;
+
   return (
     <div className="relative h-auto w-full">
       <div className="m-4 w-auto">
         <button
           id={menuId}
           type="button"
-          className={`${expanded ? selectedStyle : "bg-penni-background-input-light-mode"} " pt-3" flex h-14 w-full flex-row items-center rounded-penni-border px-4`}
+          className={containerStyle}
           aria-haspopup={true}
           aria-expanded={true}
-          onClick={() => setExpanded(!expanded)}
+          onClick={() => setExpanded(!isExpanded)}
         >
           <div className="flex w-full flex-col items-start">
-            {label &&
-              (valueChanged ? (
-                <InputLabel
-                  label={label}
-                  id={menuId}
-                  className={textValueStyle}
-                />
-              ) : (
-                <InputLabel
-                  label={label}
-                  id={menuId}
-                  className="text-base font-normal leading-3 text-penni-text-secondary-light-mode"
-                />
-              ))}
-            <span
-              className={
-                valueStyle +
-                (valueChanged
-                  ? " text-penni-text-regular-light-mode"
-                  : " text-penni-text-tertiary-light-mode")
-              }
-            >
-              {value}
-            </span>
+            {label && (
+              <label
+                htmlFor={menuId}
+                className={`${value !== "" ? labelStyleSmall : labelStyleLarge} duration-50 text-left transition-all ease-out`}
+              >
+                {label}
+              </label>
+            )}
+            {value !== "" && (
+              <span className={`${valueStyle} text-left`}>{value}</span>
+            )}
           </div>
           <div className="ml-3 flex size-6 items-center justify-center">
             <DropdownIcon />
@@ -366,7 +346,7 @@ export function DropdownInput({
         </button>
       </div>
 
-      {expanded && (
+      {isExpanded && (
         <DropdownMenu
           menuId={menuId}
           options={options}
