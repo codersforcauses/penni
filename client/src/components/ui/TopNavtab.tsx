@@ -14,8 +14,8 @@ const TopNavtab = () => {
       <button
         className={`flex-1 border-b-2 px-4 py-2 focus:outline-none ${
           activeTab === "Task Details"
-            ? "border-blue-500 text-blue-500"
-            : "border-transparent text-gray-600 hover:text-blue-500 focus:border-blue-500 focus:text-blue-500"
+            ? "border-penni-main text-penni-main"
+            : "border-transparent text-penni-grey-inactive hover:text-penni-main focus:border-penni-main focus:text-penni-main"
         }`}
         onClick={() => handleTabClick("Task Details")}
       >
@@ -24,8 +24,8 @@ const TopNavtab = () => {
       <button
         className={`flex-1 border-b-2 px-4 py-2 focus:outline-none ${
           activeTab === "Other Details"
-            ? "border-blue-500 text-blue-500"
-            : "border-transparent text-gray-600 hover:text-blue-500 focus:border-blue-500 focus:text-blue-500"
+            ? "border-blue-500 text-penni-main"
+            : "border-transparent text-penni-grey-inactive hover:text-penni-main focus:border-penni-main focus:text-penni-main"
         }`}
         onClick={() => handleTabClick("Other Details")}
       >
