@@ -124,7 +124,7 @@ function TextInputContainer({
  * <SingleLineInput
  *   value={priceValue}
  *   onChange={(e) => setPriceValue(e.target.value)}
- *   label="Enter price"
+ *   label="Your donation"
  *   placeholder="0.00"
  *   type="price"
  * />
@@ -203,8 +203,8 @@ export function SingleLineInput({
  * <ParagraphInput
  *   value={paragraphValue}
  *   onChange={(e) => setParagraphValue(e.target.value)}
- *   label="Enter text"
- *   placeholder="Type here..."
+ *   label="Self Introduction"
+ *   placeholder="My name is Yoshikage Kira. I'm 33 years old. My house is in th..."
  * />
  */
 export function ParagraphInput({
@@ -288,9 +288,9 @@ function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
  * const [selectedValue, setSelectedValue] = useState('');
  * <DropdownInput
  *   value={selectedValue}
- *   options={['Option 1', 'Option 2', 'Option 3']}
+ *   options={['C', 'Python', 'HTML ;)']}
  *   onChange={(e) => setSelectedValue(e.target.value)}
- *   label="Choose an option"
+ *   label="Favorite Programming Language"
  * />
  */
 export function DropdownInput({
