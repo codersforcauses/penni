@@ -1,18 +1,9 @@
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { DropdownIcon } from "./icons";
 
-// Tailwind 'jit' don't support str concatenation so stick to string templates
-const inputBaseStyle =
-  "m-4 flex w-auto flex-col rounded-penni-border bg-penni-background-input-light-mode justify-center";
-const textStyleWithLabel = `${inputBaseStyle} px-4  h-14 overflow-hidden`;
-const textStyleNoLabel = `${inputBaseStyle} py-4 pl-4 pr-3 h-14 overflow-hidden`;
-const paragraphStyle = `${inputBaseStyle} h-auto py-4 pl-4 pr-3 overflow-y-auto`;
-// colour added to safelist so can concatenate colour in function
 const valueStyle =
   "h-full text-base font-normal leading-5 focus:outline-none  resize-none text-penni-text-regular-light-mode";
-const textValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-tertiary-light-mode w-full`;
-const placeholderValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-text-secondary-light-mode w-full`;
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
@@ -22,22 +13,34 @@ type HTMLEventTargetElement =
   | HTMLTextAreaElement
   | HTMLSelectElement;
 
+interface TextInputContainerProps {
+  value: string;
+  label?: string;
+  id: string;
+  isSelected: boolean;
+  multiline?: boolean;
+  setIsSelected: (value: boolean) => void;
+  children?: React.ReactNode;
+}
+
+// Shared by all input components
 interface InputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
   label?: string;
 }
 
-interface DropdownInputProps extends InputProps {
-  options: string[];
+interface SingleLineInputProps extends InputProps {
+  placeholder?: string;
+  type: "text" | "price" | "date" | "password";
 }
 
-interface FreeTextInputProps extends InputProps {
+interface ParagraphInputProps extends InputProps {
   placeholder?: string;
 }
 
-interface SingleLineInputProps extends FreeTextInputProps {
-  type: "text" | "price" | "date" | "password";
+interface DropdownInputProps extends InputProps {
+  options: string[];
 }
 
 interface DropdownMenuProps {
@@ -46,24 +49,66 @@ interface DropdownMenuProps {
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
 }
 
-function InputLabel({ label, id }: { label: string; id: string }) {
+// Label displayed above actual input if onFocus, otherwise displayed as placeholder
+function InputLabel({
+  label,
+  id,
+  className,
+}: {
+  label: string;
+  id: string;
+  className: string;
+}) {
   return (
-    <label
-      htmlFor={id}
-      className="text-xs font-normal leading-3 text-penni-text-secondary-light-mode"
-    >
+    <label htmlFor={id} className={className}>
       {label}
     </label>
   );
 }
-function DropDownLabel({ label, id }: { label: string; id: string }) {
+
+// Container for input components, handles onFocus and onBlur events
+function TextInputContainer({
+  value,
+  label,
+  id,
+  isSelected,
+  multiline = false,
+  setIsSelected,
+  children,
+}: TextInputContainerProps) {
+  const emptyValue = value === "";
+
+  const selectedStyle =
+    "border-opacity-100 border-penni-grey-border-light-mode bg-penni-main-shade2";
+  const deselectedStyle =
+    "border-transparent bg-penni-background-input-light-mode";
+  const expandedStyle = "px-4 justify-center";
+  const collapsedStyle = "py-4 pl-4 pr-3";
+
+  const labelStyleLarge =
+    "select-none hover:cursor-text h-full w-full text-base font-normal leading-5 text-penni-text-secondary-light-mode";
+  const labelStyleSmall =
+    "text-xs font-normal leading-3 text-penni-text-secondary-light-mode";
+
   return (
-    <label
-      htmlFor={id}
-      className="text-base font-normal leading-3 text-penni-text-secondary-light-mode"
+    <div
+      tabIndex={0} // Support for onFocus and onBlur
+      onFocus={() => {
+        setIsSelected(true);
+      }}
+      onBlur={() => setIsSelected(false)}
+      className={`duration-50 m-4 flex ${multiline ? "h-36 overflow-y-auto" : `h-14 overflow-hidden`} flex-col rounded-penni-border border-2 transition-all ease-out hover:cursor-text ${isSelected ? selectedStyle : deselectedStyle} ${!emptyValue || isSelected ? expandedStyle : collapsedStyle}`}
     >
-      {label}
-    </label>
+      <label
+        htmlFor={id}
+        className={`${isSelected || !emptyValue ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
+      >
+        {label}
+      </label>
+      {(isSelected || !emptyValue) && (
+        <div className="item-center flex flex-row">{children}</div>
+      )}
+    </div>
   );
 }
 
@@ -90,59 +135,63 @@ function DropDownLabel({ label, id }: { label: string; id: string }) {
  *   type="price"
  * />
  */
-function SingleLineInput({
+export function SingleLineInput({
   value,
   onChange,
   label,
   placeholder,
   type,
 }: SingleLineInputProps) {
-  const [id] = useState(uniqueId());
   const [isSelected, setIsSelected] = useState(false);
-  const [valueChanged, setValueChanged] = useState(false); // use to change input and label layout
+  const [id] = useState(uniqueId());
 
-  const handleOnBlur = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+  function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
     // Fix decimal places to 2 when clicking out of input
     if (type == "price" && e.target.value !== "") {
       const fixedValue = parseFloat(e.target.value).toFixed(2);
       onChange({ ...e, target: { ...e.target, value: fixedValue } });
+    } else if (
+      type == "date" &&
+      e.target.value !== "" &&
+      e.target.value.length > 10
+    ) {
+      const parts = e.target.value.split("-");
+      if (parts[0].length !== 4) {
+        const correctedYear = parts[0].slice(0, 4);
+        onChange({
+          ...e,
+          target: {
+            ...e.target,
+            value: `${correctedYear}-${parts[1]}-${parts[2]}`,
+          },
+        });
+      }
     }
-    setIsSelected(false);
-  };
-  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
-    onChange(e);
-    if (e.target.value === "") {
-      setValueChanged(false);
-    } else {
-      setValueChanged(true);
-    }
-  };
+  }
 
   return (
-    <div
-      className={`${isSelected ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} ${label ? textStyleWithLabel : textStyleNoLabel}`}
+    <TextInputContainer
+      value={value}
+      label={label}
+      id={id}
+      isSelected={isSelected}
+      multiline={false}
+      setIsSelected={setIsSelected}
     >
-      {label && (isSelected || valueChanged) && (
-        <InputLabel label={label} id={id} />
+      {type === "price" && (isSelected || value !== "") && (
+        <span className="w-4">$</span>
       )}
-      <div className="item-center flex flex-row">
-        {type === "price" && (isSelected || valueChanged) && (
-          <span className="w-4">$</span>
-        )}
-        <input
-          id={id}
-          type={type === "price" ? "number" : type}
-          value={value}
-          placeholder={!label || isSelected ? placeholder : label}
-          onChange={handleOnChange}
-          onFocus={() => {
-            setIsSelected(true);
-          }}
-          onBlur={handleOnBlur}
-          className={isSelected ? textValueStyle : placeholderValueStyle}
-        />
-      </div>
-    </div>
+      <input
+        id={id}
+        autoFocus={isSelected}
+        type={type === "price" ? "number" : type}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        onBlur={handleOnChange}
+        className="placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode caret-penni-main focus:outline-none"
+      />
+    </TextInputContainer>
   );
 }
 
@@ -167,41 +216,34 @@ function SingleLineInput({
  *   placeholder="Type here..."
  * />
  */
-function ParagraphInput({
+export function ParagraphInput({
   value,
   onChange,
   label,
   placeholder,
-}: FreeTextInputProps) {
-  const [id] = useState(uniqueId());
+}: ParagraphInputProps) {
   const [isSelected, setIsSelected] = useState(false);
-  const [valueChanged, setValueChanged] = useState(false); // use to change input and label layout
-  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
-    onChange(e);
-    if (e.target.value === "") {
-      setValueChanged(false);
-    } else {
-      setValueChanged(true);
-    }
-  };
+  const [id] = useState(uniqueId());
+
   return (
-    <div
-      className={`${isSelected ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} ${paragraphStyle}`}
+    <TextInputContainer
+      value={value}
+      label={label}
+      id={id}
+      multiline={true}
+      isSelected={isSelected}
+      setIsSelected={setIsSelected}
     >
-      {(isSelected || valueChanged) && label && (
-        <InputLabel label={label} id={id} />
-      )}
       <textarea
         id={id}
-        value={value}
+        autoFocus={isSelected}
         rows={5}
-        onFocus={() => setIsSelected(true)}
-        onBlur={() => setIsSelected(false)}
-        placeholder={!label || isSelected ? placeholder : label}
-        onChange={handleOnChange}
-        className={isSelected ? textValueStyle : placeholderValueStyle}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        className="placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode caret-penni-main focus:outline-none"
       />
-    </div>
+    </TextInputContainer>
   );
 }
 
@@ -260,7 +302,7 @@ function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
  *   label="Choose an option"
  * />
  */
-function DropdownInput({
+export function DropdownInput({
   value,
   options,
   onChange,
@@ -269,11 +311,17 @@ function DropdownInput({
   const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [menuId] = useState(uniqueId());
   const [expanded, setExpanded] = useState(false);
-  const handleOnChange = (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+
+  const selectedStyle =
+    "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2";
+
+  const textValueStyle = `${valueStyle} bg-transparent caret-penni-main placeholder-penni-tertiary-light-mode w-full`;
+
+  function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
     setValueChanged(true);
     setExpanded(false);
     onChange(e);
-  };
+  }
 
   return (
     <div className="relative h-auto w-full">
@@ -281,7 +329,7 @@ function DropdownInput({
         <button
           id={menuId}
           type="button"
-          className={`${expanded ? "border-2 border-penni-grey-border-light-mode bg-penni-main-shade2" : "bg-penni-background-input-light-mode"} " pt-3" flex h-14 w-full flex-row items-center rounded-penni-border px-4`}
+          className={`${expanded ? selectedStyle : "bg-penni-background-input-light-mode"} " pt-3" flex h-14 w-full flex-row items-center rounded-penni-border px-4`}
           aria-haspopup={true}
           aria-expanded={true}
           onClick={() => setExpanded(!expanded)}
@@ -289,9 +337,17 @@ function DropdownInput({
           <div className="flex w-full flex-col items-start">
             {label &&
               (valueChanged ? (
-                <InputLabel label={label} id={menuId} />
+                <InputLabel
+                  label={label}
+                  id={menuId}
+                  className={textValueStyle}
+                />
               ) : (
-                <DropDownLabel label={label} id={menuId} />
+                <InputLabel
+                  label={label}
+                  id={menuId}
+                  className="text-base font-normal leading-3 text-penni-text-secondary-light-mode"
+                />
               ))}
             <span
               className={
@@ -320,5 +376,3 @@ function DropdownInput({
     </div>
   );
 }
-
-export { DropdownInput, ParagraphInput, SingleLineInput };
