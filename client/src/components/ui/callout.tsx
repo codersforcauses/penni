@@ -1,16 +1,16 @@
 import { EditIcon, InfoIcon } from "./icons";
 
-interface CalloutProp {
+interface CalloutProps {
   text: string;
   // If provided, edit icon will be shown
-  onClick?: (...args: any[]) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-interface GenericCalloutProp extends CalloutProp {
+interface GenericCalloutProps extends CalloutProps {
   colour: string;
 }
 
-function GenericCallout({ text, colour, onClick }: GenericCalloutProp) {
+function GenericCallout({ text, colour, onClick }: GenericCalloutProps) {
   return (
     <div className="px-4 py-3" onClick={onClick}>
       <div
@@ -32,7 +32,7 @@ function GenericCallout({ text, colour, onClick }: GenericCalloutProp) {
   );
 }
 
-function InfoCallout({ text, onClick }: CalloutProp) {
+function InfoCallout({ text, onClick }: CalloutProps) {
   return (
     <GenericCallout
       text={text}
@@ -42,7 +42,7 @@ function InfoCallout({ text, onClick }: CalloutProp) {
   );
 }
 
-function SuccessCallout({ text, onClick }: CalloutProp) {
+function SuccessCallout({ text, onClick }: CalloutProps) {
   return (
     <GenericCallout
       text={text}
@@ -52,7 +52,7 @@ function SuccessCallout({ text, onClick }: CalloutProp) {
   );
 }
 
-function WarningCallout({ text, onClick }: CalloutProp) {
+function WarningCallout({ text, onClick }: CalloutProps) {
   return (
     <GenericCallout
       text={text}
@@ -62,7 +62,7 @@ function WarningCallout({ text, onClick }: CalloutProp) {
   );
 }
 
-function ErrorCallout({ text, onClick }: CalloutProp) {
+function ErrorCallout({ text, onClick }: CalloutProps) {
   return (
     <GenericCallout text={text} colour="penni-alert-error" onClick={onClick} />
   );
