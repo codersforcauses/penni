@@ -12,18 +12,22 @@ const Test = () => {
         category="CLEANING"
         date="21 Aug, 2022"
         location="Richmond, VIC"
-        duration="4"
-        price="300"
+        duration= {4}
+        estimatePrice= {300}
+        myOfferPrice={250}
         state="BIDDING"
+        priceType ="Estimate Price"
       />
       <TaskCard
         title="Clean up my house"
         category="CLEANING"
         date="21 Aug, 2022"
         location="Richmond, VIC"
-        duration="4"
-        price="300"
+        duration= {5}
+        estimatePrice= {400}
+        myOfferPrice={300}
         state="EXPIRED"
+        priceType ="My Offer"
       />
     </div>
   );

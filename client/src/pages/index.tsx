@@ -37,7 +37,7 @@ export default function Home() {
         fontSans.variable,
       )}
     >
-      <h1 className="text-3xl text-primary">Test title 123</h1>
+      <h1 className="text-3xl text-primary">Test title 12</h1>
       <Button onClick={() => setClicked(true)}>
         {isLoading ? "Loading" : "Ping"}
       </Button>
