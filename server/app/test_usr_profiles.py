@@ -58,12 +58,11 @@ class UsersModelTest(TestCase):
     def test_string_representation(self):
         self.assertEqual(
             str(self.user),
-            f"User {self.user.user_id}: email='testuser@example.com', "
+            f"User {self.user.user_id}: email=testuser@example.com, "
             f"mobile=0450000000, "
-            f"password_hash={self.user.password_hash}, "
             f"created_at={self.user.created_at}, "
-            f"updated_at={self.user.updated_at},"
-            f"last_login={self.user.last_login},"
+            f"updated_at={self.user.updated_at}, "
+            f"last_login={self.user.last_login}, "
             f"status=pending"
         )
 
@@ -131,7 +130,9 @@ class ProfilesModelTest(TestCase):
             avatar_url='http://example.com/avatar.jpg',
             bio='This is a test bio.'
         )
-        self.assertEqual(str(profile), f"Profile {profile.profile_id}: User={profile.user_id}, Full Name={profile.full_name}")
+        self.assertEqual(str(profile), f"Profile {profile.profile_id}: user_id={profile.user_id}, "
+                         f"full_name={profile.full_name}, "
+                         f"avatar_url={profile.avatar_url}, bio={profile.bio}")
 
     def test_profiles_delete_user_cascade(self):
         profile = Profiles.objects.create(

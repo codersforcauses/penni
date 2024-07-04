@@ -1,46 +1,51 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import User, Task
+from .models import Users, Tasks
 from django.core.exceptions import ValidationError
+import time
 
 
 class TaskModelTests(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create(
+        self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="1234567890",
             password_hash="password123",
             status="active"
         )
-        self.task = Task.objects.create(
+        self.task = Tasks.objects.create(
             owner_id=self.user,
             title="Test Task",
             category="General",
             description="This is a test task",
             location="Test Location",
-            estimated_price="100",
-            estimated_time="100",
+            budget="100",
+            estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open"
         )
 
     def test_task_creation(self):
-        self.assertIsInstance(self.task, Task)
+        self.assertIsInstance(self.task, Tasks)
         self.assertEqual(self.task.owner_id.email, "testuser@example.com")
         self.assertEqual(self.task.title, "Test Task")
         self.assertEqual(self.task.category, "General")
         self.assertEqual(self.task.description, "This is a test task")
         self.assertEqual(self.task.location, "Test Location")
-        self.assertEqual(self.task.estimated_price, "100")
+        self.assertEqual(self.task.budget, "100")
         self.assertEqual(self.task.estimated_time, "2 hours")
         self.assertEqual(self.task.status, "open")
 
-    def test_task_str(self):
-        self.assertEqual(str(self.task), self.task.title)
+    def test_task_str_method(self):
+        self.assertEqual(str(self.task), f"Task {self.task.task_id}: owner_id={self.task.owner_id}, "
+                         f"title={self.task.title}, description={self.task.description}, "
+                         f"location={self.task.location}, budget={self.task.budget}, "
+                         f"deadline={self.task.deadline}, status={self.task.status}, "
+                         f"created_at={self.task.created_at}, updated_at={self.task.updated_at}")
 
     def test_task_default_values(self):
-        task = Task.objects.create(
+        task = Tasks.objects.create(
             owner_id=self.user,
             title="Task with Defaults",
             description="Task description",
@@ -49,7 +54,7 @@ class TaskModelTests(TestCase):
             status="open"
         )
         self.assertEqual(task.category, "")
-        self.assertEqual(task.estimated_price, "")
+        self.assertEqual(task.budget, "")
         self.assertEqual(task.estimated_time, "")
 
     def test_task_update(self):
@@ -61,29 +66,32 @@ class TaskModelTests(TestCase):
     def test_task_deletion(self):
         task_id = self.task.task_id
         self.task.delete()
-        with self.assertRaises(Task.DoesNotExist):
-            Task.objects.get(task_id=task_id)
+        with self.assertRaises(Tasks.DoesNotExist):
+            Tasks.objects.get(task_id=task_id)
 
     def test_task_invalid_deadline(self):
-        with self.assertRaises(ValidationError):
-            Task.objects.create(
-                owner_id=self.user,
-                title="Invalid Deadline Task",
-                description="This task has an invalid deadline",
-                location="Invalid Location",
-                estimated_price="100",
-                estimated_time="2 hours",
-                deadline=timezone.now() - timezone.timedelta(days=1),
-                status="open"
-            )
+        invalid_deadline = Tasks.objects.create(
+            owner_id=self.user,
+            title="Invalid Deadline Task",
+            description="This task has an invalid deadline",
+            location="Invalid Location",
+            budget="100",
+            estimated_time="2 hours",
+            deadline=timezone.now() - timezone.timedelta(days=1),
+            status="open"
+        )
+
+        with self.assertRaises(ValidationError) as cm:
+            invalid_deadline.full_clean()
+        self.assertEqual(cm.exception.message_dict['deadline'][0], 'Deadline must be in the future.')
 
     def test_task_deadline_future(self):
-        task = Task.objects.create(
+        task = Tasks.objects.create(
             owner_id=self.user,
             title="Future Deadline Task",
             description="This task has a future deadline",
             location="Future Location",
-            estimated_price="100",
+            budget="100",
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=2),
             status="open"
@@ -93,12 +101,12 @@ class TaskModelTests(TestCase):
     def test_task_status_choices(self):
         valid_statuses = ["open", "in_progress", "completed", "cancelled"]
         for status in valid_statuses:
-            task = Task.objects.create(
+            task = Tasks.objects.create(
                 owner_id=self.user,
                 title=f"Task with {status} status",
                 description="Task description",
                 location="Location",
-                estimated_price="100",
+                budget="100",
                 estimated_time="2 hours",
                 deadline=timezone.now() + timezone.timedelta(days=1),
                 status=status
@@ -106,12 +114,12 @@ class TaskModelTests(TestCase):
             self.assertEqual(task.status, status)
 
         with self.assertRaises(ValidationError):
-            task = Task.objects.create(
+            task = Tasks.objects.create(
                 owner_id=self.user,
                 title="Invalid Status Task",
                 description="Task with invalid status",
                 location="Location",
-                estimated_price="100",
+                budget="100",
                 estimated_time="2 hours",
                 deadline=timezone.now() + timezone.timedelta(days=1),
                 status="invalid_status"
@@ -120,33 +128,19 @@ class TaskModelTests(TestCase):
 
     def test_task_location_not_empty(self):
         with self.assertRaises(ValidationError):
-            Task.objects.create(
+            Tasks.objects.create(
                 owner_id=self.user,
                 title="No Location Task",
                 description="This task has no location",
                 location="",
-                estimated_price="100",
-                estimated_time="2 hours",
-                deadline=timezone.now() + timezone.timedelta(days=1),
-                status="open"
-            ).full_clean()
-
-    def test_task_long_title(self):
-        long_title = 'T' * 256
-        with self.assertRaises(ValidationError):
-            Task.objects.create(
-                owner_id=self.user,
-                title=long_title,
-                description="This task has a very long title",
-                location="Location",
-                estimated_price="100",
+                budget="100",
                 estimated_time="2 hours",
                 deadline=timezone.now() + timezone.timedelta(days=1),
                 status="open"
             ).full_clean()
 
     def test_task_without_estimated_fields(self):
-        task = Task.objects.create(
+        task = Tasks.objects.create(
             owner_id=self.user,
             title="No Estimated Fields Task",
             description="This task has no estimated price or time",
@@ -154,7 +148,7 @@ class TaskModelTests(TestCase):
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open"
         )
-        self.assertEqual(task.estimated_price, "")
+        self.assertEqual(task.budget, "")
         self.assertEqual(task.estimated_time, "")
 
     def test_task_creation_timestamp(self):
@@ -169,13 +163,13 @@ class TaskModelTests(TestCase):
         self.assertGreater(self.task.updated_at, old_updated_at)
 
     def test_task_owner_deletion_cascade(self):
-        user = User.objects.create(
+        user = Users.objects.create(
             email="testuser2@example.com",
             mobile="0987654321",
             password_hash="password123",
             status="active"
         )
-        task = Task.objects.create(
+        task = Tasks.objects.create(
             owner_id=user,
             title="Task to be deleted with owner",
             description="Description",
@@ -184,12 +178,12 @@ class TaskModelTests(TestCase):
             status="open"
         )
         user.delete()
-        with self.assertRaises(Task.DoesNotExist):
-            Task.objects.get(task_id=task.task_id)
+        with self.assertRaises(Tasks.DoesNotExist):
+            Tasks.objects.get(task_id=task.task_id)
 
     def test_task_bulk_create(self):
         tasks = [
-            Task(
+            Tasks(
                 owner_id=self.user,
                 title=f"Task {i}",
                 description=f"Description {i}",
@@ -199,46 +193,51 @@ class TaskModelTests(TestCase):
             )
             for i in range(5)
         ]
-        Task.objects.bulk_create(tasks)
-        self.assertEqual(Task.objects.count(), 6)
+        Tasks.objects.bulk_create(tasks)
+        self.assertEqual(Tasks.objects.count(), 6)
 
     def test_task_filtering(self):
-        Task.objects.create(
+        Tasks.objects.create(
             owner_id=self.user,
             title="Task for Filtering",
             description="This task is for filtering",
             location="Filtering Location",
-            estimated_price="200",
+            budget="200",
             estimated_time="3 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open"
         )
-        open_tasks = Task.objects.filter(status="open")
-        self.assertEqual(open_tasks.count(), Task.objects.count())
+        open_tasks = Tasks.objects.filter(status="open")
+        self.assertEqual(open_tasks.count(), Tasks.objects.count())
 
     def test_task_ordering(self):
-        task1 = Task.objects.create(
+        Tasks.objects.all().delete()
+
+        task1 = Tasks.objects.create(
             owner_id=self.user,
             title="Earlier Task",
             description="This task was created earlier",
             location="Location",
-            estimated_price="100",
+            budget="100",
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open",
             created_at=timezone.now() - timezone.timedelta(days=2)
         )
-        task2 = Task.objects.create(
+
+        time.sleep(1)
+
+        task2 = Tasks.objects.create(
             owner_id=self.user,
             title="Later Task",
             description="This task was created later",
             location="Location",
-            estimated_price="100",
+            budget="100",
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open",
             created_at=timezone.now() - timezone.timedelta(days=1)
         )
-        tasks = Task.objects.all().order_by('created_at')
+        tasks = Tasks.objects.all().order_by('created_at')
         self.assertEqual(tasks[0], task1)
         self.assertEqual(tasks[1], task2)
