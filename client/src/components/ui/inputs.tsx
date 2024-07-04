@@ -299,18 +299,15 @@ export function DropdownInput({
   onChange,
   label,
 }: DropdownInputProps) {
-  const [valueChanged, setValueChanged] = useState(false); // show lighter grey if not changed
   const [menuId] = useState(uniqueId());
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
   const expandedOrNotEmpty = isExpanded || value !== "";
 
   function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
-    setValueChanged(true);
     setExpanded(false);
     onChange(e);
   }
 
-  // `${expanded ? selectedStyle : "bg-penni-background-input-light-mode"} " pt-3" flex h-14 w-full flex-row items-center rounded-penni-border px-4`}
   const containerStyle =
     `duration-50 flex flex-row h-14 w-full items-center rounded-penni-border px-4 border-2 transition-all ease-out` +
     ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
