@@ -49,7 +49,6 @@ export function InfoIcon({
   );
 }
 
-
 export function DropdownIcon({
   strokeColour = "penni-text-regular-light-mode",
 }: {
@@ -73,7 +72,7 @@ export function DropdownIcon({
     </svg>
   );
 }
-        
+
 /* Bottom navBar icons */
 interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string; // use to change color of the svg pic
