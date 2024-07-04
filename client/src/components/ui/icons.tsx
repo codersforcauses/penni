@@ -49,15 +49,12 @@ export function InfoIcon({
   );
 }
 
-/* Bidder-side navBar icons */
-interface BidderNavIconProps extends React.SVGProps<SVGSVGElement> {
+/* Bottom navBar icons */
+interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string; // use to change color of the svg pic
   alt?: string;
 }
-const BidderNavIconTasks: React.FC<BidderNavIconProps> = ({
-  className,
-  ...props
-}) => {
+const MyTasksIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
   return (
     <svg
       width={24}
@@ -78,10 +75,7 @@ const BidderNavIconTasks: React.FC<BidderNavIconProps> = ({
   );
 };
 
-const BidderNavIconMarket: React.FC<BidderNavIconProps> = ({
-  className,
-  ...props
-}) => {
+const MarketIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
   return (
     <svg
       width={24}
@@ -102,10 +96,7 @@ const BidderNavIconMarket: React.FC<BidderNavIconProps> = ({
   );
 };
 
-const BidderNavIconMe: React.FC<BidderNavIconProps> = ({
-  className,
-  ...props
-}) => {
+const MeIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
   return (
     <svg
       width={24}
@@ -126,4 +117,4 @@ const BidderNavIconMe: React.FC<BidderNavIconProps> = ({
   );
 };
 
-export { BidderNavIconMarket, BidderNavIconMe, BidderNavIconTasks };
+export { MarketIcon, MeIcon, MyTasksIcon };

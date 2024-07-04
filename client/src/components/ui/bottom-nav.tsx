@@ -2,19 +2,15 @@ import Link from "next/link";
 import * as React from "react";
 import { useState } from "react";
 
-import {
-  BidderNavIconMarket,
-  BidderNavIconMe,
-  BidderNavIconTasks,
-} from "./icons";
+import { MarketIcon, MeIcon, MyTasksIcon } from "./icons";
 
-interface BidderNavIconProps extends React.SVGProps<SVGSVGElement> {
+interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string; // use to change color of the svg pic
   alt?: string;
 }
 
 interface Icon {
-  IconComponent: React.FC<BidderNavIconProps>;
+  IconComponent: React.FC<BottomNavIconProps>;
   alt: string;
   text: string;
   link?: string; // in case link to other page when the component is used in the page
@@ -23,19 +19,19 @@ interface Icon {
 
 const iconLists: Icon[] = [
   {
-    IconComponent: BidderNavIconTasks,
+    IconComponent: MyTasksIcon,
     alt: "Icon of my tasks",
     text: "My Tasks",
     id: 0,
   },
   {
-    IconComponent: BidderNavIconMarket,
+    IconComponent: MarketIcon,
     alt: "Icon of market",
     text: "Market",
     id: 1,
   },
   {
-    IconComponent: BidderNavIconMe,
+    IconComponent: MeIcon,
     alt: "Icon of me",
     text: "Me",
     id: 2,
@@ -51,7 +47,7 @@ const BottomNav = ({ navIndex }: { navIndex: 0 | 1 | 2 }) => {
 
   return (
     <div className="border-t-penni-border-light-mode fixed bottom-0 h-20 w-full border-t-2">
-      <ul className="flex h-12 cursor-pointer text-[10px] leading-3">
+      <ul className="flex h-12 cursor-pointer text-xs leading-3">
         {iconLists.map((iconItem) => (
           <li
             key={iconItem.id}
