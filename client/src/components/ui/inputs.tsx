@@ -14,13 +14,12 @@ const collapsedStyle = "py-4 pl-4 pr-3";
 
 // Display only the label when not onFocus, otherwise display shrinked label and children
 const labelStyleLarge =
-  "select-none hover:cursor-text h-full w-full text-base font-normal leading-5 text-penni-text-secondary-light-mode";
-const labelStyleSmall =
-  "text-xs font-normal leading-3 text-penni-text-secondary-light-mode";
+  "callout select-none hover:cursor-text h-full w-full text-penni-text-secondary-light-mode";
+const labelStyleSmall = "caption text-penni-text-secondary-light-mode";
 
 // Style for value that user type in
 const valueStyle =
-  "placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-base font-normal leading-5 text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
+  "callout placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
