@@ -1,7 +1,7 @@
 export function EditIcon({
   strokeColour = "penni-text-regular-light-mode",
 }: {
-  strokeColour: string;
+  strokeColour?: string;
 }) {
   return (
     <svg
@@ -30,7 +30,7 @@ export function EditIcon({
 export function InfoIcon({
   strokeColour = "penni-text-regular-light-mode",
 }: {
-  strokeColour: string;
+  strokeColour?: string;
 }) {
   return (
     <svg
@@ -40,6 +40,30 @@ export function InfoIcon({
     >
       <path
         d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v4M12 16h.01"
+        stroke="current"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function DropdownIcon({
+  strokeColour = "penni-text-regular-light-mode",
+}: {
+  strokeColour?: string;
+}) {
+  return (
+    <svg
+      className={`fill-none stroke-${strokeColour}`}
+      width={14}
+      height={9}
+      viewBox="0 0 14 9"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 1.5l6 6 6-6"
         stroke="current"
         strokeWidth={2}
         strokeLinecap="round"
