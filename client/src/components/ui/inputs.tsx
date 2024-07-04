@@ -12,7 +12,7 @@ const deselectedStyle =
 const expandedStyle = "px-4 justify-center";
 const collapsedStyle = "py-4 pl-4 pr-3";
 
-// Display only the label when onFocus, otherwise display shrinked label and children
+// Display only the label when not onFocus, otherwise display shrinked label and children
 const labelStyleLarge =
   "select-none hover:cursor-text h-full w-full text-base font-normal leading-5 text-penni-text-secondary-light-mode";
 const labelStyleSmall =
@@ -120,7 +120,7 @@ function TextInputContainer({
  *
  * @example
  * // Example usage:
- * const [priceValue, setPriceValue] = useState(0);
+ * const [priceValue, setPriceValue] = useState('');
  * <SingleLineInput
  *   value={priceValue}
  *   onChange={(e) => setPriceValue(e.target.value)}
