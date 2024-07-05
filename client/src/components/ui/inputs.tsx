@@ -99,7 +99,7 @@ function TextInputContainer({
           htmlFor={id}
           className={`${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
         >
-          {label ? label : placeholder ? placeholder : ""}
+          {label ? label : placeholder}
         </label>
       )}
       {selectedOrNotEmpty && (
@@ -136,7 +136,7 @@ export function SingleLineInput({
   value,
   onChange,
   label,
-  placeholder,
+  placeholder = "",
   type,
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
@@ -167,15 +167,14 @@ export function SingleLineInput({
     <TextInputContainer
       value={value}
       label={label}
-      placeholder={placeholder ? placeholder : ""}
+      placeholder={placeholder}
       id={id}
       isSelected={isSelected}
       multiline={false}
       setIsSelected={setIsSelected}
     >
-      {type === "price" && (isSelected || value !== "") && (
-        <span className="w-4">$</span>
-      )}
+      {/* note: $ is only displayed on select because of the container */}
+      {type === "price" && value != "" && <span className="w-4">$</span>}
       <input
         id={id}
         autoFocus={isSelected}
