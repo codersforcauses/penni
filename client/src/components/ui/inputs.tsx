@@ -174,7 +174,9 @@ export function SingleLineInput({
       setIsSelected={setIsSelected}
     >
       {/* note: $ is only displayed on select because of the container */}
-      {type === "price" && value != "" && <span className="w-4">$</span>}
+      {type === "price" && (isSelected || value) != "" && (
+        <span className="w-4">$</span>
+      )}
       <input
         id={id}
         autoFocus={isSelected}
