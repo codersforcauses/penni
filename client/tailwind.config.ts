@@ -1,3 +1,4 @@
+import { finished } from "stream";
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -70,6 +71,7 @@ const config = {
           },
           grey: {
             inactive: "#B6BABC",
+            finished: "#F4F4F4",
             "border-light-mode": "#E7E8E9",
             "border-dark-mode": "#B6BABC",
           },
@@ -83,6 +85,8 @@ const config = {
             "dark-mode": "#00040C",
           },
           text: {
+            body: "#49556B", // The color of the placeholder text in the input field
+            finish: "#BDBDBD", // when submitted
             "regular-light-mode": "#0B1920",
             "regular-dark-mode": "#FAFAFA",
             "secondary-light-mode": "#485358",
@@ -126,6 +130,7 @@ const config = {
         },
       },
       borderWidth: {
+        1: "calc(var(--borderWidth) - 1px)",
         2: "var(--borderWidth)",
       },
       borderRadius: {
@@ -135,6 +140,7 @@ const config = {
         "penni-border": "8px",
         "penni-card": "8px",
         "penni-sheet": "8px",
+        "penni-special": "100px", // for small button
       },
       keyframes: {
         "accordion-down": {
