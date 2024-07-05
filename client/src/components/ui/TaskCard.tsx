@@ -26,12 +26,12 @@ type TaskCardProps = {
   duration: number;
   estimatePrice:number;
   myOfferPrice: number;
-  priceType:'Estimate Price' | 'My Offer';
+  priceType:'Estimated Price' | 'My Offer';
 };
 
 
 // the task card
-const TaskCard: React.FC<TaskCardProps> = ({ title, category, date, location, duration, estimatePrice,myOfferPrice, state,priceType }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ title, category, date, location, duration, estimatePrice,myOfferPrice, state, priceType }) => {
   return (
     <div className={`p-4 m-4 border rounded-lg ${state === 'EXPIRED' ? 'bg-gray-200 opacity-80' : 'bg-white'}  transition duration-300 ease-in-out`}>
       {/* the state (expried or bidding) */}
@@ -41,7 +41,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ title, category, date, location, du
 
       {/* the category & title (in 1 column) */}
       <div className="mt-2 mb-4">
-        <h5 className="text-sm text-gray-500">{category}</h5>
+        <h5 className="text-sm text-gray-500 mb-1 mt-1">{category}</h5>
         <h3 className="text-lg font-semibold leading-tight">{title}</h3>     
       </div>
 
@@ -71,12 +71,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ title, category, date, location, du
         </div>
 
         {/* Column 2 */}
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col space-y-2 text-right">
           <p className="text-lg font-bold">
           {/* show the different price based on the different price type */}
           ${priceType === "My Offer" ? myOfferPrice : estimatePrice}
           </p>
-          <p className="text-lg font-bold">{priceType}</p>
+          <p className="caption-semibold">{priceType}</p>
         </div>
         
       </div>
