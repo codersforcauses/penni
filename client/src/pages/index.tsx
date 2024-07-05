@@ -1,11 +1,11 @@
 import { Inter as FontSans } from "next/font/google";
 import { useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button"; // Adjust the import to match your structure
+import Card from "@/components/ui/card"; // Adjusted the path
+import SplashScreen from "@/components/ui/SplashScreen";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
-
-import { Button } from "../components/ui/button";
-import SplashScreen from "../components/ui/SplashScreen";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -15,6 +15,7 @@ const fontSans = FontSans({
 export default function Home() {
   const [clicked, setClicked] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [showCard, setShowCard] = useState(false); // Added this line
   const { data, isLoading } = usePings({
     enabled: clicked,
   });
@@ -44,6 +45,19 @@ export default function Home() {
       <p>
         Response from server: <span>{data as string}</span>
       </p>
+      <Button onClick={() => setShowCard(true)}>Show Card</Button>{" "}
+      {/* Added this line */}
+      {showCard && ( // Added this line
+        <Card>
+          {" "}
+          {/* Added this line */}
+          <form>
+            <label htmlFor="amount">How much would you like to add?</label>
+            <input type="text" id="amount" name="amount" />
+            <button type="submit">Confirm</button>
+          </form>
+        </Card>
+      )}
     </main>
   );
 }
