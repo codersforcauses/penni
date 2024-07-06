@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Heading, Paragraph, Subheading } from "./ui/text";
+
 // Mapping between database column names and display subheading titles to reduce further data processesing
 const sectionNamesMap: { [key: string]: string } = {
   category: "Task Category",
@@ -25,23 +27,22 @@ type TaskDetailsProps = {
 
 const TaskDetailsSection = ({
   data,
-  emptyContentPlaceholder = "N/A",
+  emptyContentPlaceholder = "N/A", // Change this to modify default placeholder
 }: TaskDetailsProps) => {
   return (
     <>
       {Object.keys(sectionNamesMap).map((dbName, index) => (
-        <div
-          key={index}
-          className="py-2.5 text-base font-normal leading-5 text-[#485358]"
-        >
-          {sectionNamesMap[dbName]}
-          <p className="py-1.5 text-xl font-normal leading-7 text-[#000000]">
-            {data[dbName] === null ||
-            data[dbName] === undefined ||
-            data[dbName] === ""
-              ? emptyContentPlaceholder
-              : data[dbName]}
-          </p>
+        <div key={index}>
+          <Subheading text={sectionNamesMap[dbName]} />
+          <Paragraph
+            text={
+              data[dbName] === null ||
+              data[dbName] === undefined ||
+              data[dbName] === ""
+                ? emptyContentPlaceholder
+                : data[dbName]
+            }
+          />
         </div>
       ))}
     </>
@@ -51,9 +52,7 @@ const TaskDetailsSection = ({
 const TaskDetails = ({ data, emptyContentPlaceholder }: TaskDetailsProps) => {
   return (
     <div className="max-w-screen-sm overflow-hidden px-7">
-      <div className="mb-2 pb-3 pt-8 text-2xl font-normal leading-6">
-        Task Details
-      </div>
+      <Heading text="Task Details" />
       <TaskDetailsSection
         data={data}
         emptyContentPlaceholder={emptyContentPlaceholder}

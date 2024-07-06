@@ -1,0 +1,31 @@
+import React from "react";
+
+interface HeadingProps {
+  text: string;
+}
+
+interface SubheadingProps {
+  text: string;
+}
+
+interface ParagraphProps {
+  text: string;
+}
+
+export const Heading: React.FC<HeadingProps> = ({ text }) => {
+  return <div className="body-medium pb-2.5 pt-7 text-black">{text}</div>;
+};
+
+export const Subheading: React.FC<SubheadingProps> = ({ text }) => {
+  return (
+    <div className="footnote py-2.5 text-penni-text-secondary-light-mode">
+      {text}
+    </div>
+  );
+};
+
+export const Paragraph: React.FC<ParagraphProps> = ({ text }) => {
+  return (
+    <div className="body py-1.5 text-penni-text-regular-light-mode">{text}</div>
+  );
+};
