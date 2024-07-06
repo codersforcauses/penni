@@ -20,6 +20,7 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
+import TaskCard from "@/components/ui/TaskCard";
 import TopNavtab from "@/components/ui/top-navtab";
 
 function ComponentSection({
@@ -156,6 +157,41 @@ export default function ComponentShowcase() {
                 content: <p>Tab 2 content</p>,
               },
             ]}
+          />
+        </ComponentSection>
+        <ComponentSection title="Task Card">
+          <TaskCard
+            title="Clean up my house"
+            category="CLEANING"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="300"
+            myOfferPrice="250"
+            state="BIDDING"
+            priceType="Estimated Price"
+          />
+          <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="BIDDING"
+            priceType="My Offer"
+          />
+          <TaskCard
+            title="Clean up my house"
+            category="CLEANING"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="5"
+            estimatePrice="400"
+            myOfferPrice="400"
+            state="EXPIRED"
+            priceType="My Offer"
           />
         </ComponentSection>
       </div>
