@@ -186,4 +186,3 @@ class Payments(models.Model):
 
     class Meta:
         verbose_name_plural = "Payments"
-
