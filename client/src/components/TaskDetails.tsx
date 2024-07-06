@@ -25,7 +25,7 @@ type TaskDetailsProps = {
 
 const TaskDetailsSection = ({
   data,
-  emptyContentPlaceholder = "N/A", // Change this to modify default placeholder
+  emptyContentPlaceholder = "N/A",
 }: TaskDetailsProps) => {
   return (
     <>
@@ -36,15 +36,11 @@ const TaskDetailsSection = ({
         >
           {sectionNamesMap[dbName]}
           <p className="py-1.5 text-xl font-normal leading-7 text-[#000000]">
-            {
-              data[dbName] === null ||
-              data[dbName] === undefined ||
-              data[dbName] === ""
-                ? emptyContentPlaceholder
-                : data[
-                    dbName
-                  ]
-            }
+            {data[dbName] === null ||
+            data[dbName] === undefined ||
+            data[dbName] === ""
+              ? emptyContentPlaceholder
+              : data[dbName]}
           </p>
         </div>
       ))}
