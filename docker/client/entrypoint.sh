@@ -24,13 +24,13 @@ echo "APP_ENV: ${APP_ENV}"
 #   printenv
 # fi
 
-echo "  "
-echo "======= Linux version (Debug) ==================================================================================="
-cat /etc/os-release
+# echo "  "
+# echo "======= Linux version (Debug) ==================================================================================="
+# cat /etc/os-release
 
-echo "  "
-echo "======= Node Path & Version (Debug) ==========================================================================="
-node -v
+# echo "  "
+# echo "======= Node Path & Version (Debug) ==========================================================================="
+# node -v
 
 # Check for required env vars, exit as failure if missing these critical env vars.
 if [[ -z "${APP_ENV}" ]]; then
@@ -48,7 +48,8 @@ fi
 # Run inbuilt nextjs server if ENV is LOCAL
 # ====================================================================================
 if [ "${APP_ENV^^}" = "DEVELOPMENT" ]; then
-
+    # Install dependencies (idk why it's not installing the latest ones in the docker image)
+    npm install
     # Run developments
     echo "  "
     echo "======= Starting inbuilt nextjs webserver ==================================================================="

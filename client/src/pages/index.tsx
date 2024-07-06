@@ -1,11 +1,12 @@
 import { Inter as FontSans } from "next/font/google";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import OnBoarding from "@/components/OnBoarding/OnBoarding";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
+import SplashScreen from "../components/ui/SplashScreen";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -14,20 +15,37 @@ const fontSans = FontSans({
 
 const Ping = () => {
   const [clicked, setClicked] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const { data, isLoading } = usePings({
     enabled: clicked,
   });
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreen />;
+  }
+
   return (
-    <>
-      <h1 className="text-3xl text-primary">Test title</h1>
+    <main
+      className={cn(
+        "flex min-h-screen flex-col items-center gap-4 p-24 font-sans",
+        fontSans.variable,
+      )}
+    >
+      <h1 className="title1 text-primary">Test title</h1>
       <Button onClick={() => setClicked(true)}>
         {isLoading ? "Loading" : "Ping"}
       </Button>
       <p>
         Response from server: <span>{data as string}</span>
       </p>
-    </>
+    </main>
   );
 };
 

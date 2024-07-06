@@ -9,6 +9,12 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
+  safelist: [
+    {
+      // Some components use str template to determine colour, not rendered if 'jit'
+      pattern: /(bg|text|stroke)-penni-(alert|text-regular)/,
+    },
+  ],
   prefix: "",
   theme: {
     container: {
@@ -20,11 +26,71 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["Inter", "sans-serif", ...fontFamily.sans],
+      },
+      fontSize: {
+        lgt: "34px", //large title
+        t1: "28px", //title 1 and so on
+        t2: "22px",
+        t3: "20px",
+        hb: "17px", //headline and body
+        co: "16px", //callout
+        sh: "15px", //subheadline
+        fn: "13px", //footnote
+        ct: "11px", //caption
+        nl: "10px", //navigation label
+      },
+      lineHeight: {
+        lgt: "41px",
+        t1: "34px",
+        t2: "28px",
+        t3: "28px",
+        hb: "22px",
+        co: "21px",
+        sh: "20px",
+        fn: "18px",
+        ct: "13px",
+        nl: "12px",
+      },
+      fontWeight: {
+        bold: "700",
+        semibold: "600",
+        medium: "500",
       },
       colors: {
-        "penni-main": "#0051CA", // penni blue
-        "penni-dark": "#081428", // penni dark blue (onboarding carousel title)
+        penni: {
+          main: "#0051CA", // penni blue
+          "main-shade1": "#AACCFF",
+          "main-shade2": "#FAFCFF",
+          secondary: "#5A489B",
+          alert: {
+            warning: "#FFD20C",
+            success: "#72D62A",
+            error: "#FA4856",
+          },
+          grey: {
+            inactive: "#B6BABC",
+            "border-light-mode": "#E7E8E9",
+            "border-dark-mode": "#B6BABC",
+          },
+          background: {
+            "input-light-mode": "#f2f2f2",
+            "light-mode": "#FFFFFF",
+            "dark-mode": "#040B17",
+          },
+          sheet: {
+            "light-mode": "#FFFFFF",
+            "dark-mode": "#00040C",
+          },
+          text: {
+            "regular-light-mode": "#0B1920",
+            "regular-dark-mode": "#FAFAFA",
+            "secondary-light-mode": "#485358",
+            "secondary-dark-mode": "#BCBCBC",
+            "tertiary-light-mode": "#858C8F",
+            "tertiary-dark-mode": "#77797D",
+          },
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -66,6 +132,9 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        "penni-border": "8px",
+        "penni-card": "8px",
+        "penni-sheet": "8px",
       },
       keyframes: {
         "accordion-down": {
