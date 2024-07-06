@@ -1,8 +1,5 @@
 import React from "react";
 
-// Change this to modify the default placeholder
-const default_emptyContentPlaceholder: string = "N/A";
-
 // Mapping between database column names and display subheading titles to reduce further data processesing
 const sectionNamesMap: { [key: string]: string } = {
   category: "Task Category",
@@ -28,7 +25,7 @@ type TaskDetailsProps = {
 
 const TaskDetailsSection = ({
   data,
-  emptyContentPlaceholder = default_emptyContentPlaceholder,
+  emptyContentPlaceholder = "N/A", // Change this to modify default placeholder
 }: TaskDetailsProps) => {
   return (
     <>
@@ -46,7 +43,7 @@ const TaskDetailsSection = ({
                 ? emptyContentPlaceholder
                 : data[
                     dbName
-                  ] /* Handle null, undefined and empty section data */
+                  ]
             }
           </p>
         </div>
