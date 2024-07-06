@@ -35,10 +35,10 @@ const TaskDetailsSection = ({
       {Object.keys(sectionNamesMap).map((dbName, index) => (
         <div
           key={index}
-          className="py-[0.65rem] text-[1rem] font-[350] leading-[1.125rem] text-[#485358]"
+          className="py-2.5 text-base font-normal leading-5 text-[#485358]"
         >
           {sectionNamesMap[dbName]}
-          <p className="py-[0.5rem] text-[1.25rem] font-[350] leading-[1.7rem] text-[#000000]">
+          <p className="py-1.5 text-xl font-normal leading-7 text-[#000000]">
             {
               data[dbName] === null ||
               data[dbName] === undefined ||
@@ -57,8 +57,8 @@ const TaskDetailsSection = ({
 
 const TaskDetails = ({ data, emptyContentPlaceholder }: TaskDetailsProps) => {
   return (
-    <div className="fontSans.variable max-w-screen-sm overflow-hidden px-[1.3rem]">
-      <div className="mb-2 pb-2 pt-8 text-[1.3rem] font-[450] leading-[1.375rem]">
+    <div className="max-w-screen-sm overflow-hidden px-7">
+      <div className="mb-2 pb-3 pt-8 text-2xl font-normal leading-6">
         Task Details
       </div>
       <TaskDetailsSection
