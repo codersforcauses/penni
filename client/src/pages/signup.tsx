@@ -109,7 +109,7 @@ function SignUp() {
         {multistepForm.isFirstStep && (
           <div className="flex justify-center">
             <Button
-              type="submit"
+              type="button"
               className="mt-5 flex w-10/12 self-center rounded-lg bg-slate-200 text-center font-mono text-2xl font-bold text-blue-600"
               onClick={SwitchUser}
             >
