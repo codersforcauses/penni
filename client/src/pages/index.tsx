@@ -50,9 +50,16 @@ export default function Home() {
         <Card>
           {" "}
           <form>
-            <label htmlFor="amount">How much would you like to add?</label>
-            <input type="text" id="amount" name="amount" />
-            <button type="submit">Confirm</button>
+            <label htmlFor="amount">
+              <b>How much would you like to add?</b>
+            </label>
+            <div className="input-container">
+              <span className="dollar-sign">$</span>
+              <input type="number" id="amount" name="amount" />
+            </div>
+            <button id="confirm-button" type="submit">
+              Confirm
+            </button>
           </form>
         </Card>
       )}
