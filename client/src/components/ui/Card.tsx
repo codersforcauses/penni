@@ -25,21 +25,6 @@ const Card: React.FC<CardProps> = ({ children }) => {
           <button className="close-button" onClick={handleClose}>
             ✖
           </button>
-          <div className="input-container">
-            <span>$</span>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={handleInputChange}
-              placeholder="Enter amount"
-            />
-          </div>
-          <button
-            className={`confirm-button ${isButtonActive ? "active" : ""}`}
-            disabled={!isButtonActive}
-          >
-            Confirm
-          </button>
           {children}
         </div>
       </div>
