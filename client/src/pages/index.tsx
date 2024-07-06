@@ -30,17 +30,13 @@ export default function Home() {
   if (showSplash) {
     return <SplashScreen />;
   }
-  return (
+  return(
     <main
-      className={cn("flex min-h-screen flex-col font-sans", fontSans.variable)}
+      className={cn(
+        "flex min-h-screen flex-col",
+      )}
     >
-      <h1 className="title1 text-primary">Test title</h1>
-      <Button onClick={() => setClicked(true)}>
-        {isLoading ? "Loading" : "Ping"}
-      </Button>
-      <p>
-        Response from server: <span>{data as string}</span>
-      </p>
+      <TaskDetails data={{}}></TaskDetails>
     </main>
-  );
+  )
 }

@@ -35,7 +35,7 @@ const TaskDetailsSection = ({
           className="py-2.5 text-base font-normal leading-5 text-[#485358]"
         >
           {sectionNamesMap[dbName]}
-          <p className="py-1.5 text-xl font-normal leading-7 text-[#000000]">
+          <p className="py-1.5 text-xl font-normal leading-7 text-black">
             {
               data[dbName] === null ||
               data[dbName] === undefined ||
