@@ -35,6 +35,68 @@ interface FormData {
   value: string;
 }
 
+/**
+ * Form component rendering and handling input states using JSON input
+ *
+ * Form renders a list of fields represented as `{title, subtitle, inputs}` where
+ * `title` and `subtitle` are optional and inputs is a list of input components
+ * such as single-line text, price, dropdown, and paragraph inputs. Each input can have
+ * a `label`, `placeholder`, and `value` attribute with additional attributes depending
+ * on the input type. Form data is represented as an array of `{name, value}` pairs.
+ *
+ * **NOTE: The submit button is not provided**
+ *
+ * **NOTE: Only inputs with a `name` attribute are included in the form data**
+ *
+ * @param props - list of fields, onSubmit function, and optional header and footer
+ * @param props.fields - list of fields; object with a list of inputs and optional title and subtitle
+ * @param props.onSubmit - function to call when form is submitted; form data is passed as an array of {name, value} pairs
+ * @param props.header - (*Optional*) JSX element to render before the form
+ * @param props.footer - (*Optional*) JSX element to render after the form
+ *
+ * @returns Rendered form component with inputs, title and subtitle.
+ *
+ * @example
+ * const fields: FieldData[] = [
+ *   {
+ *     title: "Player details",
+ *     subtitle: "pspsps give us your data pspsps",
+ *     inputs: [
+ *         {
+ *           label: "Your name",
+ *           placeholder: "Extremely cool and epic gamer xx00xx",
+ *           type: "text",
+ *         },
+ *         {
+ *           label: "Why did you chose to join us?",
+ *           placeholder: "Ever since I was little, I've always been passionate about not starving to death.",
+ *           type: "paragraph",
+ *         },
+ *     ],
+ *   },
+ *   {
+ *     title: "How much $$$ do you have???",
+ *     inputs: [
+ *       {
+ *         value: "0",
+ *         type: "price",
+ *       },
+ *       {
+ *         label: "Will you donate to us?",
+ *         type: "dropdown",
+ *         value: "Yes",
+ *         options: ["Yes", "Yes", "Yes"],
+ *       },
+ *     ],
+ *   },
+ * ];
+ *
+ * <Form
+ *   fields={fields}
+ *   onSubmit={(e) => console.log(e)}
+ *   footer={<button type="submit">Submit</button>}
+ * />
+ */
 export function Form({
   fields,
   onSubmit,
