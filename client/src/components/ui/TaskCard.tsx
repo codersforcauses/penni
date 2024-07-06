@@ -23,9 +23,9 @@ type TaskCardProps = {
   title: string; 
   date: string;
   location: string;
-  duration: number;
-  estimatePrice:number;
-  myOfferPrice: number;
+  duration: string;
+  estimatePrice:string;
+  myOfferPrice: string;
   priceType:'Estimated Price' | 'My Offer';
 };
 
