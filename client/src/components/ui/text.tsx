@@ -10,7 +10,7 @@ interface SubheadingProps {
 }
 
 interface ParagraphProps {
-  text: string;
+  text: string | null | undefined;
 }
 
 export const Heading: React.FC<HeadingProps> = ({ text }) => {
