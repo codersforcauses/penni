@@ -100,7 +100,7 @@ DATABASES = {
         "NAME": os.environ.get("POSTGRES_NAME") or "postgres",
         "USER": os.environ.get("POSTGRES_USER") or "postgres",
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD") or "password",
-        "HOST": os.environ.get("POSTGRES_HOST") or "host.docker.internal",
+        "HOST": "host.docker.internal",
         "PORT": os.environ.get("POSTGRES_PORT") or 5432,
     }
 }
@@ -140,9 +140,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-PROJECT_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-)  # <- '/' directory
+PROJECT_ROOT = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))  # <- '/' directory
 
 STATIC_URL = "/static/"
 
