@@ -107,7 +107,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="text-penni-text-regular-light-mode -mt-[0.7vh] ml-1 max-w-[39vh] text-center title1">
+                <p className="title1 -mt-[0.7vh] ml-1 max-w-[39vh] text-center text-penni-text-regular-light-mode">
                   {slide.title}
                 </p>
               </div>
@@ -117,13 +117,13 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
       </Carousel>
       <div
         id="onboarding-controls"
-        className="flex h-full flex-col items-center justify-center bg-light-mode"
+        className="bg-light-mode flex h-full flex-col items-center justify-center"
       >
         <div className="mt-[4vh] flex w-screen max-w-[50vh] items-center justify-between pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
             className={
-              "headline text-penni-grey-inactive hover:bg-light-mode hover:text-penni-main"
+              "headline hover:bg-light-mode text-penni-grey-inactive hover:text-penni-main"
             }
             variant="ghost" // Button variant
           >
@@ -144,7 +144,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           <Button
             onClick={handleNext}
             className={
-              "hover:text-penni-text-regular-light-mode headline text-penni-main hover:bg-background"
+              "headline text-penni-main hover:bg-background hover:text-penni-text-regular-light-mode"
             }
             variant="ghost"
           >

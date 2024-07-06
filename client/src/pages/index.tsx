@@ -71,11 +71,7 @@ export default function Home() {
   ];
 
   return (
-    <main
-      className={cn(
-        "flex min-h-full min-w-full flex-col items-center", 
-      )}
-    >
+    <main className={cn("flex min-h-full min-w-full flex-col items-center")}>
       <OnBoarding followingContent={<Ping />} slides={slides} />
     </main>
   );
