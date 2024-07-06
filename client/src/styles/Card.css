@@ -4,11 +4,10 @@
   left: 50%;  
   transform: translateX(-50%);
   width: 300px;
-  height: 200px;
+  height: 350px;
   background-color: white;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
-  margin-bottom: 8%;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   animation: slide-up 0.3s ease-out;
 }
@@ -33,38 +32,11 @@
   margin: 0 auto;
 }
 
-.dollar-sign {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #000;
-}
-
-#amount { 
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  height: 40px;
-  padding-left: 25px; 
-  width: 100%; 
-  box-sizing: border-box; 
-}
-
-#confirm-button {
-  display: block;
-  margin: 16px auto 0 auto; 
-  background-color: #d3d3d3;
-  padding: 10px 20px; 
-  border-radius: 8px; 
-  width: auto; 
-}
-
 @keyframes slide-up {
   from {
-    transform: translateY(100%);
+    bottom: -200px;
   }
   to {
-    transform: translateY(0);
+    bottom: 0;
   }
 }

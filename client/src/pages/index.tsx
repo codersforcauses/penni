@@ -32,29 +32,9 @@ export default function Home() {
   }
 
   return (
-    <main
-      className={cn(
-        "flex min-h-screen flex-col items-center gap-4 p-24",
-      )}
-    >
+    <main className={cn("flex min-h-screen flex-col items-center gap-4 p-24")}>
       <Button onClick={() => setShowCard(true)}>Show Card</Button>{" "}
-      {showCard && (
-        <Card>
-          {" "}
-          <form>
-            <label htmlFor="amount">
-              <b>How much would you like to add?</b>
-            </label>
-            <div className="input-container">
-              <span className="dollar-sign">$</span>
-              <input type="number" id="amount" name="amount" />
-            </div>
-            <button id="confirm-button" type="submit">
-              Confirm
-            </button>
-          </form>
-        </Card>
-      )}
+      {showCard && <Card> </Card>}
     </main>
   );
 }
