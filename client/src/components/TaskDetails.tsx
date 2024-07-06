@@ -33,16 +33,17 @@ const TaskDetailsSection = ({
     <>
       {Object.keys(sectionNamesMap).map((dbName, index) => (
         <div key={index}>
-          <Subheading text={sectionNamesMap[dbName]} />
-          <Paragraph
-            text={
-              data[dbName] === null ||
-              data[dbName] === undefined ||
-              data[dbName] === ""
-                ? emptyContentPlaceholder
-                : data[dbName]
-            }
-          />
+          <Subheading text={sectionNamesMap[dbName]}>
+            <Paragraph
+              text={
+                data[dbName] === null ||
+                data[dbName] === undefined ||
+                data[dbName] === ""
+                  ? emptyContentPlaceholder
+                  : data[dbName]
+              }
+            />
+          </Subheading>
         </div>
       ))}
     </>
