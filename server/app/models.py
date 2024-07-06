@@ -128,6 +128,10 @@ class Bids(models.Model):
                 f"message={self.message}, status={self.status}, "
                 f"created_at={self.created_at}, updated_at={self.updated_at}")
 
+    @classmethod
+    def acceptedBids(cls):
+        return cls.objects.filter(status='accepted')
+
     def clean(self):
         """
         Perform custom validation.
@@ -182,3 +186,4 @@ class Payments(models.Model):
 
     class Meta:
         verbose_name_plural = "Payments"
+
