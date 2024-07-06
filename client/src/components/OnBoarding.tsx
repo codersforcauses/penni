@@ -107,7 +107,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className="text-penni-dark -mt-[0.7vh] ml-1 max-w-[38vh] text-center text-[1.63rem] font-[620] leading-[2.1rem]">
+                <p className="text-penni-text-regular-light-mode -mt-[0.7vh] ml-1 max-w-[39vh] text-center title1">
                   {slide.title}
                 </p>
               </div>
@@ -117,13 +117,13 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
       </Carousel>
       <div
         id="onboarding-controls"
-        className="flex h-full flex-col items-center justify-center bg-background"
+        className="flex h-full flex-col items-center justify-center bg-light-mode"
       >
         <div className="mt-[4vh] flex w-screen max-w-[50vh] items-center justify-between pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
             className={
-              "text-[1rem] font-[550] leading-[1.438rem] text-[#858D9C] hover:bg-background hover:text-penni-main"
+              "headline text-penni-grey-inactive hover:bg-light-mode hover:text-penni-main"
             }
             variant="ghost" // Button variant
           >
@@ -136,7 +136,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                 className={`h-[0.6rem] w-[0.6rem] rounded-full transition-all duration-300 ${
                   currentSlide === index
                     ? "w-[1.1rem] rounded-full bg-penni-main"
-                    : "bg-[#F3F3F5]"
+                    : "bg-penni-grey-border-light-mode"
                 }`}
               />
             ))}
@@ -144,7 +144,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           <Button
             onClick={handleNext}
             className={
-              "hover:text-penni-dark text-[1rem] font-[550] leading-[1.438rem] text-penni-main hover:bg-background"
+              "hover:text-penni-text-regular-light-mode headline text-penni-main hover:bg-background"
             }
             variant="ghost"
           >
