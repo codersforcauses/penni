@@ -27,6 +27,10 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleCardClose = () => {
+    setShowCard(false);
+  };
+
   if (showSplash) {
     return <SplashScreen />;
   }
@@ -34,7 +38,7 @@ export default function Home() {
   return (
     <main className={cn("flex min-h-screen flex-col items-center gap-4 p-24")}>
       <Button onClick={() => setShowCard(true)}>Show Card</Button>{" "}
-      {showCard && <Card> </Card>}
+      {showCard && <Card onClose={handleCardClose}> </Card>}
     </main>
   );
 }
