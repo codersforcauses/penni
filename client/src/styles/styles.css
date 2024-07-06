@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+  font-family: "Inter", sans-serif;
+  /* SF Pro Text waiting for adding
+     Size is same with Inter font */
+}
+
+/* LargeTitle Inter - B34, 41L */
+.largetitle {
+  @apply text-lgt font-bold leading-lgt;
+}
+
+/* Title1 Inter - B28, 34L */
+.title1 {
+  @apply text-t1 font-bold leading-t1;
+}
+
+/* Title2 Inter - B22, 28L */
+.title2 {
+  @apply text-t2 font-bold leading-t2;
+}
+
+/* Title3 Inter - SB28, 24L */
+.title3 {
+  @apply text-t3 font-semibold leading-t3;
+}
+
+/* Headline Inter - SB17, 22L */
+.headline {
+  @apply text-hb font-semibold leading-hb;
+}
+
+/* Body-medium Inter - M17, 22L */
+.body-medium {
+  @apply text-hb font-medium leading-hb;
+}
+
+/* Body Inter - R17, 22L */
+.body {
+  @apply text-hb font-normal leading-hb;
+}
+
+/* Callout Inter - R16, 21L */
+.callout {
+  @apply text-co font-normal leading-co;
+}
+
+/* Subheadline - Medium Inter - M15, 20L */
+.subheadline-medium {
+  @apply text-sh font-medium leading-sh;
+}
+
+/* Subheadline Inter - R15, 20L */
+.subheadline {
+  @apply text-sh font-normal leading-sh;
+}
+
+/* Footnote Inter - R13, 18L */
+.footnote {
+  @apply text-fn font-normal leading-fn;
+}
+
+/* Caption-Semibold Inter - SB11, 13L */
+.caption-semibold {
+  @apply text-ct font-semibold leading-ct;
+}
+
+/* Caption Inter - R11, 13L */
+.caption {
+  @apply text-ct font-normal leading-ct;
+}
+
+/* Navigation Label Inter - R10, 12L */
+.navigationlabel {
+  @apply text-nl font-normal leading-nl;
+}
