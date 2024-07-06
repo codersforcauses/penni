@@ -74,7 +74,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
               <div className="flex flex-col items-center justify-center">
-                <div className="relative h-[82vh] w-full ml-1 -mt-4">
+                <div className="relative -mt-4 ml-1 h-[82vh] w-full">
                   <Image
                     src={slide.img}
                     alt="" // No alt as title handles that
@@ -82,7 +82,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
                     style={{ objectFit: "contain" }}
                   />
                 </div>
-                <p className=" -mt-[0.7vh] ml-1 max-w-[38vh] text-center text-[1.63rem] font-[620] leading-[2.1rem] text-penni-dark">
+                <p className="text-penni-dark -mt-[0.7vh] ml-1 max-w-[38vh] text-center text-[1.63rem] font-[620] leading-[2.1rem]">
                   {slide.title}
                 </p>
               </div>
@@ -92,9 +92,9 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
       </Carousel>
       <div
         id="onboarding-controls"
-        className="flex flex-col items-center justify-center bg-background h-full"
+        className="flex h-full flex-col items-center justify-center bg-background"
       >
-        <div className="mt-[4vh] flex max-w-[50vh] w-screen items-center justify-between pl-[2.5vh] pr-[2.5vh]">
+        <div className="mt-[4vh] flex w-screen max-w-[50vh] items-center justify-between pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
             className={
@@ -119,7 +119,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           <Button
             onClick={handleNext}
             className={
-              "text-[1rem] font-[550] leading-[1.438rem] text-penni-main hover:bg-background hover:text-penni-dark"
+              "hover:text-penni-dark text-[1rem] font-[550] leading-[1.438rem] text-penni-main hover:bg-background"
             }
             variant="ghost"
           >
