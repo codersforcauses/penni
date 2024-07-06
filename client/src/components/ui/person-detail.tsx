@@ -27,15 +27,16 @@ interface personPic {
  */
 
 const PersonImg = (props: personPic) => {
-  // convert px to tailwind style size number
-  const size = props.size / 4;
   return (
     <div className="flex justify-center">
-      <div className={`relative h-${size} w-${size}`}>
+      <div
+        className="relative"
+        style={{ width: `${props.size}px`, height: `${props.size}px` }}
+      >
         <Image
           src={props.personImg}
           alt="Picture of the person"
-          fill
+          layout="fill"
           className="rounded-full object-cover"
         />
       </div>
