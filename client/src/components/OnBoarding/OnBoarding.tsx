@@ -20,6 +20,31 @@ interface OnBoardingProps {
   slides: Slide[]; // Slides used for onboarding to be passed as a prop
 }
 
+/**
+ * The on-boarding component that creates a carousel using slides.
+ *
+ * @param props - The properties for the OnBoarding component.
+ * @param props.slides - The slides used to make the carousel for on-boarding.
+ * @param props.followingContent - The content following the onboarding carousel. (After they are skipped or completed)
+ * @returns The onboarding component
+ *
+ * @example
+ * // Example Usage:
+ * const slides = [
+ *  {
+ *    title: "Penni jobs for some extra cash",
+ *    img: "/img/OnBoarding/carousel-1.svg",
+ *  },
+ *  {
+ *    title: "Give back to someone who has given a lot",
+ *    img: "/img/OnBoarding/carousel-2.svg",
+ *  },
+ *   title: "Extra spare time with the loves ones",
+ *   img: "/img/OnBoarding/carousel-3.svg",
+ *  }
+ * ];
+ * <OnBoarding followingContent={<Ping />} slides={slides}
+ */
 const OnBoarding: React.FC<OnBoardingProps> = ({
   followingContent,
   slides,
