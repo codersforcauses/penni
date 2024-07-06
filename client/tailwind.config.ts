@@ -11,7 +11,7 @@ const config = {
   ],
   safelist: [
     {
-      // Callouts and icons use format string to determine colour, not rendered if 'jit'
+      // Some components use str template to determine colour, not rendered if 'jit'
       pattern: /(bg|text|stroke)-penni-(alert|text-regular)/,
     },
   ],
@@ -26,7 +26,36 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["Inter", "sans-serif", ...fontFamily.sans],
+      },
+      fontSize: {
+        lgt: "34px", //large title
+        t1: "28px", //title 1 and so on
+        t2: "22px",
+        t3: "20px",
+        hb: "17px", //headline and body
+        co: "16px", //callout
+        sh: "15px", //subheadline
+        fn: "13px", //footnote
+        ct: "11px", //caption
+        nl: "10px", //navigation label
+      },
+      lineHeight: {
+        lgt: "41px",
+        t1: "34px",
+        t2: "28px",
+        t3: "28px",
+        hb: "22px",
+        co: "21px",
+        sh: "20px",
+        fn: "18px",
+        ct: "13px",
+        nl: "12px",
+      },
+      fontWeight: {
+        bold: "700",
+        semibold: "600",
+        medium: "500",
       },
       colors: {
         penni: {
@@ -45,6 +74,7 @@ const config = {
             "border-dark-mode": "#B6BABC",
           },
           background: {
+            "input-light-mode": "#f2f2f2",
             "light-mode": "#FFFFFF",
             "dark-mode": "#040B17",
           },

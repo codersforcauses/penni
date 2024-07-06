@@ -293,7 +293,12 @@ dist
 
 opt/
 
+
+# Test page for visualising components, don't actually push to main
+test_sandbox.tsx
+
 .idea/ 
 pyproject.toml
 .vscode/*
 .vscode/settings.json
+
