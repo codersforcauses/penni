@@ -3,7 +3,7 @@ import * as React from "react";
 
 export default function TaskTopBar() {
   return (
-    <div className="flex w-full items-center justify-between px-4 py-2">
+    <div className="fixed flex w-full items-center justify-between px-4 py-2">
       <p className="text-xl font-semibold">Penni</p>
       <button>
         <Image
