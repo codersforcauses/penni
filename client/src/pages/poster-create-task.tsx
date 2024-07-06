@@ -1,5 +1,12 @@
 import React from "react";
 
+import CreateTask from "@/components/ui/poster/create-task";
+import TaskTopBar from "@/components/ui/task-top-bar";
+
 export default function PosterCreateTask() {
-  return <div>{/* components here */}</div>;
+  return (
+    <div>
+      <CreateTask />
+    </div>
+  );
 }
