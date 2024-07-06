@@ -3,18 +3,7 @@ import Image from 'next/image';
 import React from 'react';
 
 
-//Cameron's part has been deleted as it not fit the page really well
-
-//what I have done: basic structue of all the info and layout, modified the icon color in the public files
-
-//need to do : 
-//1. the font (we probs need to merge or pull the font from the main now, cuz now the main has the font info, 
-//I asked Yunho and he said follow the config of tailswind. In only know that the figma fonts shows are same as the google fonts, it is the font we should use)
-// 2. the size (I haven't check the size, I only checked the margin and padding,, should be done after finishing the font)
-// 3. the color (I have finished all the color except the Blue part (just not sure if we have to be standars on this part)
-
-//4. due to the different state (bidding or expired), the size and the card-outline should be changed
-//5. please try to understand the "pricetype", not sure if we need to do useState for this part
+// please try to understand the "pricetype", not sure if we need to do useState for this part
 
 // the props
 type TaskCardProps = {
