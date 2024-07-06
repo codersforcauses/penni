@@ -11,6 +11,7 @@ import TaskCard, { TaskCardProps } from "./TaskCard";
 const MarketPage: React.FC = () => {
   const tasks: TaskCardProps[] = [
     {
+      id: "abc123",
       state: "BIDDING",
       category: "Construction",
       title: "Fix the roof",
@@ -22,6 +23,7 @@ const MarketPage: React.FC = () => {
       priceType: "Estimated Price",
     },
     {
+      id: "xyz000",
       state: "EXPIRED",
       category: "Painting",
       title: "Paint the fence",
@@ -33,6 +35,7 @@ const MarketPage: React.FC = () => {
       priceType: "My Offer",
     },
     {
+      id: "lol223",
       state: "BIDDING",
       category: "Cleaning",
       title: "Clean the house",
@@ -48,11 +51,9 @@ const MarketPage: React.FC = () => {
   return (
     <div>
       <div>
-        {tasks.map((task, index) => (
-          <TaskCard key={index} {...task} />
+        {tasks.map((task) => (
+          <TaskCard key={task.id} {...task} />
         ))}
-      </div>
-      <div>
         <BottomNav navIndex={0} />
       </div>
     </div>
