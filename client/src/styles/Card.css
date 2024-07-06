@@ -30,7 +30,7 @@
 .input-container {
   position: relative;
   width: 95%;
-  margin: 0 auto; /* Center the input within its container */
+  margin: 0 auto;
 }
 
 .dollar-sign {
@@ -46,18 +46,18 @@
   background-color: #f0f0f0;
   border-radius: 8px;
   height: 40px;
-  padding-left: 25px; /* Add padding to make space for the dollar sign */
-  width: 100%; /* Full width within the container */
-  box-sizing: border-box; /* Include padding in width */
+  padding-left: 25px; 
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 #confirm-button {
   display: block;
   margin: 16px auto 0 auto; 
   background-color: #d3d3d3;
-  padding: 10px 20px; /* Adjust padding to make the background larger */
-  border-radius: 8px; /* Match the border radius of the input */
-  width: auto; /* Ensure the button width fits the content */
+  padding: 10px 20px; 
+  border-radius: 8px; 
+  width: auto; 
 }
 
 @keyframes slide-up {
