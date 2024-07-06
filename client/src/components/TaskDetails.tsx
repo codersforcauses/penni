@@ -51,7 +51,7 @@ const TaskDetailsSection = ({
 const TaskDetails = ({ data, emptyContentPlaceholder }: TaskDetailsProps) => {
   return (
     <div className="max-w-screen-sm overflow-hidden px-7">
-      <div className="pb-2.5 pt-7 body-medium">
+      <div className="pb-2.5 pt-7 body-medium text-black">
         Task Details
       </div>
       <TaskDetailsSection
