@@ -34,17 +34,9 @@ export default function Home() {
   return (
     <main
       className={cn(
-        "flex min-h-screen flex-col items-center gap-4 p-24 font-sans",
-        fontSans.variable,
+        "flex min-h-screen flex-col items-center gap-4 p-24",
       )}
     >
-      <h1 className="title1 text-primary">Test title</h1>
-      <Button onClick={() => setClicked(true)}>
-        {isLoading ? "Loading" : "Ping"}
-      </Button>
-      <p>
-        Response from server: <span>{data as string}</span>
-      </p>
       <Button onClick={() => setShowCard(true)}>Show Card</Button>{" "}
       {showCard && (
         <Card>
