@@ -19,6 +19,8 @@ import {
   ParagraphInput,
   SingleLineInput,
 } from "@/components/ui/inputs";
+import PersonDetail from "@/components/ui/person-detail";
+import TopNavtab from "@/components/ui/top-navtab";
 
 function ComponentSection({
   title,
@@ -86,6 +88,7 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Inputs">
+          <SingleLineInput onChange={() => {}} value="" type="text" />
           <SingleLineInput
             label="Single line text"
             onChange={() => {}}
@@ -101,19 +104,19 @@ export default function ComponentShowcase() {
           <SingleLineInput
             label="Single line price"
             onChange={() => {}}
-            value=""
+            value="100000000.00"
             type="price"
           />
           <SingleLineInput
             label="Single line date"
             onChange={() => {}}
-            value=""
+            value="2003-05-13"
             type="date"
           />
           <SingleLineInput
             label="Single line password"
             onChange={() => {}}
-            value=""
+            value="very secure password"
             type="password"
           />
           <ParagraphInput
@@ -126,6 +129,33 @@ export default function ComponentShowcase() {
             options={["hello", "yay"]}
             value="Some option"
             onChange={() => {}}
+          />
+        </ComponentSection>
+        <ComponentSection title="Person Detail">
+          <PersonDetail
+            personName="very cool name"
+            personImg="penni-logo.svg"
+          />
+        </ComponentSection>
+
+        <ComponentSection title="Bottom Nav">
+          <div className="w-full">
+            <BottomNav isFixed={false} navIndex={0} />
+          </div>
+        </ComponentSection>
+
+        <ComponentSection title="Top Navtab">
+          <TopNavtab
+            tabs={[
+              {
+                name: "Tab 1",
+                content: <p>Tab 1 content</p>,
+              },
+              {
+                name: "Tab 2",
+                content: <p>Tab 2 content</p>,
+              },
+            ]}
           />
         </ComponentSection>
       </div>
