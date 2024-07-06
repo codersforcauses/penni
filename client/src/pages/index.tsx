@@ -2,7 +2,7 @@ import { Inter as FontSans } from "next/font/google";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import Card from "@/components/ui/card";
+import Card from "@/components/ui/Card";
 import SplashScreen from "@/components/ui/SplashScreen";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
