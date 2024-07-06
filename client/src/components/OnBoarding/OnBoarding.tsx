@@ -74,7 +74,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
               <div className="flex flex-col items-center justify-center">
-                <div className="relative h-[82vh] w-[100%] ml-1 -mt-4">
+                <div className="relative h-[82vh] w-full ml-1 -mt-4">
                   <Image
                     src={slide.img}
                     alt="" // No alt as title handles that
