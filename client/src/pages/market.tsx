@@ -1,14 +1,11 @@
-// TODO:
-// - import Dropdown component(#72) once its been merged onto main
-// - edit bottom navbar component so it's no longer transparent
+import type { ReactElement } from "react";
 
-import React from "react";
+import MeLayout from "@/components/ui/MeLayout";
+import TaskCard, { TaskCardProps } from "@/components/ui/TaskCard";
 
-import BottomNav from "./bottom-nav";
-// import Dropdown from './Dropdown';
-import TaskCard, { TaskCardProps } from "./TaskCard";
+import type { NextPageWithLayout } from "./_app";
 
-const MarketPage: React.FC = () => {
+const MarketPage: NextPageWithLayout = () => {
   const tasks: TaskCardProps[] = [
     {
       id: "abc123",
@@ -49,15 +46,16 @@ const MarketPage: React.FC = () => {
   ];
 
   return (
-    <div>
-      <div>
-        {tasks.map((task) => (
-          <TaskCard key={task.id} {...task} />
-        ))}
-        <BottomNav navIndex={0} />
-      </div>
-    </div>
+    <>
+      {tasks.map((task) => (
+        <TaskCard key={task.id} {...task} />
+      ))}
+    </>
   );
+};
+
+MarketPage.getLayout = function getLayout(page: ReactElement) {
+  return <MeLayout>{page}</MeLayout>;
 };
 
 export default MarketPage;
