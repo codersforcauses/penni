@@ -70,4 +70,5 @@ const PersonDetail = (props: personInfo) => {
   );
 };
 
-export { PersonDetail, PersonImg };
+export default PersonDetail;
+export { PersonImg };
