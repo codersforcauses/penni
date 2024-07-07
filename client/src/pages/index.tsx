@@ -44,6 +44,8 @@ export default function Home() {
       <p>
         Response from server: <span>{data as string}</span>
       </p>
+      <br />
+      <h1> HELLO </h1>
     </main>
   );
 }
