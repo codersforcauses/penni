@@ -130,13 +130,28 @@ export function Form({
   return (
     <form onSubmit={formAction}>
       {header && header}
-      {fields.map((field, field_idx) => {
+      {fields.map((field, fieldIdx) => {
         return (
-          <div key={field_idx}>
-            {field.title && <h1>{field.title}</h1>}
-            {field.subtitle && <h2>{field.subtitle}</h2>}
+          <div
+            key={fieldIdx}
+            className={fieldIdx + 1 === fields.length ? "" : "pb-6"}
+          >
+            {field.title && (
+              <div className="w-full pb-2">
+                <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+                  {field.title}
+                </h1>
+              </div>
+            )}
+            {field.subtitle && (
+              <div className="w-full pb-4">
+                <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+                  {field.subtitle}
+                </h2>
+              </div>
+            )}
 
-            {field.inputs.map((input) => {
+            {field.inputs.map((input, inputIdx) => {
               const i = runningIndex++;
               const props = {
                 value: values[i].value,
@@ -146,18 +161,29 @@ export function Form({
                   setValues[i](e.target.value);
                 },
               };
-
-              if (input.type === "paragraph")
-                return <ParagraphInput {...props} key={i} />;
-              if (input.type === "dropdown")
-                return (
+              let inputComponent;
+              if (input.type === "paragraph") {
+                inputComponent = <ParagraphInput {...props} />;
+              } else if (input.type === "dropdown") {
+                inputComponent = (
                   <DropdownInput
                     {...props}
                     options={(input as DropdownData).options}
-                    key={i}
                   />
                 );
-              return <SingleLineInput {...props} type={input.type} key={i} />;
+              } else {
+                inputComponent = (
+                  <SingleLineInput {...props} type={input.type} />
+                );
+              }
+              return (
+                <div
+                  key={i}
+                  className={`h-auto w-full ${inputIdx + 1 == field.inputs.length ? "" : "pb-4"}`}
+                >
+                  {inputComponent}
+                </div>
+              );
             })}
           </div>
         );

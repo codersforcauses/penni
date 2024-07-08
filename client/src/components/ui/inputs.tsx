@@ -80,7 +80,7 @@ function TextInputContainer({
   const selectedOrNotEmpty = isSelected || value !== "";
 
   const containerStyle =
-    `duration-50 m-4 flex flex-col rounded-penni-border border-2 hover:cursor-text` +
+    `duration-50 m-0 flex flex-col rounded-penni-border border-2 hover:cursor-text` +
     ` ${isSelected ? selectedStyle : deselectedStyle} ` +
     ` ${selectedOrNotEmpty ? expandedStyle : collapsedStyle} ` +
     ` ${multiline ? "h-36 overflow-y-auto" : `h-14 overflow-hidden`}`;
@@ -249,7 +249,7 @@ function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
     <div className="relative">
       <div className="h-auto w-full">
         <div
-          className="absolute left-0 right-0 z-10 -m-3 mx-4 flex origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
+          className="absolute left-0 right-0 z-10 mt-1 flex origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby={menuId}
@@ -321,7 +321,7 @@ export function DropdownInput({
 
   return (
     <div className="relative h-auto w-full">
-      <div className="m-4 w-auto">
+      <div className="w-auto">
         <button
           id={menuId}
           type="button"
