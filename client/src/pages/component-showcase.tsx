@@ -6,6 +6,7 @@ import {
   SuccessCallout,
   WarningCallout,
 } from "@/components/ui/callout";
+import { FieldData, Form } from "@/components/ui/form";
 import {
   DropdownIcon,
   EditIcon,
@@ -22,6 +23,45 @@ import {
 import PersonDetail from "@/components/ui/person-detail";
 import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
+
+const fields: FieldData[] = [
+  {
+    title: "Player details",
+    subtitle: "pspsps give us your data pspsps",
+    inputs: [
+      {
+        label: "Your name",
+        name: "playerName",
+        placeholder: "Extremely cool and epic gamer xx00xx",
+        type: "text",
+      },
+      {
+        label: "Why did you chose to join us?",
+        name: "playerReason",
+        placeholder:
+          "Ever since I was little, I've always been passionate about not starving to death.",
+        type: "paragraph",
+      },
+    ],
+  },
+  {
+    title: "How much $$$ do you have???",
+    inputs: [
+      {
+        value: "0",
+        name: "playerMoney",
+        type: "price",
+      },
+      {
+        // name: "willDonation",  // without `name`, this field won't be included in the form data
+        label: "Will you donate to us?",
+        type: "dropdown",
+        value: "Yes",
+        options: ["Yes", "Yes", "Yes"],
+      },
+    ],
+  },
+];
 
 function ComponentSection({
   title,
@@ -70,11 +110,15 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Callouts">
-          <InfoCallout text="Info callout" />
-          <InfoCallout text="Info callout" onClick={() => {}} />
-          <SuccessCallout text="Success callout" />
-          <WarningCallout text="Warning callout" />
-          <ErrorCallout text="Error callout" />
+          {[
+            <InfoCallout text="Info callout" />,
+            <InfoCallout text="Info callout" onClick={() => {}} />,
+            <SuccessCallout text="Success callout" />,
+            <WarningCallout text="Warning callout" />,
+            <ErrorCallout text="Error callout" />,
+          ].map((callout) => {
+            return <div className="w-full px-4 py-3">{callout}</div>;
+          })}
         </ComponentSection>
 
         <ComponentSection title="Icons">
@@ -89,49 +133,70 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Inputs">
-          <SingleLineInput onChange={() => {}} value="" type="text" />
-          <SingleLineInput
-            label="Single line text"
-            onChange={() => {}}
-            value=""
-            type="text"
-          />
-          <SingleLineInput
-            label="Single line text"
-            onChange={() => {}}
-            value="with values filled in"
-            type="text"
-          />
-          <SingleLineInput
-            label="Single line price"
-            onChange={() => {}}
-            value="100000000.00"
-            type="price"
-          />
-          <SingleLineInput
-            label="Single line date"
-            onChange={() => {}}
-            value="2003-05-13"
-            type="date"
-          />
-          <SingleLineInput
-            label="Single line password"
-            onChange={() => {}}
-            value="very secure password"
-            type="password"
-          />
-          <ParagraphInput
-            label="Paragraph"
-            value="Some sample text here"
-            onChange={() => {}}
-          />
-          <DropdownInput
-            label="Dropdown"
-            options={["hello", "yay"]}
-            value="Some option"
-            onChange={() => {}}
-          />
+          {[
+            <SingleLineInput onChange={() => {}} value="" type="text" />,
+            <SingleLineInput
+              label="Single line text"
+              onChange={() => {}}
+              value=""
+              type="text"
+            />,
+            <SingleLineInput
+              label="Single line text"
+              onChange={() => {}}
+              value="with values filled in"
+              type="text"
+            />,
+            <SingleLineInput
+              label="Single line price"
+              onChange={() => {}}
+              value="100000000.00"
+              type="price"
+            />,
+            <SingleLineInput
+              label="Single line date"
+              onChange={() => {}}
+              value="2003-05-13"
+              type="date"
+            />,
+            <SingleLineInput
+              label="Single line password"
+              onChange={() => {}}
+              value="very secure password"
+              type="password"
+            />,
+            <ParagraphInput
+              label="Paragraph"
+              value="Some sample text here"
+              onChange={() => {}}
+            />,
+            <DropdownInput
+              label="Dropdown"
+              options={["hello", "yay"]}
+              value="Some option"
+              onChange={() => {}}
+            />,
+          ].map((input) => {
+            return <div className="w-full px-4 pb-4">{input}</div>;
+          })}
         </ComponentSection>
+
+        <ComponentSection title="Form">
+          <div className="m-4">
+            <Form
+              fields={fields}
+              onSubmit={(e) => console.log(e)}
+              footer={
+                <div className="mt-6 w-full">
+                  <Button type="submit" className="w-full">
+                    Submit
+                  </Button>
+                </div>
+              }
+            />
+          </div>
+        </ComponentSection>
+
         <ComponentSection title="Person Detail">
           <PersonDetail
             personName="very cool name"
@@ -159,6 +224,7 @@ export default function ComponentShowcase() {
             ]}
           />
         </ComponentSection>
+
         <ComponentSection title="Task Card">
           <TaskCard
             title="Clean up my house"
