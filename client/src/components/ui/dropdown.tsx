@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { MarketDropdownIcon } from "./icons";
+import { DropdownIcon } from "./icons";
 
 // Change background colour and show border when onFocus
 // Uses border-opacity because adding border-2 shifts the content inside div
@@ -8,9 +8,6 @@ const selectedStyle =
   "border-opacity-100 border-penni-grey-border-light-mode bg-penni-main-shade2";
 const deselectedStyle =
   "border-penni-grey-border-light-mode bg-penni-background-light-mode";
-// Padding changes when onFocus as label size changes and children is rendered
-const expandedStyle = "px-4 justify-center";
-const collapsedStyle = "py-4 pl-4 pr-3";
 
 // Display only the label when not onFocus, otherwise display shrinked label and children
 const labelStyle =
@@ -28,33 +25,69 @@ type HTMLEventTargetElement =
   | HTMLTextAreaElement
   | HTMLSelectElement;
 
-interface DropdownInputProps {
+interface MarketDropdownProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
   label: string;
   options: string[];
 }
 
+interface DropdownButtonProps {
+  children: React.ReactNode;
+  id: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  style: string;
+  caretWidth: number; //px
+}
+
 interface DropdownMenuProps {
   menuId: string;
   options: string[];
-  label: string;
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
 }
 
-function DropdownMenu({ menuId, options, label, onChange }: DropdownMenuProps) {
-  const optionList = [label, ...options];
+export function DropdownButton({
+  id,
+  children,
+  onClick,
+  style,
+  caretWidth,
+}: DropdownButtonProps) {
+  return (
+    <button
+      id={id}
+      type="button"
+      className={style}
+      aria-haspopup={true}
+      aria-expanded={true}
+      onClick={onClick}
+    >
+      <div className="flex w-full items-center justify-between">
+        {children}
+
+        <div
+          className="flex items-center justify-end"
+          style={{ width: `${caretWidth}px` }}
+        >
+          <DropdownIcon strokeColour="penni-text-regular-light-mode" />
+        </div>
+      </div>
+    </button>
+  );
+}
+
+export function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
   return (
     <div className="relative">
-      <div className="h-auto w-36">
+      <div className="h-auto w-full">
         <ul
-          className="absolute left-0 z-10 mt-px flex w-36 origin-top-right flex-col items-start rounded-penni-card bg-penni-background-input-light-mode px-2 py-1 shadow-lg focus:outline-none"
+          className="absolute left-0 z-10 mt-px flex w-full origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-2 text-center shadow-lg focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby={menuId}
           tabIndex={-1}
         >
-          {optionList.map((option, index) => (
+          {options.map((option, index) => (
             <li
               key={index}
               value={option}
@@ -103,7 +136,7 @@ export function MarketDropdown({
   options,
   onChange,
   label,
-}: DropdownInputProps) {
+}: MarketDropdownProps) {
   const [menuId] = useState(uniqueId());
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
 
@@ -111,43 +144,34 @@ export function MarketDropdown({
     setExpanded(false);
     onChange(e);
   }
-
+  function handleOnClick() {
+    setExpanded(!isExpanded);
+  }
   const containerStyle =
-    `duration-50 flex flex-row h-9 w-36 items-center rounded-penni-border px-3  border transition-all ease-out` +
+    `duration-50 flex flex-row h-9 w-full items-center rounded-penni-border px-3  border transition-all ease-out` +
     ` ${isExpanded ? selectedStyle : deselectedStyle} `;
-
+  const optionList = [label, ...options];
   return (
-    <div className="relative">
-      <div className="w-auto">
-        <button
-          id={menuId}
-          type="button"
-          className={containerStyle}
-          aria-haspopup={true}
-          aria-expanded={true}
-          onClick={() => setExpanded(!isExpanded)}
-        >
-          <div className="flex w-full items-center justify-between">
-            {value === "" ? (
-              <label htmlFor={menuId} className={` ${labelStyle} text-left`}>
-                {label}
-              </label>
-            ) : (
-              <span className={`${valueStyle} text-left`}>{value}</span>
-            )}
-
-            <div className="flex w-2.5 items-center">
-              <MarketDropdownIcon className="w-full text-penni-text-regular-light-mode" />
-            </div>
-          </div>
-        </button>
-      </div>
+    <div className="relative w-36">
+      <DropdownButton
+        id={menuId}
+        style={containerStyle}
+        onClick={handleOnClick}
+        caretWidth={10}
+      >
+        {value === "" ? (
+          <label htmlFor={menuId} className={` ${labelStyle} text-left`}>
+            {label}
+          </label>
+        ) : (
+          <span className={`${valueStyle} text-left`}>{value}</span>
+        )}
+      </DropdownButton>
 
       {isExpanded && (
         <DropdownMenu
           menuId={menuId}
-          label={label}
-          options={options}
+          options={optionList}
           onChange={handleOnChange}
         />
       )}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import { DropdownButton, DropdownMenu } from "./dropdown";
 import { DropdownIcon } from "./icons";
 
 // Change background colour and show border when onFocus
@@ -80,7 +81,7 @@ function TextInputContainer({
   const selectedOrNotEmpty = isSelected || value !== "";
 
   const containerStyle =
-    `duration-50 m-4 flex flex-col rounded-penni-border border-2 hover:cursor-text` +
+    `duration-50  flex flex-col rounded-penni-border border-2 hover:cursor-text` +
     ` ${isSelected ? selectedStyle : deselectedStyle} ` +
     ` ${selectedOrNotEmpty ? expandedStyle : collapsedStyle} ` +
     ` ${multiline ? "h-36 overflow-y-auto" : `h-14 overflow-hidden`}`;
@@ -244,39 +245,39 @@ export function ParagraphInput({
   );
 }
 
-function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
-  return (
-    <div className="relative">
-      <div className="h-auto w-full">
-        <div
-          className="absolute left-0 right-0 z-10 -m-3 mx-4 flex origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby={menuId}
-          tabIndex={-1}
-        >
-          {options.map((option, index) => (
-            <button
-              value={option}
-              className={`${valueStyle} select-none rounded-penni-border px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive`}
-              role="menuitem"
-              tabIndex={-1}
-              key={index}
-              onClick={() => {
-                const dummyEvent = {
-                  target: { value: option },
-                } as React.ChangeEvent<HTMLEventTargetElement>;
-                onChange(dummyEvent);
-              }}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+// function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
+//   return (
+//     <div className="relative">
+//       <div className="h-auto w-full">
+//         <div
+//           className="absolute left-0 right-0 z-10 flex w-full origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
+//           role="menu"
+//           aria-orientation="vertical"
+//           aria-labelledby={menuId}
+//           tabIndex={-1}
+//         >
+//           {options.map((option, index) => (
+//             <button
+//               value={option}
+//               className={`${valueStyle} select-none rounded-penni-border px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive`}
+//               role="menuitem"
+//               tabIndex={-1}
+//               key={index}
+//               onClick={() => {
+//                 const dummyEvent = {
+//                   target: { value: option },
+//                 } as React.ChangeEvent<HTMLEventTargetElement>;
+//                 onChange(dummyEvent);
+//               }}
+//             >
+//               {option}
+//             </button>
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 /**
  * Input component with a list of options.
@@ -313,7 +314,9 @@ export function DropdownInput({
     setExpanded(false);
     onChange(e);
   }
-
+  function handleOnClick() {
+    setExpanded(!isExpanded);
+  }
   const containerStyle =
     `duration-50 flex flex-row h-14 w-full items-center rounded-penni-border px-4 border-2 transition-all ease-out` +
     ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
@@ -321,33 +324,26 @@ export function DropdownInput({
 
   return (
     <div className="relative h-auto w-full">
-      <div className="m-4 w-auto">
-        <button
-          id={menuId}
-          type="button"
-          className={containerStyle}
-          aria-haspopup={true}
-          aria-expanded={true}
-          onClick={() => setExpanded(!isExpanded)}
-        >
-          <div className="flex w-full flex-col items-start">
-            {label && (
-              <label
-                htmlFor={menuId}
-                className={`${value !== "" ? labelStyleSmall : labelStyleLarge} duration-50 text-left transition-all ease-out`}
-              >
-                {label}
-              </label>
-            )}
-            {value !== "" && (
-              <span className={`${valueStyle} text-left`}>{value}</span>
-            )}
-          </div>
-          <div className="ml-3 flex size-6 items-center justify-center">
-            <DropdownIcon />
-          </div>
-        </button>
-      </div>
+      <DropdownButton
+        id={menuId}
+        style={containerStyle}
+        caretWidth={24}
+        onClick={handleOnClick}
+      >
+        <div className="flex w-full flex-col items-start">
+          {label && (
+            <label
+              htmlFor={menuId}
+              className={`${value !== "" ? labelStyleSmall : labelStyleLarge} duration-50 text-left transition-all ease-out`}
+            >
+              {label}
+            </label>
+          )}
+          {value !== "" && (
+            <span className={`${valueStyle} text-left`}>{value}</span>
+          )}
+        </div>
+      </DropdownButton>
 
       {isExpanded && (
         <DropdownMenu
