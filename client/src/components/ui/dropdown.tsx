@@ -20,10 +20,7 @@ const valueStyle =
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
-type HTMLEventTargetElement =
-  | HTMLInputElement
-  | HTMLTextAreaElement
-  | HTMLSelectElement;
+type HTMLEventTargetElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface MarketDropdownProps {
   value: string;
