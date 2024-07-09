@@ -25,14 +25,17 @@ const Card: React.FC<CardProps> = ({ onClose, children }) => {
 
   return (
     isVisible && (
-      <div className="card-container">
-        <div className="card">
-          <button className="close-button" onClick={handleClose}>
-            ✖
-          </button>
-          {children}
+      <>
+        <div className="overlay" onClick={handleClose}></div>
+        <div className="card-container z-50">
+          <div className="card">
+            <button className="close-button" onClick={handleClose}>
+              ✖
+            </button>
+            {children}
+          </div>
         </div>
-      </div>
+      </>
     )
   );
 };
