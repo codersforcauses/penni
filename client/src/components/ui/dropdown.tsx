@@ -11,20 +11,18 @@ const deselectedStyle =
 
 // Display only the label when not onFocus, otherwise display shrinked label and children
 const labelStyle =
-  "body select-none hover:cursor-text h-full w-full text-penni-text-regular-light-mode";
+  "body select-none hover:cursor-pointer h-full w-full text-penni-text-regular-light-mode";
 
 // Style for value that user type in
 const valueStyle =
-  "body  h-full w-full resize-none bg-transparent text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
+  "body h-full w-full resize-none bg-transparent text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
 
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
-type HTMLEventTargetElement = HTMLInputElement | HTMLTextAreaElement;
-
 interface MarketDropdownProps {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
+  onChange: (e: React.ChangeEvent) => void;
   label: string;
   options: string[];
 }
@@ -40,7 +38,7 @@ interface DropdownButtonProps {
 interface DropdownMenuProps {
   menuId: string;
   options: string[];
-  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function DropdownButton({
@@ -94,7 +92,7 @@ export function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
               onClick={() =>
                 onChange({
                   target: { value: option },
-                } as React.ChangeEvent<HTMLEventTargetElement>)
+                } as React.ChangeEvent<HTMLInputElement>)
               }
             >
               {option}
@@ -137,7 +135,7 @@ export function MarketDropdown({
   const [menuId] = useState(uniqueId());
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
 
-  function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
+  function handleOnChange(e: React.ChangeEvent) {
     setExpanded(false);
     onChange(e);
   }
@@ -145,7 +143,7 @@ export function MarketDropdown({
     setExpanded(!isExpanded);
   }
   const containerStyle =
-    `duration-50 m-0 flex flex-row h-9 w-full items-center rounded-penni-border px-3  border transition-all ease-out` +
+    `duration-50 flex flex-row h-9 w-full items-center rounded-penni-border px-3  border transition-all ease-out` +
     ` ${isExpanded ? selectedStyle : deselectedStyle} `;
   const optionList = [label, ...options];
   return (

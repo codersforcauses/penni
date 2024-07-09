@@ -14,7 +14,7 @@ const collapsedStyle = "py-4 pl-4 pr-3";
 
 // Display only the label when not onFocus, otherwise display shrinked label and children
 const labelStyleLarge =
-  "callout select-none hover:cursor-text h-full w-full text-penni-text-secondary-light-mode";
+  "callout select-none h-full w-full text-penni-text-secondary-light-mode";
 const labelStyleSmall = "caption text-penni-text-secondary-light-mode";
 
 // Style for value that user type in
@@ -24,7 +24,7 @@ const valueStyle =
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
-type HTMLEventTargetElement = HTMLInputElement | HTMLTextAreaElement;
+type HTMLTextTargetElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface TextInputContainerProps {
   value: string;
@@ -40,20 +40,22 @@ interface TextInputContainerProps {
 // Shared by all input components
 interface InputProps {
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
   label?: string;
 }
 
 interface SingleLineInputProps extends InputProps {
   placeholder?: string;
+  onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
   type: "text" | "price" | "date" | "password";
 }
 
 interface ParagraphInputProps extends InputProps {
+  onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
   placeholder?: string;
 }
 
 interface DropdownInputProps extends InputProps {
+  onChange: (e: React.ChangeEvent) => void;
   options: string[];
 }
 
@@ -88,7 +90,7 @@ function TextInputContainer({
       {selectedOrNotEmpty && !label ? null : (
         <label
           htmlFor={id}
-          className={`${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
+          className={`hover:cursor-pointer ${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
         >
           {label ? label : placeholder}
         </label>
@@ -133,7 +135,7 @@ export function SingleLineInput({
   const [isSelected, setIsSelected] = useState(false);
   const [id] = useState(uniqueId());
 
-  function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
+  function handleOnChange(e: React.ChangeEvent<HTMLTextTargetElement>) {
     // Fix decimal places to 2 when clicking out of input
     if (type == "price" && e.target.value !== "") {
       const fixedValue = parseFloat(e.target.value).toFixed(2);
@@ -266,7 +268,7 @@ export function DropdownInput({
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
   const expandedOrNotEmpty = isExpanded || value !== "";
 
-  function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
+  function handleOnChange(e: React.ChangeEvent) {
     setExpanded(false);
     onChange(e);
   }
@@ -290,13 +292,15 @@ export function DropdownInput({
           {label && (
             <label
               htmlFor={menuId}
-              className={`${value !== "" ? labelStyleSmall : labelStyleLarge} duration-50 text-left transition-all ease-out`}
+              className={`${value !== "" ? labelStyleSmall : labelStyleLarge} duration-50 text-left transition-all ease-out hover:cursor-pointer`}
             >
               {label}
             </label>
           )}
           {value !== "" && (
-            <span className={`${valueStyle} text-left`}>{value}</span>
+            <span className={`hover:cursor-pointer ${valueStyle} text-left`}>
+              {value}
+            </span>
           )}
         </div>
       </DropdownButton>
