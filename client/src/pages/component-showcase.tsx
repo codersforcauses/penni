@@ -20,7 +20,7 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
-import TaskCard from "@/components/ui/TaskCard";
+import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
 
 function ComponentSection({
