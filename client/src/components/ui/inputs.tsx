@@ -277,7 +277,7 @@ export function DropdownInput({
     setExpanded(!isExpanded);
   }
   const containerStyle =
-    `duration-50 flex flex-row h-14 w-full items-center rounded-penni-border px-4 border-2 transition-all ease-out` +
+    `duration-50 m-0 flex flex-row h-14 w-full items-center rounded-penni-border px-4 border-2 transition-all ease-out` +
     ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
     ` ${expandedOrNotEmpty ? expandedStyle : collapsedStyle} `;
 

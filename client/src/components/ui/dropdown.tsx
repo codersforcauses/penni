@@ -148,7 +148,7 @@ export function MarketDropdown({
     setExpanded(!isExpanded);
   }
   const containerStyle =
-    `duration-50 flex flex-row h-9 w-full items-center rounded-penni-border px-3  border transition-all ease-out` +
+    `duration-50 m-0 flex flex-row h-9 w-full items-center rounded-penni-border px-3  border transition-all ease-out` +
     ` ${isExpanded ? selectedStyle : deselectedStyle} `;
   const optionList = [label, ...options];
   return (
