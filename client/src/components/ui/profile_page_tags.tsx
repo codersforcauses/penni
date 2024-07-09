@@ -22,7 +22,7 @@ const ProfileTag: React.FC<ProfileTagProps> = ({ icon, title, description, link,
     }
   };
 
-  return (
+  const Content = (
     <div className="relative flex flex-col bg-white">
       <div
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100"
@@ -49,6 +49,8 @@ const ProfileTag: React.FC<ProfileTagProps> = ({ icon, title, description, link,
       {isOpen && nestedContent && <div className="p-4">{nestedContent}</div>}
     </div>
   );
+
+  return link ? <Link href={link}>{Content}</Link> : Content;
 };
 
 export default ProfileTag;
