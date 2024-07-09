@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { DropdownButton, DropdownMenu } from "./dropdown";
-import { DropdownIcon } from "./icons";
 
 // Change background colour and show border when onFocus
 // Uses border-opacity because adding border-2 shifts the content inside div
@@ -59,12 +58,6 @@ interface ParagraphInputProps extends InputProps {
 
 interface DropdownInputProps extends InputProps {
   options: string[];
-}
-
-interface DropdownMenuProps {
-  menuId: string;
-  options: string[];
-  onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
 }
 
 // Container for single-line and paragraph inputs, handles onFocus and onBlur events
@@ -244,40 +237,6 @@ export function ParagraphInput({
     </TextInputContainer>
   );
 }
-
-// function DropdownMenu({ menuId, options, onChange }: DropdownMenuProps) {
-//   return (
-//     <div className="relative">
-//       <div className="h-auto w-full">
-//         <div
-//           className="absolute left-0 right-0 z-10 flex w-full origin-top-right flex-col rounded-penni-card bg-penni-background-input-light-mode px-2 py-3 shadow-lg focus:outline-none"
-//           role="menu"
-//           aria-orientation="vertical"
-//           aria-labelledby={menuId}
-//           tabIndex={-1}
-//         >
-//           {options.map((option, index) => (
-//             <button
-//               value={option}
-//               className={`${valueStyle} select-none rounded-penni-border px-4 py-3 hover:cursor-pointer hover:bg-penni-grey-inactive`}
-//               role="menuitem"
-//               tabIndex={-1}
-//               key={index}
-//               onClick={() => {
-//                 const dummyEvent = {
-//                   target: { value: option },
-//                 } as React.ChangeEvent<HTMLEventTargetElement>;
-//                 onChange(dummyEvent);
-//               }}
-//             >
-//               {option}
-//             </button>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
 
 /**
  * Input component with a list of options.
