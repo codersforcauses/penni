@@ -265,28 +265,18 @@ export function DropdownInput({
   label,
 }: DropdownInputProps) {
   const [menuId] = useState(uniqueId());
-  const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
-  const expandedOrNotEmpty = isExpanded || value !== "";
-
-  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setExpanded(false);
-    onChange(e);
-  }
-  function handleOnClick() {
-    setExpanded(!isExpanded);
-  }
-  const containerStyle =
-    `duration-50 m-0 flex flex-row h-14 w-full items-center rounded-penni-border px-4 border-2 transition-all ease-out` +
-    ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
-    ` ${expandedOrNotEmpty ? expandedStyle : collapsedStyle} `;
+  const style = "h-14 px-4";
 
   return (
     <div className="relative h-auto w-full">
       <DropdownButton
-        id={menuId}
-        style={containerStyle}
+        menuId={menuId}
+        buttonStyle={style}
         caretWidth={24}
-        onClick={handleOnClick}
+        onChange={onChange}
+        selectedStyle={selectedStyle}
+        deselectedStyle={deselectedStyle}
+        options={options}
       >
         <div className="flex w-full flex-col items-start">
           {label && (
@@ -304,14 +294,6 @@ export function DropdownInput({
           )}
         </div>
       </DropdownButton>
-
-      {isExpanded && (
-        <DropdownMenu
-          menuId={menuId}
-          options={options}
-          onChange={handleOnChange}
-        />
-      )}
     </div>
   );
 }
