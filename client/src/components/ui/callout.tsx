@@ -12,7 +12,10 @@ interface GenericCalloutProps extends CalloutProps {
 
 function GenericCallout({ text, colour, onClick }: GenericCalloutProps) {
   return (
-    <div className={onClick ? "hover:cursor-pointer" : ""} onClick={onClick}>
+    <div
+      className={`px-4 py-3 ${onClick ? "hover:cursor-pointer" : ""}`}
+      onClick={onClick}
+    >
       <div
         className={`flex h-14 w-full flex-row items-center rounded-penni-border bg-${colour} bg-opacity-5 p-4`}
       >
