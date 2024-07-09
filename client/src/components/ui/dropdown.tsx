@@ -22,7 +22,7 @@ const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
 interface MarketDropdownProps {
   value: string;
-  onChange: (e: React.ChangeEvent) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
   options: string[];
 }
@@ -135,7 +135,7 @@ export function MarketDropdown({
   const [menuId] = useState(uniqueId());
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
 
-  function handleOnChange(e: React.ChangeEvent) {
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     setExpanded(false);
     onChange(e);
   }

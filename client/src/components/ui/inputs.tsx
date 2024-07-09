@@ -55,7 +55,7 @@ interface ParagraphInputProps extends InputProps {
 }
 
 interface DropdownInputProps extends InputProps {
-  onChange: (e: React.ChangeEvent) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options: string[];
 }
 
@@ -268,7 +268,7 @@ export function DropdownInput({
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
   const expandedOrNotEmpty = isExpanded || value !== "";
 
-  function handleOnChange(e: React.ChangeEvent) {
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     setExpanded(false);
     onChange(e);
   }
