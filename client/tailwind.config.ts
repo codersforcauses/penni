@@ -70,6 +70,7 @@ const config = {
           },
           grey: {
             inactive: "#B6BABC",
+            finished: "#F4F4F4",
             "border-light-mode": "#E7E8E9",
             "border-dark-mode": "#B6BABC",
           },
@@ -83,6 +84,8 @@ const config = {
             "dark-mode": "#00040C",
           },
           text: {
+            body: "#49556B", // The color of the placeholder text in the input field
+            finish: "#BDBDBD", // when submitted
             "regular-light-mode": "#0B1920",
             "regular-dark-mode": "#FAFAFA",
             "secondary-light-mode": "#485358",
@@ -100,32 +103,9 @@ const config = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
       },
       borderWidth: {
+        1: "calc(var(--borderWidth) - 1px)",
         2: "var(--borderWidth)",
       },
       borderRadius: {
@@ -135,6 +115,7 @@ const config = {
         "penni-border": "8px",
         "penni-card": "8px",
         "penni-sheet": "8px",
+        "penni-special": "100px", // for small button
       },
       keyframes: {
         "accordion-down": {
