@@ -5,7 +5,7 @@ import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
-import SplashScreen from "../components/ui/SplashScreen";
+import SplashScreen from "../components/ui/splash-screen";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -44,6 +44,8 @@ export default function Home() {
       <p>
         Response from server: <span>{data as string}</span>
       </p>
+      <br />
+      <h1> HELLO </h1>
     </main>
   );
 }
