@@ -22,7 +22,6 @@ const uniqueId = () => `${Date.now()}-${Math.random()}`;
 interface MarketDropdownProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  label: string;
   options: string[];
 }
 
@@ -35,7 +34,7 @@ interface DropdownMenuProps {
 interface DropdownButtonProps extends DropdownMenuProps {
   children: React.ReactNode;
   buttonStyle: string; // only height and padding tailwind style, e.g. "h-14 px-4"
-  caretWidth: number; //px
+  iconSize: number; //px
   selectedStyle: string;
   deselectedStyle: string;
 }
@@ -79,11 +78,17 @@ export function DropdownButton({
   onChange,
   menuId,
   options,
-  caretWidth,
+  iconSize,
   selectedStyle,
   deselectedStyle,
 }: DropdownButtonProps) {
   const [isExpanded, setExpanded] = useState(false);
+
+  const containerStyle =
+    `duration-50 m-0 flex flex-row w-full items-center rounded-penni-border border-2 transition-all ease-out` +
+    ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
+    `${buttonStyle}`;
+
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     setExpanded(false);
     onChange(e);
@@ -96,10 +101,7 @@ export function DropdownButton({
       setExpanded(false);
     }
   }
-  const containerStyle =
-    `duration-50 m-0 flex flex-row w-full items-center rounded-penni-border border-2 transition-all ease-out` +
-    ` ${isExpanded ? selectedStyle : deselectedStyle} ` +
-    `${buttonStyle}`;
+
   return (
     <div onBlur={handleOnBlur} tabIndex={-1}>
       <button
@@ -114,7 +116,7 @@ export function DropdownButton({
           {children}
           <div
             className="flex items-center justify-end"
-            style={{ width: `${caretWidth}px` }}
+            style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
           >
             <DropdownIcon strokeColour="penni-text-regular-light-mode" />
           </div>
@@ -157,30 +159,25 @@ export function MarketDropdown({
   value,
   options,
   onChange,
-  label,
 }: MarketDropdownProps) {
+  if (!options.includes(value))
+    throw new Error("Default value must be in options list");
+
   const [menuId] = useState(uniqueId());
   const buttonStyle = "h-9 px-3 ";
-  const optionList = [label, ...options];
 
   return (
     <div className="relative h-auto w-36">
       <DropdownButton
-        caretWidth={10}
+        iconSize={10}
         menuId={menuId}
-        options={optionList}
+        options={options}
         onChange={onChange}
         buttonStyle={buttonStyle}
         selectedStyle={selectedStyle}
         deselectedStyle={deselectedStyle}
       >
-        {value === "" ? (
-          <label htmlFor={menuId} className={` ${labelStyle} text-left`}>
-            {label}
-          </label>
-        ) : (
-          <span className={`${valueStyle} text-left`}>{value}</span>
-        )}
+        <span className={`${valueStyle} text-left`}>{value}</span>
       </DropdownButton>
     </div>
   );

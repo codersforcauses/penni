@@ -43,7 +43,7 @@ function ComponentSection({
 
 export default function ComponentShowcase() {
   const [selectedValue, setSelectedValue] = useState("");
-  const [selectedDropdown, setSelectedDropdown] = useState("");
+  const [selectedDropdown, setSelectedDropdown] = useState("HTML");
   return (
     <div className="flex h-full w-screen items-center justify-center bg-penni-background-dark-mode">
       <div className="m-0 h-auto w-[375px] bg-penni-background-light-mode">
@@ -204,7 +204,6 @@ export default function ComponentShowcase() {
             value={selectedDropdown}
             options={["C", "Python", "HTML"]}
             onChange={(e) => setSelectedDropdown(e.target.value)}
-            label="All Language"
           />
         </ComponentSection>
       </div>

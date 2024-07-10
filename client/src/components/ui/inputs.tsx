@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { DropdownButton, DropdownMenu } from "./dropdown";
+import { DropdownButton } from "./dropdown";
 
 // Change background colour and show border when onFocus
 // Uses border-opacity because adding border-2 shifts the content inside div
@@ -85,7 +85,7 @@ function TextInputContainer({
         setIsSelected(true);
       }}
       onBlur={() => setIsSelected(false)}
-      className={`${containerStyle} ${label ? "transition-all ease-out" : null}`}
+      className={`${containerStyle} ${label ? "transition-all ease-out" : ""}`}
     >
       {selectedOrNotEmpty && !label ? null : (
         <label
@@ -218,7 +218,7 @@ export function ParagraphInput({
     <TextInputContainer
       value={value}
       label={label}
-      placeholder={placeholder ? placeholder : ""}
+      placeholder={placeholder ?? ""}
       id={id}
       multiline={true}
       isSelected={isSelected}
@@ -272,7 +272,7 @@ export function DropdownInput({
       <DropdownButton
         menuId={menuId}
         buttonStyle={style}
-        caretWidth={24}
+        iconSize={24}
         onChange={onChange}
         selectedStyle={selectedStyle}
         deselectedStyle={deselectedStyle}
