@@ -8,7 +8,10 @@ interface EmptyListDisplayProp {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-export default function EmptyListDisplay({ type }: EmptyListDisplayProp) {
+export default function EmptyListDisplay({
+  type,
+  onClick,
+}: EmptyListDisplayProp) {
   return (
     <div className="relative flex flex-col items-center gap-5 px-4">
       <Image
