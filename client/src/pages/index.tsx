@@ -82,7 +82,7 @@ export default function Home() {
     );
   }
 
-   //when you do the replace for this main page, please be careful about the FADE IN effect here 
+  //when you do the replace for this main page, please be careful about the FADE IN effect here
   return (
     <main
       style={{ opacity: mainContentOpacity }} // Apply dynamic opacity to main content
