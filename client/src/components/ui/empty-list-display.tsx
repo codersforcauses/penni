@@ -23,7 +23,10 @@ export default function EmptyListDisplay({
       <p className="body">
         You do not have any {type === "poster" ? "orders" : "tasks"} yet
       </p>
-      <Button className="headline h-14 w-full">
+      <Button
+        className="headline h-14 w-full"
+        {...(onClick ? { onClick } : {})}
+      >
         {type === "poster" ? "Create a Task" : "Start Browsing"}
       </Button>
     </div>
