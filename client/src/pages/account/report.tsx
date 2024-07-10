@@ -36,10 +36,14 @@ export default function Report() {
     <div id="report" className="">
       <div className="flex flex-row items-center justify-center">
         {/* <Image src={} className="mr-auto"/> */}
-        <h2 className="text-center">Report a problem</h2>
+        <h2 className="text-center p-5 pt-6 body-medium">Report a problem</h2>
+      </div>
+      <div className="h-0.5 pt-3 bg-penni-background-input-light-mode">
       </div>
       <form onSubmit={handleSubmit}>
         <WriteIn imgUpload={true} onFormDataChange={handleFormDataChange} />
+        <div className="h-0.5 pt-10 bg-penni-background-input-light-mode">
+        </div>
         <div className="mt-4 flex items-center justify-center rounded-t-md">
           <Button
             type="submit"
