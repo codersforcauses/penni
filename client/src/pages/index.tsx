@@ -5,7 +5,7 @@ import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
-import SplashScreen from "../components/ui/splash-screen";
+import SplashScreen from "../components/ui/SplashScreen";
 
 const fontSans = FontSans({
   subsets: ["latin"],
