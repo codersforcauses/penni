@@ -182,19 +182,7 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Form">
-          <div className="m-4">
-            <Form
-              fields={fields}
-              onSubmit={(e) => console.log(e)}
-              footer={
-                <div className="mt-6 w-full">
-                  <Button type="submit" className="w-full">
-                    Submit
-                  </Button>
-                </div>
-              }
-            />
-          </div>
+          <div className="m-4"></div>
         </ComponentSection>
 
         <ComponentSection title="Person Detail">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Children, isValidElement, ReactElement,useState } from "react";
 
 import {
   DropdownInput,
@@ -31,8 +31,7 @@ export interface FieldData {
 
 // Each field is returned by form as a name-value pair
 interface FormData {
-  name: string;
-  value: string;
+  [name: string]: string;
 }
 
 /**
@@ -56,139 +55,161 @@ interface FormData {
  *
  * @returns Rendered form component with inputs, title and subtitle.
  *
- * @example
- * const fields: FieldData[] = [
- *   {
- *     title: "Player details",
- *     subtitle: "pspsps give us your data pspsps",
- *     inputs: [
- *         {
- *           label: "Your name",
- *           placeholder: "Extremely cool and epic gamer xx00xx",
- *           type: "text",
- *         },
- *         {
- *           label: "Why did you chose to join us?",
- *           placeholder: "Ever since I was little, I've always been passionate about not starving to death.",
- *           type: "paragraph",
- *         },
- *     ],
- *   },
- *   {
- *     title: "How much $$$ do you have???",
- *     inputs: [
- *       {
- *         value: "0",
- *         type: "price",
- *       },
- *       {
- *         label: "Will you donate to us?",
- *         type: "dropdown",
- *         value: "Yes",
- *         options: ["Yes", "Yes", "Yes"],
- *       },
- *     ],
- *   },
- * ];
- *
- * <Form
- *   fields={fields}
- *   onSubmit={(e) => console.log(e)}
- *   footer={<button type="submit">Submit</button>}
- * />
  */
+
+// }: {
+//   fields: FieldData[];
+//   onSubmit: (vals: FormData[]) => void;
+//   header?: React.ReactNode;
+//   footer?: React.ReactNode;
+// }) {
+//   const values: { name?: string; value: string }[] = [];
+//   const setValues: React.Dispatch<React.SetStateAction<string>>[] = [];
+//   for (const field of fields) {
+//     // Create state for each input
+//     for (const input of field.inputs) {
+//       const [value, setValue] = useState(input.value || "");
+//       values.push({ name: input.name, value: value });
+//       setValues.push(setValue);
+//     }
+//   }
+//   let runningIndex = 0; // index for values and setValues
+
+//   function formAction(e: React.FormEvent) {
+//     e.preventDefault();
+//     onSubmit(
+//       values.filter((item): item is FormData => item.name !== undefined),
+//     );
+//   }
+
+//   return (
+//     <form onSubmit={formAction}>
+//       {header && header}
+//       {fields.map((field, fieldIdx) => {
+//         return (
+//           <div
+//             key={fieldIdx}
+//             className={fieldIdx + 1 === fields.length ? "" : "pb-6"}
+//           >
+//             {field.title && (
+//               <div className="w-full pb-2">
+//                 <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+//                   {field.title}
+//                 </h1>
+//               </div>
+//             )}
+//             {field.subtitle && (
+//               <div className="w-full pb-4">
+//                 <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+//                   {field.subtitle}
+//                 </h2>
+//               </div>
+//             )}
+
+//             {field.inputs.map((input, inputIdx) => {
+//               const i = runningIndex++;
+//               const props = {
+//                 value: values[i].value,
+//                 label: input.label,
+//                 placeholder: input.placeholder,
+//                 onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+//                   setValues[i](e.target.value);
+//                 },
+//               };
+//               let inputComponent;
+//               if (input.type === "paragraph") {
+//                 inputComponent = <ParagraphInput {...props} />;
+//               } else if (input.type === "dropdown") {
+//                 inputComponent = (
+//                   <DropdownInput
+//                     {...props}
+//                     options={(input as DropdownData).options}
+//                   />
+//                 );
+//               } else {
+//                 inputComponent = (
+//                   <SingleLineInput {...props} type={input.type} />
+//                 );
+//               }
+//               return (
+//                 <div
+//                   key={i}
+//                   className={`h-auto w-full ${inputIdx + 1 == field.inputs.length ? "" : "pb-4"}`}
+//                 >
+//                   {inputComponent}
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         );
+//       })}
+//       {footer && footer}
+//     </form>
+//   );
+// }
+
+// title-input: 8px
+// title-subtitle: 8px
+// input-input: 16px
+// button-button: 16px
+// subtitle-input: 16 px
+// input-button: 24px
+// input-title: 24px
+
 export function Form({
-  fields,
+  children,
   onSubmit,
-  header,
-  footer,
 }: {
-  fields: FieldData[];
-  onSubmit: (vals: FormData[]) => void;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
+  children: React.ReactNode;
+  onSubmit: (vals: FormData) => void;
 }) {
-  const values: { name?: string; value: string }[] = [];
+  const values: FormData = {};
   const setValues: React.Dispatch<React.SetStateAction<string>>[] = [];
-  for (const field of fields) {
-    // Create state for each input
-    for (const input of field.inputs) {
-      const [value, setValue] = useState(input.value || "");
-      values.push({ name: input.name, value: value });
-      setValues.push(setValue);
-    }
-  }
-  let runningIndex = 0; // index for values and setValues
+  Children.forEach(children, (child) => {
+    // Validation, require unique name for each named input
+    if (!isValidElement(child) || child.props["name"]) return;
+    if (
+      !(
+        child.type === SingleLineInput ||
+        child.type === ParagraphInput ||
+        child.type === DropdownInput
+      )
+    )
+      return;
+    if (child.props.name in values)
+      throw new Error(`Duplicate input name: ${child.props.name}`);
+
+    const [val, setVal] = useState(child.props.value || "");
+    values[child.props.name] = val;
+    setValues.push(setVal);
+  });
+  const childArray = Children.toArray(children);
 
   function formAction(e: React.FormEvent) {
     e.preventDefault();
-    onSubmit(
-      values.filter((item): item is FormData => item.name !== undefined),
-    );
+    onSubmit(values);
   }
 
+  function Spacer({ height }: { height: string }) {
+    return <div className={`${height} w-full`} />;
+  }
+  // for each element, wrap in div
+  // if header, w-full
   return (
     <form onSubmit={formAction}>
-      {header && header}
-      {fields.map((field, fieldIdx) => {
-        return (
-          <div
-            key={fieldIdx}
-            className={fieldIdx + 1 === fields.length ? "" : "pb-6"}
-          >
-            {field.title && (
-              <div className="w-full pb-2">
-                <h1 className="body-medium w-full text-penni-text-regular-light-mode">
-                  {field.title}
-                </h1>
-              </div>
-            )}
-            {field.subtitle && (
-              <div className="w-full pb-4">
-                <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
-                  {field.subtitle}
-                </h2>
-              </div>
-            )}
+      {childArray.map((child, idx) => {
+        if (!isValidElement(child)) return child;
+        let spacing = "";
+        if (!isValidElement(childArray[idx + 1])) spacing = "pb-0"; // undefined
 
-            {field.inputs.map((input, inputIdx) => {
-              const i = runningIndex++;
-              const props = {
-                value: values[i].value,
-                label: input.label,
-                placeholder: input.placeholder,
-                onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => {
-                  setValues[i](e.target.value);
-                },
-              };
-              let inputComponent;
-              if (input.type === "paragraph") {
-                inputComponent = <ParagraphInput {...props} />;
-              } else if (input.type === "dropdown") {
-                inputComponent = (
-                  <DropdownInput
-                    {...props}
-                    options={(input as DropdownData).options}
-                  />
-                );
-              } else {
-                inputComponent = (
-                  <SingleLineInput {...props} type={input.type} />
-                );
-              }
-              return (
-                <div
-                  key={i}
-                  className={`h-auto w-full ${inputIdx + 1 == field.inputs.length ? "" : "pb-4"}`}
-                >
-                  {inputComponent}
-                </div>
-              );
-            })}
-          </div>
-        );
+        switch (child.type) {
+          case SingleLineInput || ParagraphInput || DropdownInput:
+          // width = 8 if next subtitle, 24 if button or title, else 0
+          case "h1":
+          case "h2":
+          case "button":
+        }
       })}
-      {footer && footer}
     </form>
   );
 }
