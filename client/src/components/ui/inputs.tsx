@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 import { DropdownIcon } from "./icons";
 
@@ -24,10 +24,7 @@ const valueStyle =
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
-export type HTMLEventTargetElement =
-  | HTMLInputElement
-  | HTMLTextAreaElement
-  | HTMLSelectElement;
+export type HTMLEventTargetElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface TextInputContainerProps {
   value: string;
@@ -40,12 +37,18 @@ interface TextInputContainerProps {
   children?: React.ReactNode;
 }
 
-// Shared by all input components
+// Shared by all input components, optional value and onChange for use in <Form>
 interface InputProps {
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
+  label?: string;
+  name?: string; // Only used by <Form>, omitted in Input elements
+}
+interface InputContextType {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => void;
-  label?: string;
 }
+export const InputContext = createContext<InputContextType | null>(null);
 
 interface SingleLineInputProps extends InputProps {
   placeholder?: string;
@@ -141,18 +144,22 @@ export function SingleLineInput({
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
   const [id] = useState(uniqueId());
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
     // Fix decimal places to 2 when clicking out of input
     if (type == "price" && e.target.value !== "") {
       const fixedValue = parseFloat(e.target.value).toFixed(2);
-      onChange({ ...e, target: { ...e.target, value: fixedValue } });
+      // still complains that onChange is possibly undefined for some reason
+      onChange?.({ ...e, target: { ...e.target, value: fixedValue } });
       // Fix year to length 4
     } else if (type == "date" && e.target.value.length > 10) {
       const parts = e.target.value.split("-");
       if (parts[0].length !== 4) {
         const correctedYear = parts[0].slice(0, 4);
-        onChange({
+        onChange?.({
           ...e,
           target: {
             ...e.target,
@@ -220,6 +227,9 @@ export function ParagraphInput({
 }: ParagraphInputProps) {
   const [isSelected, setIsSelected] = useState(false);
   const [id] = useState(uniqueId());
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   return (
     <TextInputContainer
@@ -308,10 +318,13 @@ export function DropdownInput({
   const [menuId] = useState(uniqueId());
   const [isExpanded, setExpanded] = useState(false); // isSelect in text inputs
   const expandedOrNotEmpty = isExpanded || value !== "";
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   function handleOnChange(e: React.ChangeEvent<HTMLEventTargetElement>) {
     setExpanded(false);
-    onChange(e);
+    onChange?.(e);
   }
 
   const containerStyle =
