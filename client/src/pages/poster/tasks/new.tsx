@@ -1,21 +1,24 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
-import { Button } from "../button";
+import { Button } from "@/components/ui/button";
 
-export default function NewTask() {
+export default function New() {
   const backImg = "/back.svg";
   return (
     <div>
       <div className="flex flex-col items-center">
         <div className="fixed top-5 mt-3 flex h-12 w-screen justify-center bg-gray-300">
-          <Image
-            className="absolute left-10 top-2"
-            src={backImg}
-            alt="back"
-            width={30}
-            height={30}
-          />
+          <Link href="/poster/tasks/create">
+            <Image
+              className="absolute left-10 top-2"
+              src={backImg}
+              alt="back"
+              width={30}
+              height={30}
+            />
+          </Link>
           <h1 className="absolute top-2 text-center font-mono text-2xl font-bold">
             New Task
           </h1>
