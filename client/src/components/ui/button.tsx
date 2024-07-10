@@ -9,13 +9,13 @@ const hoverStyles =
 // rounded-lg corresponds to 8px border radius
 // added hover variant
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 font-sans",
+  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
         default: `bg-penni-main text-white headline rounded-lg ${hoverStyles}`, // Default blue
         link: `bg-white text-penni-main headline rounded-lg`,
-        inactive: `bg-penni-grey-inactive text-white text-opacity-50 headline rounded-lg`,
+        inactive: `bg-penni-grey-inactive text-white text-opacity-50 headline rounded-lg disabled:opacity-100`,
         floating: `bg-penni-main text-white subheadline-medium rounded-penni-special`,
         pay: `bg-penni-main text-white subheadline rounded-penni-special`,
         finish: `bg-penni-grey-finished text-penni-text-finish body-medium rounded-penni-special`,
@@ -23,13 +23,13 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 px-4 py-2",
-        penni: "w-[343px] h-[54px]", // Penni Default Size
-        sm: "w-[132px] h-[38px]",
+        penni: "w-full h-14", // Penni Default Size
+        sm: "w-32 h-10",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
-        floating: "w-[120px] h-[40px]",
-        pay: "w-[58px] h-[24px]",
-        finish: "w-[335px] h-[54px]",
+        floating: "w-32 h-10",
+        pay: "w-14 h-6",
+        finish: "w-full h-14",
       },
     },
     defaultVariants: {
