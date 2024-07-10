@@ -9,6 +9,7 @@ import {
   WarningCallout,
 } from "@/components/ui/callout";
 import { MarketDropdown } from "@/components/ui/dropdown";
+import EmptyListDisplay from "@/components/ui/empty-list-display";
 import {
   DropdownIcon,
   EditIcon,
@@ -173,8 +174,19 @@ export default function ComponentShowcase() {
             duration="4"
             estimatePrice="300"
             myOfferPrice="250"
-            state="BIDDING"
+            state="ONGOING"
             priceType="Estimated Price"
+          />
+          <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="COMPLETED"
+            priceType="My Offer"
           />
           <TaskCard
             title="Walking my dog"
@@ -188,6 +200,17 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="EXPIRED"
+            priceType="My Offer"
+          />
+          <TaskCard
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -195,16 +218,16 @@ export default function ComponentShowcase() {
             duration="5"
             estimatePrice="400"
             myOfferPrice="400"
-            state="EXPIRED"
             priceType="My Offer"
           />
         </ComponentSection>
-        <ComponentSection title="Bidder-side Market">
+        <ComponentSection title="Bidder-side">
           <MarketDropdown
             value={selectedDropdown}
             options={["C", "Python", "HTML"]}
             onChange={(e) => setSelectedDropdown(e.target.value)}
           />
+          <EmptyListDisplay type="poster" />
         </ComponentSection>
       </div>
     </div>
