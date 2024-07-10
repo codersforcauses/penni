@@ -1,4 +1,10 @@
-import { Children, isValidElement, ReactElement, useState } from "react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  ReactElement,
+  useState,
+} from "react";
 
 import { Button } from "./button";
 import {
@@ -34,7 +40,8 @@ interface FormData {
  * @param props.children - list of fields to render. Input components' states are
  *     automatically managed by the form component.
  * @param props.onSubmit - function to call when form is submitted. The function
- *     will receive a dictionary of input names and values.
+ *     will receive a dictionary of input names and values. Not called if any
+ *     required field is empty.
  * @param props.className - optional class name to apply to the form
  *
  * @returns Rendered form component.
@@ -44,6 +51,7 @@ interface FormData {
  *   <h1>Player details</h1>
  *   <h2>pspsps give us your data pspsps</h2>
  *   <SingleLineInput name="playerName"  // value and setValue not needed
+ *     required={true}   // onSubmit will not run if required field is empty
  *     label="Your Name pls" type="text"
  *   />
  *   <ParagraphInput name="PlayerReason" label="Why did you chose to join us?"
@@ -66,8 +74,9 @@ export function Form({ children, onSubmit, className }: FormProps) {
     );
   }
 
-  const values: { name?: string; value: string }[] = [];
+  const values: { name?: string; value: string; required: boolean }[] = [];
   const setValues: React.Dispatch<React.SetStateAction<string>>[] = [];
+
   // Populate values and setValues
   Children.forEach(children, (child) => {
     if (!isValidElement(child) || !isInputComponent(child)) return;
@@ -79,15 +88,23 @@ export function Form({ children, onSubmit, className }: FormProps) {
       throw new Error(`Duplicate input name: ${child.props.name}`);
 
     const [val, setVal] = useState(child.props.value ?? "");
-    values.push({ name: child.props.name, value: val });
+    values.push({
+      name: child.props.name,
+      value: val,
+      required: child.props.required,
+    });
     setValues.push(setVal);
   });
 
   const childArray = Children.toArray(children); // get array so can check next item arr[idx + 1]
+  const filledAllRequired = values.every((item) => {
+    return item.required ? item.value : true;
+  });
   let inputIdx = 0; // Children are not all input components, so need to keep track of input index
 
   function formAction(e: React.FormEvent) {
     e.preventDefault();
+
     const formValues: FormData = {};
     values.forEach((nameVal) => {
       if (nameVal.name) formValues[nameVal.name] = nameVal.value;
@@ -128,7 +145,14 @@ export function Form({ children, onSubmit, className }: FormProps) {
         // no spacing, can't put in mapSpacing, check should be performed outside
         if (!isValidElement(child)) return child;
 
+        if (child.type == Button && !filledAllRequired) {
+          child = (
+            <Button variant="inactive" disabled={true} {...child.props} />
+          );
+        }
+
         let spacing = mapSpacing({ child, idx });
+
         if (!isInputComponent(child))
           return (
             <div key={idx} className={`w-full ${spacing}`}>

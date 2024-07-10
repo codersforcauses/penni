@@ -42,6 +42,7 @@ interface InputProps {
   value?: string;
   label?: string;
   name?: string; // Only used by <Form>, omitted in Input elements
+  required?: boolean; // Only used by <Form>, omitted in Input elements
 }
 interface InputContextType {
   value: string;
@@ -97,7 +98,7 @@ function TextInputContainer({
       {selectedOrNotEmpty && !label ? null : (
         <label
           htmlFor={id}
-          className={`hover:cursor-pointer ${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
+          className={`hover:cursor-text ${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
         >
           {label ? label : placeholder}
         </label>

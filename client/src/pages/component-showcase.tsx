@@ -162,6 +162,7 @@ export default function ComponentShowcase() {
             </h2>
             <SingleLineInput
               name="playerName"
+              required={true}
               label="Your Name pls"
               type="text"
             />
