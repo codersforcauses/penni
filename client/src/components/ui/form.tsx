@@ -1,5 +1,6 @@
 import { Children, isValidElement, ReactElement, useState } from "react";
 
+import { Button } from "./button";
 import {
   DropdownInput,
   HTMLEventTargetElement,
@@ -24,7 +25,7 @@ interface FormData {
  *
  * Form creates new `useState()` variables and setters for each input field
  * and renders spacing based on the type of elements before and after it. Currently,
- * only spacing for `h1`, `h2`, `button`, `SingleLineInput`, `ParagraphInput`, and
+ * only spacing for `h1`, `h2`, `Button`, `SingleLineInput`, `ParagraphInput`, and
  * `DropdownInput` is supported.
  *
  * **NOTE: Only inputs with a `name` attribute are included in the form data**
@@ -37,6 +38,24 @@ interface FormData {
  * @param props.className - optional class name to apply to the form
  *
  * @returns Rendered form component.
+ *
+ * @example
+ * <Form className="m-4" onSubmit={(dict) => {console.log(dict);}}>
+ *   <h1>Player details</h1>
+ *   <h2>pspsps give us your data pspsps</h2>
+ *   <SingleLineInput name="playerName"  // value and setValue not needed
+ *     label="Your Name pls" type="text"
+ *   />
+ *   <ParagraphInput name="PlayerReason" label="Why did you chose to join us?"
+ *     placeholder="Ever since I was little, I've always been passionate about not starving to death."
+ *   />
+ *   <DropdownInput // `name` not supplied so this input is ignored on submission
+ *     value="Yes"
+ *     options={["Yes", "Yes", "Yes"]}
+ *   />
+ *   <Button className="w-full" variant={"outline"} type="button">Cancel</Button>
+ *   <Button className="w-full" type="submit">Submit</Button>
+ * </Form>
  */
 export function Form({ children, onSubmit, className }: FormProps) {
   function isInputComponent(child: ReactElement) {
@@ -53,7 +72,10 @@ export function Form({ children, onSubmit, className }: FormProps) {
   Children.forEach(children, (child) => {
     if (!isValidElement(child) || !isInputComponent(child)) return;
 
-    if (child.props.name ?? child.props.name in values)
+    if (
+      child.props.name &&
+      values.find((item) => item.name === child.props.name)
+    )
       throw new Error(`Duplicate input name: ${child.props.name}`);
 
     const [val, setVal] = useState(child.props.value ?? "");
@@ -77,13 +99,17 @@ export function Form({ children, onSubmit, className }: FormProps) {
   function mapSpacing({ child, idx }: { child: ReactElement; idx: number }) {
     if (idx + 1 == childArray.length || !isValidElement(childArray[idx + 1]))
       return "pb-0";
-
     const nextElement = childArray[idx + 1] as ReactElement;
 
-    if (isInputComponent(child) && child.type != nextElement.type) {
+    if (isInputComponent(child)) {
+      if (isInputComponent(nextElement)) return "pb-4";
       // h1 indicate starting a new section, button indicate end of form
       // grouped into 2 if statements for readability
-      if (nextElement.type == "h1" || nextElement.type == "button")
+      if (
+        nextElement.type == "h1" ||
+        nextElement.type == "h2" ||
+        nextElement.type == Button
+      )
         return "pb-6";
     }
     switch (child.type) {

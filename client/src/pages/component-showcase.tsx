@@ -6,7 +6,7 @@ import {
   SuccessCallout,
   WarningCallout,
 } from "@/components/ui/callout";
-import { FieldData, Form } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import {
   DropdownIcon,
   EditIcon,
@@ -23,45 +23,6 @@ import {
 import PersonDetail from "@/components/ui/person-detail";
 import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
-
-const fields: FieldData[] = [
-  {
-    title: "Player details",
-    subtitle: "pspsps give us your data pspsps",
-    inputs: [
-      {
-        label: "Your name",
-        name: "playerName",
-        placeholder: "Extremely cool and epic gamer xx00xx",
-        type: "text",
-      },
-      {
-        label: "Why did you chose to join us?",
-        name: "playerReason",
-        placeholder:
-          "Ever since I was little, I've always been passionate about not starving to death.",
-        type: "paragraph",
-      },
-    ],
-  },
-  {
-    title: "How much $$$ do you have???",
-    inputs: [
-      {
-        value: "0",
-        name: "playerMoney",
-        type: "price",
-      },
-      {
-        // name: "willDonation",  // without `name`, this field won't be included in the form data
-        label: "Will you donate to us?",
-        type: "dropdown",
-        value: "Yes",
-        options: ["Yes", "Yes", "Yes"],
-      },
-    ],
-  },
-];
 
 function ComponentSection({
   title,
@@ -182,7 +143,46 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Form">
-          <div className="m-4"></div>
+          <Form
+            className="m-4"
+            onSubmit={(dict) => {
+              console.log(dict);
+            }}
+          >
+            <h1>Player details</h1>
+            <h2>pspsps give us your data pspsps</h2>
+            <SingleLineInput
+              name="playerName"
+              label="Your Name pls"
+              type="text"
+            />
+            <ParagraphInput
+              name="PlayerReason"
+              label="Why did you chose to join us?"
+              placeholder="Ever since I was little, I've always been passionate about not starving to death."
+            />
+            <h1>How much $$$ do you have??? :3</h1>
+            <SingleLineInput value="1000" type="price" name="PlayerWallet" />
+            <h1>
+              At EA Games, we are very poor. Will you perchance consider making
+              a small donation to a small indie game development company?
+            </h1>
+            <h2>(...pls?)</h2>
+            <DropdownInput // `name` not supplied so this input is ignored on submission
+              value="Yes"
+              onChange={() => {
+                console.log("yes");
+              }}
+              options={["Yes", "Yes", "Yes"]}
+              label="Thy answer"
+            />
+            <Button className="w-full" variant={"outline"} type="button">
+              Cancel
+            </Button>
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+          </Form>
         </ComponentSection>
 
         <ComponentSection title="Person Detail">
