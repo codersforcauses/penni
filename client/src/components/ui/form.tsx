@@ -121,7 +121,6 @@ export function Form({ children, onSubmit, className }: FormProps) {
     if (isInputComponent(child)) {
       if (isInputComponent(nextElement)) return "pb-4";
       // h1 indicate starting a new section, button indicate end of form
-      // grouped into 2 if statements for readability
       if (
         nextElement.type == "h1" ||
         nextElement.type == "h2" ||
