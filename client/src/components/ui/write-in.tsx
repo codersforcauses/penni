@@ -31,30 +31,30 @@ const WriteIn: React.FC<WriteInProps> = ({
   }, [subject, description, handleInputChange]);
 
   return (
-    <div id="write-in" className="p-4 body">
+    <div id="write-in" className="p-4 body bg-penni-background-light-mode">
       <div className="mb-4">
         <input
           type="text"
           id="subject"
           placeholder="Subject"
-          className="px-2 py-1  text-penni-text-regular-light-mode"
+          className="px-1 py-1.5  text-penni-text-regular-light-mode"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
       </div>
-      <hr className="my-4 mx-2 bg-penni-background-input-light-mode" />
+      <hr className="my-4 mx-1 bg-penni-text-regular-dark-mode" />
       <div className="mb-4">
         <textarea
           id="description"
           placeholder="Description"
-          className="px-2 py-1  text-penni-text-regular-light-mode"
+          className="w-full px-1 py-1.5 text-penni-text-regular-light-mode"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
       {imgUpload ? (
         <>
-          <hr className="my-4 mx-2 bg-penni-background-input-light-mode" />
+          <hr className="my-4 mx-1 bg-penni-text-regular-dark-mode" />
           <div>{/* Image upload handling can be added here */}</div>
         </>
       ) : null}

@@ -33,21 +33,21 @@ export default function Report() {
   };
 
   return (
-    <div id="report" className="">
-      <div className="flex flex-row items-center justify-center">
+    <div id="report" className="bg-penni-background-input-light-mode">
+      <div className="flex flex-row items-center justify-center bg-penni-background-light-mode">
         {/* <Image src={} className="mr-auto"/> */}
-        <h2 className="text-center p-5 pt-6 body-medium">Report a problem</h2>
+        <h2 className="text-center p-[1.1rem] pt-6 body-medium">Report a problem</h2>
       </div>
-      <div className="h-0.5 pt-3 bg-penni-background-input-light-mode">
+      <div className="h-[0.12rem] pt-3 bg-penni-background-input-light-mode">
       </div>
       <form onSubmit={handleSubmit}>
         <WriteIn imgUpload={true} onFormDataChange={handleFormDataChange} />
-        <div className="h-0.5 pt-10 bg-penni-background-input-light-mode">
+        <div className="h-0.5 pt-8 bg-penni-background-input-light-mode">
         </div>
-        <div className="mt-4 flex items-center justify-center rounded-t-md">
+        <div className="mt-4 pt-4 flex items-center justify-center shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px] rounded-t-3xl bg-penni-background-light-mode">
           <Button
             type="submit"
-            className={`${formReady ? "" : "disabled"}`}
+            className={`${formReady ? "" : "disabled"} body-medium py-[1.7rem] text-penni-text-tertiary-light-mode w-full mx-4 rounded-full  bg-penni-grey-border-light-mode`}
             disabled={!formReady}
           >
             Submit report
