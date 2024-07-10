@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import BottomNav from "@/components/ui/bottom-nav";
 import { Button } from "@/components/ui/button";
 import {
@@ -6,6 +8,7 @@ import {
   SuccessCallout,
   WarningCallout,
 } from "@/components/ui/callout";
+import { MarketDropdown } from "@/components/ui/dropdown";
 import {
   DropdownIcon,
   EditIcon,
@@ -39,6 +42,8 @@ function ComponentSection({
 }
 
 export default function ComponentShowcase() {
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedDropdown, setSelectedDropdown] = useState("HTML");
   return (
     <div className="flex h-full w-screen items-center justify-center bg-penni-background-dark-mode">
       <div className="m-0 h-auto w-[375px] bg-penni-background-light-mode">
@@ -128,8 +133,8 @@ export default function ComponentShowcase() {
           <DropdownInput
             label="Dropdown"
             options={["hello", "yay"]}
-            value="Some option"
-            onChange={() => {}}
+            value={selectedValue}
+            onChange={(e) => setSelectedValue(e.target.value)}
           />
         </ComponentSection>
         <ComponentSection title="Person Detail">
@@ -192,6 +197,13 @@ export default function ComponentShowcase() {
             myOfferPrice="400"
             state="EXPIRED"
             priceType="My Offer"
+          />
+        </ComponentSection>
+        <ComponentSection title="Bidder-side Market">
+          <MarketDropdown
+            value={selectedDropdown}
+            options={["C", "Python", "HTML"]}
+            onChange={(e) => setSelectedDropdown(e.target.value)}
           />
         </ComponentSection>
       </div>
