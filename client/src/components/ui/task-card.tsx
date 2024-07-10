@@ -5,7 +5,7 @@ import React from "react";
 
 // the props
 type TaskCardProps = {
-  state: "BIDDING" | "EXPIRED";
+  state: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   category: string;
   title: string;
   date: string;
@@ -30,11 +30,11 @@ const TaskCard: React.FC<TaskCardProps> = ({
 }) => {
   return (
     <div
-      className={`m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-200 opacity-80" : "bg-white"} transition duration-300 ease-in-out`}
+      className={`m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
     >
       {/* the state (expried or bidding) */}
       <div
-        className={`inline-block rounded-lg px-2 py-1 text-sm font-medium ${state === "BIDDING" ? "bg-blue-100 text-blue-600" : "bg-gray-300 text-gray-500"}`}
+        className={`footnote inline-block rounded-lg px-3 py-1.5 font-medium ${state === "BIDDING" ? "bg-blue-100 text-blue-700" : state === "ONGOING" ? "bg-orange-100 text-orange-700" : state === "COMPLETED" ? "bg-green-100 text-green-700" : "bg-gray-300 text-gray-700"}`}
       >
         {state}
       </div>
