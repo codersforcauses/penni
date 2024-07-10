@@ -145,7 +145,11 @@ export function Form({ children, onSubmit, className }: FormProps) {
         // no spacing, can't put in mapSpacing, check should be performed outside
         if (!isValidElement(child)) return child;
 
-        if (child.type == Button && !filledAllRequired) {
+        if (
+          child.type == Button &&
+          child.props.type == "submit" &&
+          !filledAllRequired
+        ) {
           child = (
             <Button variant="inactive" disabled={true} {...child.props} />
           );
