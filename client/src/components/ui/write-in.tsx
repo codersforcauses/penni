@@ -4,7 +4,7 @@ import React, { FormEvent, useCallback, useEffect, useState } from "react";
 interface WriteInFormData {
   subject: string;
   description: string;
-  imgs?: string[];
+  imgs?: File[];
 }
 
 interface WriteInProps {
@@ -20,29 +20,51 @@ const WriteIn: React.FC<WriteInProps> = ({
 }) => {
   const [subject, setSubject] = useState("test");
   const [description, setDescription] = useState("");
+  const [imgs, setImgs] = useState<File[]>([]);
+  const [imgPreviews, setImgPreviews] = useState<string[]>([]);
 
   const handleInputChange = useCallback(() => {
     const isFormReady = subject.trim() !== "" && description.trim() !== "";
-    onFormDataChange({ subject, description, imgs: [] }); // imgs handling can be added later
-  }, [subject, description, onFormDataChange]);
+    onFormDataChange({ subject, description, imgs });
+  }, [subject, description, imgs, onFormDataChange]);
 
   useEffect(() => {
     handleInputChange();
-  }, [subject, description, handleInputChange]);
+  }, [subject, description, imgs, handleInputChange]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFiles = Array.from(e.target.files);
+      setImgs(selectedFiles);
+    }
+  };
+
+  useEffect(() => {
+    if (imgs.length) {
+      const previews = imgs.map((img) => URL.createObjectURL(img));
+      setImgPreviews(previews);
+
+      // Clean up the URLs when component unmounts or imgs change
+      // Without this the uploaded image was flickering
+      return () => {
+        previews.forEach((url) => URL.revokeObjectURL(url));
+      };
+    }
+  }, [imgs]);
 
   return (
-    <div id="write-in" className="p-4 body bg-penni-background-light-mode">
+    <div id="write-in" className="body bg-penni-background-light-mode p-4">
       <div className="mb-4">
         <input
           type="text"
           id="subject"
           placeholder="Subject"
-          className="px-1 py-1.5  text-penni-text-regular-light-mode"
+          className="px-1 py-1.5 text-penni-text-regular-light-mode"
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
         />
       </div>
-      <hr className="my-4 mx-1 bg-penni-text-regular-dark-mode" />
+      <hr className="mx-1 my-4 bg-penni-text-regular-dark-mode" />
       <div className="mb-4">
         <textarea
           id="description"
@@ -52,12 +74,32 @@ const WriteIn: React.FC<WriteInProps> = ({
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      {imgUpload ? (
+      {imgUpload && (
         <>
-          <hr className="my-4 mx-1 bg-penni-text-regular-dark-mode" />
-          <div>{/* Image upload handling can be added here */}</div>
+          <hr className="mx-1 my-4 bg-penni-text-regular-dark-mode" />
+          <div>
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleFileChange}
+              className="mb-4"
+            />
+            <div className="flex flex-wrap">
+              {imgPreviews.map((preview, index) => (
+                <div key={index} className="relative mb-2 mr-2 h-24 w-24">
+                  <Image
+                    src={preview}
+                    alt={`uploaded-img-${index}`}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </>
-      ) : null}
+      )}
     </div>
   );
 };
