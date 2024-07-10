@@ -1,15 +1,9 @@
 import React from "react";
 
-import CreateTask from "@/components/ui/poster/create-task";
-import TaskTopBar from "@/components/ui/task-top-bar";
-import NewTask from "@/components/ui/poster/new-task";
-import TaskDetail from "@/components/ui/poster/task-detail";
+import Create from "./poster/tasks/create";
+import List from "./poster/tasks/list";
 
-export default function PosterCreateTask() {
-  return (
-    <div>
-      <CreateTask />
-      <NewTask />
-    </div>
-  );
+export default function PosterTaksPage() {
+  const [task, setTask] = React.useState([]);
+  return <div>{task.length === 0 ? <Create /> : <List />}</div>;
 }
