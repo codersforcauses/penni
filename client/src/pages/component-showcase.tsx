@@ -154,8 +154,12 @@ export default function ComponentShowcase() {
               console.log(dict);
             }}
           >
-            <h1>Player details</h1>
-            <h2>pspsps give us your data pspsps</h2>
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              Player details
+            </h1>
+            <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+              pspsps give us your data pspsps
+            </h2>
             <SingleLineInput
               name="playerName"
               label="Your Name pls"
@@ -166,13 +170,17 @@ export default function ComponentShowcase() {
               label="Why did you chose to join us?"
               placeholder="Ever since I was little, I've always been passionate about not starving to death."
             />
-            <h1>How much $$$ do you have??? :3</h1>
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              How much $$$ do you have??? :3
+            </h1>
             <SingleLineInput value="1000" type="price" name="PlayerWallet" />
-            <h1>
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
               At EA Games, we are very poor. Will you perchance consider making
               a small donation to a small indie game development company?
             </h1>
-            <h2>(...pls?)</h2>
+            <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+              (...pls?)
+            </h2>
             <DropdownInput // `name` not supplied so this input is ignored on submission
               value="Yes"
               onChange={() => {
