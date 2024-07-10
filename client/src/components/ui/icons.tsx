@@ -41,7 +41,7 @@ export function InfoIcon({
       <path
         d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v4M12 16h.01"
         stroke="current"
-        strokeWidth={2}
+        stroke-width={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -65,7 +65,7 @@ export function DropdownIcon({
       <path
         d="M1 1.5l6 6 6-6"
         stroke="current"
-        strokeWidth={2}
+        stroke-width={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -91,7 +91,7 @@ const MyTasksIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
       <path
         d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"
         stroke="currentColor"
-        strokeWidth={2}
+        stroke-width={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -112,7 +112,7 @@ const MarketIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
       <path
         d="M10 3H3v7h7V3zM21 3h-7v7h7V3zM21 14h-7v7h7v-7zM10 14H3v7h7v-7z"
         stroke="currentColor"
-        strokeWidth={2}
+        stroke-width={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -133,7 +133,7 @@ const MeIcon: React.FC<BottomNavIconProps> = ({ className, ...props }) => {
       <path
         d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"
         stroke="currentColor"
-        strokeWidth={2}
+        stroke-width={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />

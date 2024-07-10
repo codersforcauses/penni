@@ -61,12 +61,77 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Buttons">
-          <Button>hello</Button>
-          <Button variant="destructive">hello</Button>
-          <Button variant="outline">hello</Button>
-          <Button variant="secondary">hello</Button>
-          <Button variant="ghost">hello</Button>
-          <Button variant="link">hello</Button>
+          <Button
+            size="penni"
+            style={{ margin: "0 10px" }} // Space for button variant / don't reference this in other pages, it's inner style!
+            onClick={() => alert("test")}
+          >
+            Default
+          </Button>
+          {/* More Variants */}
+          <Button
+            size="sm"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 6")}
+          >
+            Small Default
+          </Button>
+          <Button
+            size="penni"
+            variant="link"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 2")}
+          >
+            Link
+          </Button>
+          <Button
+            size="penni"
+            variant="inactive"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 3")}
+          >
+            Inactive
+          </Button>
+          <Button
+            size="floating"
+            variant="floating"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 4")}
+          >
+            floating
+          </Button>
+          <Button
+            size="pay"
+            variant="pay"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 5")}
+          >
+            Pay
+          </Button>
+          <Button
+            size="finish"
+            variant="finish"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 6")}
+          >
+            Finish
+          </Button>
+          <Button
+            size="penni"
+            variant="cutout"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 6")}
+          >
+            Cutout
+          </Button>
+          <Button
+            variant="cutout"
+            size="sm"
+            style={{ margin: "0 10px" }}
+            onClick={() => alert("test 6")}
+          >
+            Small Cutout
+          </Button>
         </ComponentSection>
 
         <ComponentSection title="Callouts">

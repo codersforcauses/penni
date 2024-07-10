@@ -22,9 +22,9 @@ const buttonVariants = cva(
         cutout: `bg-white text-penni-main headline border border-2 border-penni-main rounded-lg border-solid`,
       },
       size: {
-        //default: "h-10 px-4 py-2",
-        default: "w-[343px] h-[54px]", // Penni Default Size
-        sm: "h-9 rounded-md px-3",
+        default: "h-10 px-4 py-2",
+        penni: "w-[343px] h-[54px]", // Penni Default Size
+        sm: "w-[132px] h-[38px]",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
         floating: "w-[120px] h-[40px]",
