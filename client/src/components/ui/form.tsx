@@ -3,7 +3,7 @@ import { Children, isValidElement, ReactElement, useState } from "react";
 import { Button } from "./button";
 import {
   DropdownInput,
-  HTMLEventTargetElement,
+  HTMLTextTargetElement,
   InputContext,
   ParagraphInput,
   SingleLineInput,
@@ -142,7 +142,7 @@ export function Form({ children, onSubmit, className }: FormProps) {
             <InputContext.Provider
               value={{
                 value: values[i].value,
-                onChange: (e: React.ChangeEvent<HTMLEventTargetElement>) => {
+                onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => {
                   setValues[i](e.target.value);
                 },
               }}
