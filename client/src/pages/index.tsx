@@ -1,7 +1,7 @@
 import { Inter as FontSans } from "next/font/google";
 import { useEffect, useState } from "react";
 
-import OnBoarding from "@/components/OnBoarding";
+import OnBoarding from "@/components/on-boarding";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
