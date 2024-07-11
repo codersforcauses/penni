@@ -39,14 +39,22 @@ const iconLists: Icon[] = [
 ];
 
 // navIndex prop can only be 0,1,2, representing the index of these icons. Can be used to define the initial color of the ui
-const BottomNav = ({ navIndex }: { navIndex: 0 | 1 | 2 }) => {
+const BottomNav = ({
+  navIndex,
+  isFixed = true,
+}: {
+  navIndex: 0 | 1 | 2;
+  isFixed?: boolean;
+}) => {
   const [changeColor, setChangeColor] = useState(navIndex);
   const handleItemClick = (idx: 0 | 1 | 2) => {
     setChangeColor(idx);
   };
 
   return (
-    <div className="border-t-penni-border-light-mode fixed bottom-0 h-20 w-full border-t-2">
+    <div
+      className={`border-t-penni-border-light-mode ${isFixed ? "fixed bottom-0" : ""} h-20 w-full border-t-2`}
+    >
       <ul className="flex h-12 cursor-pointer text-xs leading-3">
         {iconLists.map((iconItem) => (
           <li
