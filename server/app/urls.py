@@ -1,12 +1,27 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from .views import BidsViewSet
 
-# Create a router and register the bid viewset
-router = DefaultRouter()
-router.register(r'tasks/(?P<task_id>\d+)/bids', BidsViewSet, basename='bids')
 
-# Define the URL patterns
+bids_list = BidsViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+
+bids_accept = BidsViewSet.as_view({
+    'post': 'accept'
+})
+
+bids_reject = BidsViewSet.as_view({
+    'post': 'reject'
+})
+
+bids_pending = BidsViewSet.as_view({
+    'post': 'pending'
+})
+
 urlpatterns = [
-    path('', include(router.urls)),
+    path('tasks/<int:task_id>/bids/', bids_list, name='bids-list'),
+    path('tasks/<int:task_id>/bids/<int:pk>/accept/', bids_accept, name='bids-accept'),
+    path('tasks/<int:task_id>/bids/<int:pk>/reject/', bids_reject, name='bids-reject'),
+    path('tasks/<int:task_id>/bids/<int:pk>/review/', bids_pending, name='bids-pending'),
 ]

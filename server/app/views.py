@@ -52,7 +52,7 @@ class BidsViewSet(viewsets.ModelViewSet):
         return Response({'status': 'success', 'message': 'Bid rejected.'})
 
     @action(detail=True, methods=['post'])
-    def review(self, request, pk=None):
+    def pending(self, request, pk=None):
         bid = self.get_object()
         bid.status = 'pending'
         bid.save()
