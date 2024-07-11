@@ -71,33 +71,33 @@ const WriteIn: React.FC<WriteInProps> = ({
   return (
     <div
       id="write-in"
-      className={`body bg-penni-background-light-mode p-4 ${className}`}
+      className={`body flex flex-col bg-penni-background-light-mode p-4 ${className}`}
     >
-      <div className="mb-4">
+      <div className="my-1 grow-0 flex-col">
         <input
           type="text"
           id="subject"
           name="subject"
           placeholder="Subject"
-          className="w-full px-1 py-1.5 text-penni-text-regular-light-mode"
+          className="w-full px-2 py-4 text-penni-text-regular-light-mode"
           value={formData.subject}
           onChange={handleChange}
         />
       </div>
-      <hr className="mx-1 my-4 bg-penni-text-regular-dark-mode" />
-      <div className="mb-4">
+      <hr className="mx-1 my-4 grow-0 bg-penni-text-regular-dark-mode" />
+      <div className="my-1 flex flex-grow flex-col">
         <textarea
           id="description"
           name="description"
           placeholder="Description"
-          className="w-full resize-none px-1 py-1.5 text-penni-text-regular-light-mode"
+          className="w-full flex-grow resize-none px-2 py-4 text-penni-text-regular-light-mode"
           value={formData.description}
           onChange={handleChange}
         />
       </div>
       {imgUpload && (
         <>
-          <hr className="mx-1 my-4 bg-penni-text-regular-dark-mode" />
+          <hr className="mx-1 my-4 grow-0 bg-penni-text-regular-dark-mode" />
           <div>
             <input
               type="file"

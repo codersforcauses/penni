@@ -50,8 +50,8 @@ export default function Report() {
         <h2 className="body-medium flex-grow text-center">Report a problem</h2>
       </div>
       <div className="h-[0.12rem] grow-0 bg-penni-background-input-light-mode pt-3"></div>
-      <div className="flex-grow overflow-auto">
-        <form onSubmit={handleSubmit} className="flex h-full flex-col">
+      <div className="flex flex-grow flex-col overflow-auto">
+        <form onSubmit={handleSubmit} className="flex flex-grow flex-col">
           <WriteIn
             imgUpload={true}
             onFormDataChange={handleFormDataChange}
