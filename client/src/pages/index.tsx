@@ -1,6 +1,7 @@
 import { Inter as FontSans } from "next/font/google";
 import { useEffect, useState } from "react";
 
+import OnBoarding from "@/components/on-boarding";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
@@ -12,7 +13,7 @@ const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-export default function Home() {
+const Ping = () => {
   const [clicked, setClicked] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [opacity, setOpacity] = useState(0);
@@ -100,6 +101,34 @@ export default function Home() {
       </p>
       <br />
       <h1> HELLO </h1>
+    </main>
+  );
+};
+
+export default function Home() {
+  const [clicked, setClicked] = useState(false);
+  const { data, isLoading } = usePings({
+    enabled: clicked,
+  });
+
+  const slides = [
+    {
+      title: "Penni jobs for some extra cash",
+      img: "/img/OnBoarding/carousel-1.svg",
+    },
+    {
+      title: "Give back to someone who has given a lot",
+      img: "/img/OnBoarding/carousel-2.svg",
+    },
+    {
+      title: "Extra spare time with the loves ones",
+      img: "/img/OnBoarding/carousel-3.svg",
+    },
+  ];
+
+  return (
+    <main className={cn("flex min-h-full min-w-full flex-col items-center")}>
+      <OnBoarding followingContent={<Ping />} slides={slides} />
     </main>
   );
 }

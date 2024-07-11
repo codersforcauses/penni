@@ -11,7 +11,20 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <Component {...pageProps} />
+      {/**
+       * Can force specific theme by setting `defaultTheme` to "system" | "light" | "dark"
+       *
+       * TODO: To implement theme toggle, see:
+       * @see https://ui.shadcn.com/docs/dark-mode/next#add-a-mode-toggle
+       */}
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Component {...pageProps} />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

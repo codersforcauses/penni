@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 import { DropdownButton } from "./dropdown";
 
@@ -24,7 +24,7 @@ const valueStyle =
 // Generate unique ID for each component, used for label htmlFor attribute
 const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
-type HTMLTextTargetElement = HTMLInputElement | HTMLTextAreaElement;
+export type HTMLTextTargetElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface TextInputContainerProps {
   value: string;
@@ -37,20 +37,28 @@ interface TextInputContainerProps {
   children?: React.ReactNode;
 }
 
-// Shared by all input components
+// Shared by all input components, optional value for use in <Form>
 interface InputProps {
-  value: string;
+  value?: string;
   label?: string;
+  name?: string; // Only used by <Form>, omitted in Input elements
+  required?: boolean; // Only used by <Form>, omitted in Input elements
 }
+interface InputContextType {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
+}
+export const InputContext = createContext<InputContextType | null>(null);
 
+// Optional onChange for use in <Form>
 interface SingleLineInputProps extends InputProps {
   placeholder?: string;
-  onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
   type: "text" | "price" | "date" | "password";
 }
 
 interface ParagraphInputProps extends InputProps {
-  onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLTextTargetElement>) => void;
   placeholder?: string;
 }
 
@@ -73,7 +81,7 @@ function TextInputContainer({
   const selectedOrNotEmpty = isSelected || value !== "";
 
   const containerStyle =
-    `duration-50  flex flex-col rounded-penni-border border-2 hover:cursor-text` +
+    `duration-50 flex flex-col rounded-penni-border border-2 hover:cursor-text` +
     ` ${isSelected ? selectedStyle : deselectedStyle} ` +
     ` ${selectedOrNotEmpty ? expandedStyle : collapsedStyle} ` +
     ` ${multiline ? "h-36 overflow-y-auto" : `h-14 overflow-hidden`}`;
@@ -90,7 +98,7 @@ function TextInputContainer({
       {selectedOrNotEmpty && !label ? null : (
         <label
           htmlFor={id}
-          className={`hover:cursor-pointer ${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
+          className={`hover:cursor-text ${selectedOrNotEmpty ? labelStyleSmall : labelStyleLarge} duration-50 transition-all ease-out`}
         >
           {label ? label : placeholder}
         </label>
@@ -134,18 +142,22 @@ export function SingleLineInput({
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
   const [id] = useState(uniqueId());
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   function handleOnChange(e: React.ChangeEvent<HTMLTextTargetElement>) {
     // Fix decimal places to 2 when clicking out of input
     if (type == "price" && e.target.value !== "") {
       const fixedValue = parseFloat(e.target.value).toFixed(2);
-      onChange({ ...e, target: { ...e.target, value: fixedValue } });
+      // still complains that onChange is possibly undefined for some reason
+      onChange?.({ ...e, target: { ...e.target, value: fixedValue } });
       // Fix year to length 4
     } else if (type == "date" && e.target.value.length > 10) {
       const parts = e.target.value.split("-");
       if (parts[0].length !== 4) {
         const correctedYear = parts[0].slice(0, 4);
-        onChange({
+        onChange?.({
           ...e,
           target: {
             ...e.target,
@@ -213,6 +225,9 @@ export function ParagraphInput({
 }: ParagraphInputProps) {
   const [isSelected, setIsSelected] = useState(false);
   const [id] = useState(uniqueId());
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   return (
     <TextInputContainer
