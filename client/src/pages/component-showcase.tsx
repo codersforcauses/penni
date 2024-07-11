@@ -112,8 +112,12 @@ export default function ComponentShowcase() {
             <SuccessCallout text="Success callout" />,
             <WarningCallout text="Warning callout" />,
             <ErrorCallout text="Error callout" />,
-          ].map((callout) => {
-            return <div className="w-full px-4 py-3">{callout}</div>;
+          ].map((callout, index) => {
+            return (
+              <div key={index} className="w-full px-4 py-3">
+                {callout}
+              </div>
+            );
           })}
         </ComponentSection>
 
