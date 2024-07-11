@@ -4,14 +4,8 @@ import React from "react";
 // please try to understand the "pricetype", not sure if we need to do useState for this part
 
 // the props
-<<<<<<< HEAD:client/src/components/ui/TaskCard.tsx
-export type TaskCardProps = {
-  id: string,
-  state: "BIDDING" | "EXPIRED";
-=======
 interface TaskCardProps {
   state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
->>>>>>> origin:client/src/components/ui/task-card.tsx
   category: string;
   title: string;
   date: string;
