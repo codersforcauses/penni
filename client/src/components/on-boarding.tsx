@@ -123,7 +123,7 @@ export default function OnBoarding({
           <Button
             onClick={handleSkip}
             className="headline hover:bg-light-mode text-penni-grey-inactive hover:text-penni-main"
-            variant="ghost"
+            variant="link"
           >
             Skip
           </Button>
@@ -142,7 +142,7 @@ export default function OnBoarding({
           <Button
             onClick={handleNext}
             className="headline text-penni-main hover:bg-background hover:text-penni-text-regular-light-mode"
-            variant="ghost"
+            variant="link"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
           </Button>

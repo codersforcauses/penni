@@ -195,11 +195,12 @@ CarouselItem.displayName = "CarouselItem";
 
 type ButtonVariant =
   | "default"
-  | "destructive"
-  | "outline"
-  | "secondary"
-  | "ghost"
   | "link"
+  | "inactive"
+  | "floating"
+  | "pay"
+  | "finish"
+  | "cutout"
   | null
   | undefined;
 
@@ -208,7 +209,7 @@ const CarouselPrevious = React.forwardRef<
   Omit<React.ComponentProps<typeof Button>, "variant"> & {
     variant?: ButtonVariant;
   }
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+>(({ className, variant = "cutout", size = "icon", ...props }, ref) => {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
@@ -239,7 +240,7 @@ const CarouselNext = React.forwardRef<
   Omit<React.ComponentProps<typeof Button>, "variant"> & {
     variant?: ButtonVariant;
   }
->(({ className, variant = "outline", size = "icon", ...props }, ref) => {
+>(({ className, variant = "cutout", size = "icon", ...props }, ref) => {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
