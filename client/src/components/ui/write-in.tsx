@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
 
-interface WriteInFormData {
+export interface WriteInFormData {
   subject: string;
   description: string;
   imgs?: File[];

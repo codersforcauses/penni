@@ -2,13 +2,7 @@ import Image from "next/image";
 import React, { FormEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import WriteIn from "@/components/ui/write-in";
-
-interface WriteInFormData {
-  subject: string;
-  description: string;
-  imgs?: string[];
-}
+import WriteIn, { WriteInFormData } from "@/components/ui/write-in";
 
 export default function Report() {
   const [formReady, setFormReady] = useState(false);
@@ -36,18 +30,18 @@ export default function Report() {
     <div id="report" className="bg-penni-background-input-light-mode">
       <div className="flex flex-row items-center justify-center bg-penni-background-light-mode">
         {/* <Image src={} className="mr-auto"/> */}
-        <h2 className="text-center p-[1.1rem] pt-6 body-medium">Report a problem</h2>
+        <h2 className="body-medium p-[1.1rem] pt-6 text-center">
+          Report a problem
+        </h2>
       </div>
-      <div className="h-[0.12rem] pt-3 bg-penni-background-input-light-mode">
-      </div>
+      <div className="h-[0.12rem] bg-penni-background-input-light-mode pt-3"></div>
       <form onSubmit={handleSubmit}>
         <WriteIn imgUpload={true} onFormDataChange={handleFormDataChange} />
-        <div className="h-0.5 pt-8 bg-penni-background-input-light-mode">
-        </div>
-        <div className="mt-4 pt-4 flex items-center justify-center shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px] rounded-t-3xl bg-penni-background-light-mode">
+        <div className="h-0.5 bg-penni-background-input-light-mode pt-8"></div>
+        <div className="mt-4 flex items-center justify-center rounded-t-3xl bg-penni-background-light-mode pt-4 shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px]">
           <Button
             type="submit"
-            className={`${formReady ? "" : "disabled"} body-medium py-[1.7rem] text-penni-text-tertiary-light-mode w-full mx-4 rounded-full  bg-penni-grey-border-light-mode`}
+            className="body-medium mx-4 w-full rounded-full bg-penni-grey-border-light-mode py-[1.7rem] text-penni-text-tertiary-light-mode"
             disabled={!formReady}
           >
             Submit report
