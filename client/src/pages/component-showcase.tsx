@@ -9,7 +9,9 @@ import {
   WarningCallout,
 } from "@/components/ui/callout";
 import { MarketDropdown } from "@/components/ui/dropdown";
+
 import { Form } from "@/components/ui/form";
+import EmptyListDisplay from "@/components/ui/empty-list-display";
 import {
   DropdownIcon,
   EditIcon,
@@ -67,12 +69,41 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Buttons">
-          <Button>hello</Button>
-          <Button variant="destructive">hello</Button>
-          <Button variant="outline">hello</Button>
-          <Button variant="secondary">hello</Button>
-          <Button variant="ghost">hello</Button>
-          <Button variant="link">hello</Button>
+          <Button
+            size="penni" // Space for button variant / don't reference this in other pages, it's inner style!
+            onClick={() => alert("test")}
+          >
+            Default
+          </Button>
+          {/* More Variants */}
+          <Button size="sm" onClick={() => alert("test 2")}>
+            Small Default
+          </Button>
+          <Button size="penni" variant="link" onClick={() => alert("test 3")}>
+            Link
+          </Button>
+          <Button size="penni" variant="inactive" disabled={true}>
+            Inactive
+          </Button>
+          <Button
+            size="floating"
+            variant="floating"
+            onClick={() => alert("test 4")}
+          >
+            floating
+          </Button>
+          <Button size="pay" variant="pay" onClick={() => alert("test 5")}>
+            Pay
+          </Button>
+          <Button size="finish" variant="finish">
+            Finish
+          </Button>
+          <Button size="penni" variant="cutout" onClick={() => alert("test 6")}>
+            Cutout
+          </Button>
+          <Button variant="cutout" size="sm" onClick={() => alert("test 7")}>
+            Small Cutout
+          </Button>
         </ComponentSection>
 
         <ComponentSection title="Callouts">
@@ -236,8 +267,19 @@ export default function ComponentShowcase() {
             duration="4"
             estimatePrice="300"
             myOfferPrice="250"
-            state="BIDDING"
+            state="ONGOING"
             priceType="Estimated Price"
+          />
+          <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="COMPLETED"
+            priceType="My Offer"
           />
           <TaskCard
             title="Walking my dog"
@@ -251,6 +293,17 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="EXPIRED"
+            priceType="My Offer"
+          />
+          <TaskCard
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -258,16 +311,16 @@ export default function ComponentShowcase() {
             duration="5"
             estimatePrice="400"
             myOfferPrice="400"
-            state="EXPIRED"
             priceType="My Offer"
           />
         </ComponentSection>
-        <ComponentSection title="Bidder-side Market">
+        <ComponentSection title="Bidder-side">
           <MarketDropdown
             value={selectedDropdown}
             options={["C", "Python", "HTML"]}
             onChange={(e) => setSelectedDropdown(e.target.value)}
           />
+          <EmptyListDisplay type="poster" />
         </ComponentSection>
       </div>
     </div>
