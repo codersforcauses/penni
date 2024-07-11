@@ -9,6 +9,8 @@ import {
   WarningCallout,
 } from "@/components/ui/callout";
 import { MarketDropdown } from "@/components/ui/dropdown";
+import EmptyListDisplay from "@/components/ui/empty-list-display";
+import { Form } from "@/components/ui/form";
 import {
   DropdownIcon,
   EditIcon,
@@ -66,20 +68,53 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Buttons">
-          <Button>hello</Button>
-          <Button variant="destructive">hello</Button>
-          <Button variant="outline">hello</Button>
-          <Button variant="secondary">hello</Button>
-          <Button variant="ghost">hello</Button>
-          <Button variant="link">hello</Button>
+          <Button
+            size="penni" // Space for button variant / don't reference this in other pages, it's inner style!
+            onClick={() => alert("test")}
+          >
+            Default
+          </Button>
+          {/* More Variants */}
+          <Button size="sm" onClick={() => alert("test 2")}>
+            Small Default
+          </Button>
+          <Button size="penni" variant="link" onClick={() => alert("test 3")}>
+            Link
+          </Button>
+          <Button size="penni" variant="inactive" disabled={true}>
+            Inactive
+          </Button>
+          <Button
+            size="floating"
+            variant="floating"
+            onClick={() => alert("test 4")}
+          >
+            floating
+          </Button>
+          <Button size="pay" variant="pay" onClick={() => alert("test 5")}>
+            Pay
+          </Button>
+          <Button size="finish" variant="finish">
+            Finish
+          </Button>
+          <Button size="penni" variant="cutout" onClick={() => alert("test 6")}>
+            Cutout
+          </Button>
+          <Button variant="cutout" size="sm" onClick={() => alert("test 7")}>
+            Small Cutout
+          </Button>
         </ComponentSection>
 
         <ComponentSection title="Callouts">
-          <InfoCallout text="Info callout" />
-          <InfoCallout text="Info callout" onClick={() => {}} />
-          <SuccessCallout text="Success callout" />
-          <WarningCallout text="Warning callout" />
-          <ErrorCallout text="Error callout" />
+          {[
+            <InfoCallout text="Info callout" />,
+            <InfoCallout text="Info callout" onClick={() => {}} />,
+            <SuccessCallout text="Success callout" />,
+            <WarningCallout text="Warning callout" />,
+            <ErrorCallout text="Error callout" />,
+          ].map((callout) => {
+            return <div className="w-full px-4 py-3">{callout}</div>;
+          })}
         </ComponentSection>
 
         <ComponentSection title="Icons">
@@ -94,49 +129,106 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Inputs">
-          <SingleLineInput onChange={() => {}} value="" type="text" />
-          <SingleLineInput
-            label="Single line text"
-            onChange={() => {}}
-            value=""
-            type="text"
-          />
-          <SingleLineInput
-            label="Single line text"
-            onChange={() => {}}
-            value="with values filled in"
-            type="text"
-          />
-          <SingleLineInput
-            label="Single line price"
-            onChange={() => {}}
-            value="100000000.00"
-            type="price"
-          />
-          <SingleLineInput
-            label="Single line date"
-            onChange={() => {}}
-            value="2003-05-13"
-            type="date"
-          />
-          <SingleLineInput
-            label="Single line password"
-            onChange={() => {}}
-            value="very secure password"
-            type="password"
-          />
-          <ParagraphInput
-            label="Paragraph"
-            value="Some sample text here"
-            onChange={() => {}}
-          />
-          <DropdownInput
-            label="Dropdown"
-            options={["hello", "yay"]}
-            value={selectedValue}
-            onChange={(e) => setSelectedValue(e.target.value)}
-          />
+          {[
+            <SingleLineInput onChange={() => {}} value="" type="text" />,
+            <SingleLineInput
+              label="Single line text"
+              onChange={() => {}}
+              value=""
+              type="text"
+            />,
+            <SingleLineInput
+              label="Single line text"
+              onChange={() => {}}
+              value="with values filled in"
+              type="text"
+            />,
+            <SingleLineInput
+              label="Single line price"
+              onChange={() => {}}
+              value="100000000.00"
+              type="price"
+            />,
+            <SingleLineInput
+              label="Single line date"
+              onChange={() => {}}
+              value="2003-05-13"
+              type="date"
+            />,
+            <SingleLineInput
+              label="Single line password"
+              onChange={() => {}}
+              value="very secure password"
+              type="password"
+            />,
+            <ParagraphInput
+              label="Paragraph"
+              value="Some sample text here"
+              onChange={() => {}}
+            />,
+            <DropdownInput
+              label="Dropdown"
+              options={["hello", "yay"]}
+              value={selectedValue}
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />,
+          ].map((input) => {
+            return <div className="w-full px-4 pb-4">{input}</div>;
+          })}
         </ComponentSection>
+
+        <ComponentSection title="Form">
+          <Form
+            className="m-4"
+            onSubmit={(dict) => {
+              console.log(dict);
+            }}
+          >
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              Player details
+            </h1>
+            <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+              pspsps give us your data pspsps
+            </h2>
+            <SingleLineInput
+              name="playerName"
+              required={true}
+              label="Your Name pls"
+              type="text"
+            />
+            <ParagraphInput
+              name="PlayerReason"
+              label="Why did you chose to join us?"
+              placeholder="Ever since I was little, I've always been passionate about not starving to death."
+            />
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              How much $$$ do you have??? :3
+            </h1>
+            <SingleLineInput value="1000" type="price" name="PlayerWallet" />
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              At EA Games, we are very poor. Will you perchance consider making
+              a small donation to a small indie game development company?
+            </h1>
+            <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+              (...pls?)
+            </h2>
+            <DropdownInput // `name` not supplied so this input is ignored on submission
+              value="Yes"
+              onChange={() => {
+                console.log("yes");
+              }}
+              options={["Yes", "Yes", "Yes"]}
+              label="Thy answer"
+            />
+            <Button className="w-full" variant={"link"} type="button">
+              Cancel
+            </Button>
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </ComponentSection>
+
         <ComponentSection title="Person Detail">
           <PersonDetail
             personName="very cool name"
@@ -164,6 +256,7 @@ export default function ComponentShowcase() {
             ]}
           />
         </ComponentSection>
+
         <ComponentSection title="Task Card">
           <TaskCard
             title="Clean up my house"
@@ -173,8 +266,19 @@ export default function ComponentShowcase() {
             duration="4"
             estimatePrice="300"
             myOfferPrice="250"
-            state="BIDDING"
+            state="ONGOING"
             priceType="Estimated Price"
+          />
+          <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="COMPLETED"
+            priceType="My Offer"
           />
           <TaskCard
             title="Walking my dog"
@@ -188,6 +292,17 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            title="Walking my dog"
+            category="WALKING DOGS"
+            date="21 Aug, 2022"
+            location="Richmond, VIC"
+            duration="4"
+            estimatePrice="400"
+            myOfferPrice="250"
+            state="EXPIRED"
+            priceType="My Offer"
+          />
+          <TaskCard
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -195,16 +310,16 @@ export default function ComponentShowcase() {
             duration="5"
             estimatePrice="400"
             myOfferPrice="400"
-            state="EXPIRED"
             priceType="My Offer"
           />
         </ComponentSection>
-        <ComponentSection title="Bidder-side Market">
+        <ComponentSection title="Bidder-side">
           <MarketDropdown
             value={selectedDropdown}
             options={["C", "Python", "HTML"]}
             onChange={(e) => setSelectedDropdown(e.target.value)}
           />
+          <EmptyListDisplay type="poster" />
         </ComponentSection>
       </div>
     </div>
