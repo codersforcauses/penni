@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export interface WriteInFormData {
   subject: string;
@@ -18,30 +18,36 @@ const WriteIn: React.FC<WriteInProps> = ({
   maxImgs = 0,
   onFormDataChange,
 }) => {
-  const [subject, setSubject] = useState("test");
-  const [description, setDescription] = useState("");
-  const [imgs, setImgs] = useState<File[]>([]);
+  const [formData, setFormData] = useState<WriteInFormData>({
+    subject: "",
+    description: "",
+    imgs: [],
+  });
   const [imgPreviews, setImgPreviews] = useState<string[]>([]);
+  const onFormDataChangeRef = useRef(onFormDataChange); // Must use ref as alternatives causes infinite errors in console
 
-  const handleInputChange = useCallback(() => {
-    const isFormReady = subject.trim() !== "" && description.trim() !== "";
-    onFormDataChange({ subject, description, imgs });
-  }, [subject, description, imgs, onFormDataChange]);
-
+  // Update the current ref whenever the onFormDataChange callback changes
   useEffect(() => {
-    handleInputChange();
-  }, [subject, description, imgs, handleInputChange]);
+    onFormDataChangeRef.current = onFormDataChange;
+  }, [onFormDataChange]);
 
+  // Call onFormDataChange whenever formData changes
+  useEffect(() => {
+    onFormDataChangeRef.current(formData);
+  }, [formData]);
+
+  // Handle file change for image uploads
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
-      setImgs(selectedFiles);
+      setFormData((prev) => ({ ...prev, imgs: selectedFiles }));
     }
   };
 
+  // Generate image previews and clean up URLs
   useEffect(() => {
-    if (imgs.length) {
-      const previews = imgs.map((img) => URL.createObjectURL(img));
+    if (formData.imgs?.length) {
+      const previews = formData.imgs.map((img) => URL.createObjectURL(img));
       setImgPreviews(previews);
 
       // Clean up the URLs when component unmounts or imgs change
@@ -50,7 +56,15 @@ const WriteIn: React.FC<WriteInProps> = ({
         previews.forEach((url) => URL.revokeObjectURL(url));
       };
     }
-  }, [imgs]);
+  }, [formData.imgs]);
+
+  // Handle input and textarea changes
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <div id="write-in" className="body bg-penni-background-light-mode p-4">
@@ -58,20 +72,22 @@ const WriteIn: React.FC<WriteInProps> = ({
         <input
           type="text"
           id="subject"
+          name="subject"
           placeholder="Subject"
           className="px-1 py-1.5 text-penni-text-regular-light-mode"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
+          value={formData.subject}
+          onChange={handleChange}
         />
       </div>
       <hr className="mx-1 my-4 bg-penni-text-regular-dark-mode" />
       <div className="mb-4">
         <textarea
           id="description"
+          name="description"
           placeholder="Description"
           className="w-full px-1 py-1.5 text-penni-text-regular-light-mode"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={formData.description}
+          onChange={handleChange}
         />
       </div>
       {imgUpload && (

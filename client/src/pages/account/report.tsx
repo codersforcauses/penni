@@ -9,12 +9,13 @@ export default function Report() {
   const [formData, setFormData] = useState<WriteInFormData>({
     subject: "",
     description: "",
+    imgs: [],
   });
 
   const handleFormDataChange = (data: WriteInFormData) => {
     setFormData(data);
-    const formState: boolean =
-      formData.subject.trim() !== "" && formData.description.trim() !== "";
+    const formState =
+      data.subject.trim() !== "" && data.description.trim() !== "";
     setFormReady(formState);
   };
 
@@ -41,8 +42,10 @@ export default function Report() {
         <div className="mt-4 flex items-center justify-center rounded-t-3xl bg-penni-background-light-mode pt-4 shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px]">
           <Button
             type="submit"
-            className="body-medium mx-4 w-full rounded-full bg-penni-grey-border-light-mode py-[1.7rem] text-penni-text-tertiary-light-mode"
+            className=""
             disabled={!formReady}
+            variant="floating"
+            size="lg"
           >
             Submit report
           </Button>
