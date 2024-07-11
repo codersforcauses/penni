@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/callout";
 import { MarketDropdown } from "@/components/ui/dropdown";
 import EmptyListDisplay from "@/components/ui/empty-list-display";
+import { Form } from "@/components/ui/form";
 import {
   DropdownIcon,
   EditIcon,
@@ -105,11 +106,15 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Callouts">
-          <InfoCallout text="Info callout" />
-          <InfoCallout text="Info callout" onClick={() => {}} />
-          <SuccessCallout text="Success callout" />
-          <WarningCallout text="Warning callout" />
-          <ErrorCallout text="Error callout" />
+          {[
+            <InfoCallout text="Info callout" />,
+            <InfoCallout text="Info callout" onClick={() => {}} />,
+            <SuccessCallout text="Success callout" />,
+            <WarningCallout text="Warning callout" />,
+            <ErrorCallout text="Error callout" />,
+          ].map((callout) => {
+            return <div className="w-full px-4 py-3">{callout}</div>;
+          })}
         </ComponentSection>
 
         <ComponentSection title="Icons">
@@ -124,49 +129,106 @@ export default function ComponentShowcase() {
         </ComponentSection>
 
         <ComponentSection title="Inputs">
-          <SingleLineInput onChange={() => {}} value="" type="text" />
-          <SingleLineInput
-            label="Single line text"
-            onChange={() => {}}
-            value=""
-            type="text"
-          />
-          <SingleLineInput
-            label="Single line text"
-            onChange={() => {}}
-            value="with values filled in"
-            type="text"
-          />
-          <SingleLineInput
-            label="Single line price"
-            onChange={() => {}}
-            value="100000000.00"
-            type="price"
-          />
-          <SingleLineInput
-            label="Single line date"
-            onChange={() => {}}
-            value="2003-05-13"
-            type="date"
-          />
-          <SingleLineInput
-            label="Single line password"
-            onChange={() => {}}
-            value="very secure password"
-            type="password"
-          />
-          <ParagraphInput
-            label="Paragraph"
-            value="Some sample text here"
-            onChange={() => {}}
-          />
-          <DropdownInput
-            label="Dropdown"
-            options={["hello", "yay"]}
-            value={selectedValue}
-            onChange={(e) => setSelectedValue(e.target.value)}
-          />
+          {[
+            <SingleLineInput onChange={() => {}} value="" type="text" />,
+            <SingleLineInput
+              label="Single line text"
+              onChange={() => {}}
+              value=""
+              type="text"
+            />,
+            <SingleLineInput
+              label="Single line text"
+              onChange={() => {}}
+              value="with values filled in"
+              type="text"
+            />,
+            <SingleLineInput
+              label="Single line price"
+              onChange={() => {}}
+              value="100000000.00"
+              type="price"
+            />,
+            <SingleLineInput
+              label="Single line date"
+              onChange={() => {}}
+              value="2003-05-13"
+              type="date"
+            />,
+            <SingleLineInput
+              label="Single line password"
+              onChange={() => {}}
+              value="very secure password"
+              type="password"
+            />,
+            <ParagraphInput
+              label="Paragraph"
+              value="Some sample text here"
+              onChange={() => {}}
+            />,
+            <DropdownInput
+              label="Dropdown"
+              options={["hello", "yay"]}
+              value={selectedValue}
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />,
+          ].map((input) => {
+            return <div className="w-full px-4 pb-4">{input}</div>;
+          })}
         </ComponentSection>
+
+        <ComponentSection title="Form">
+          <Form
+            className="m-4"
+            onSubmit={(dict) => {
+              console.log(dict);
+            }}
+          >
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              Player details
+            </h1>
+            <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+              pspsps give us your data pspsps
+            </h2>
+            <SingleLineInput
+              name="playerName"
+              required={true}
+              label="Your Name pls"
+              type="text"
+            />
+            <ParagraphInput
+              name="PlayerReason"
+              label="Why did you chose to join us?"
+              placeholder="Ever since I was little, I've always been passionate about not starving to death."
+            />
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              How much $$$ do you have??? :3
+            </h1>
+            <SingleLineInput value="1000" type="price" name="PlayerWallet" />
+            <h1 className="body-medium w-full text-penni-text-regular-light-mode">
+              At EA Games, we are very poor. Will you perchance consider making
+              a small donation to a small indie game development company?
+            </h1>
+            <h2 className="subheadline w-full text-penni-text-secondary-light-mode">
+              (...pls?)
+            </h2>
+            <DropdownInput // `name` not supplied so this input is ignored on submission
+              value="Yes"
+              onChange={() => {
+                console.log("yes");
+              }}
+              options={["Yes", "Yes", "Yes"]}
+              label="Thy answer"
+            />
+            <Button className="w-full" variant={"link"} type="button">
+              Cancel
+            </Button>
+            <Button className="w-full" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </ComponentSection>
+
         <ComponentSection title="Person Detail">
           <PersonDetail
             personName="very cool name"
@@ -194,6 +256,7 @@ export default function ComponentShowcase() {
             ]}
           />
         </ComponentSection>
+
         <ComponentSection title="Task Card">
           <TaskCard
             title="Clean up my house"
