@@ -83,7 +83,7 @@ const TaskCard = ({
                 objectFit="contain"
               />
             </div>
-            <p className="subheadline text-gray-500">{duration} hours</p>
+            <p className="subheadline text-gray-500">{duration}</p>
           </div>
         </div>
 
