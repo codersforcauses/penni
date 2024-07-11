@@ -1,6 +1,8 @@
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
+import UploadImages from "./upload-images";
+
 export interface WriteInFormData {
   subject: string;
   description: string;
@@ -12,20 +14,22 @@ interface WriteInProps {
   maxImgs?: number;
   onFormDataChange: (data: WriteInFormData) => void;
   className?: string;
+  showImagePreviews?: boolean;
 }
 
-const WriteIn: React.FC<WriteInProps> = ({
+export default function WriteIn({
   imgUpload = false,
   maxImgs = 0,
   onFormDataChange,
   className,
-}) => {
+  showImagePreviews,
+}: WriteInProps) {
   const [formData, setFormData] = useState<WriteInFormData>({
     subject: "",
     description: "",
     imgs: [],
   });
-  const [imgPreviews, setImgPreviews] = useState<string[]>([]);
+
   const onFormDataChangeRef = useRef(onFormDataChange); // Must use ref as alternatives causes infinite errors in console
 
   // Update the current ref whenever the onFormDataChange callback changes
@@ -39,26 +43,9 @@ const WriteIn: React.FC<WriteInProps> = ({
   }, [formData]);
 
   // Handle file change for image uploads
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const selectedFiles = Array.from(e.target.files);
-      setFormData((prev) => ({ ...prev, imgs: selectedFiles }));
-    }
+  const handleFileChange = (files: File[]) => {
+    setFormData((prev) => ({ ...prev, imgs: files }));
   };
-
-  // Generate image previews and clean up URLs
-  useEffect(() => {
-    if (formData.imgs?.length) {
-      const previews = formData.imgs.map((img) => URL.createObjectURL(img));
-      setImgPreviews(previews);
-
-      // Clean up the URLs when component unmounts or imgs change
-      // Without this the uploaded image was flickering
-      return () => {
-        previews.forEach((url) => URL.revokeObjectURL(url));
-      };
-    }
-  }, [formData.imgs]);
 
   // Handle input and textarea changes
   const handleChange = (
@@ -85,7 +72,7 @@ const WriteIn: React.FC<WriteInProps> = ({
         />
       </div>
       <hr className="mx-1 my-4 grow-0 bg-penni-text-regular-dark-mode" />
-      <div className="my-1 flex flex-grow flex-col">
+      <div className="my-1 flex min-h-40 flex-grow flex-col">
         <textarea
           id="description"
           name="description"
@@ -98,31 +85,12 @@ const WriteIn: React.FC<WriteInProps> = ({
       {imgUpload && (
         <>
           <hr className="mx-1 my-4 grow-0 bg-penni-text-regular-dark-mode" />
-          <div>
-            <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleFileChange}
-              className="mb-4"
-            />
-            <div className="flex flex-wrap">
-              {imgPreviews.map((preview, index) => (
-                <div key={index} className="relative mb-2 mr-2 h-24 w-24">
-                  <Image
-                    src={preview}
-                    alt={`uploaded-img-${index}`}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          <UploadImages
+            onImagesChange={handleFileChange}
+            showPreviews={showImagePreviews}
+          />
         </>
       )}
     </div>
   );
-};
-
-export default WriteIn;
+}
