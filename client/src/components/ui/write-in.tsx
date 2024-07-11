@@ -11,12 +11,14 @@ interface WriteInProps {
   imgUpload?: boolean;
   maxImgs?: number;
   onFormDataChange: (data: WriteInFormData) => void;
+  className?: string;
 }
 
 const WriteIn: React.FC<WriteInProps> = ({
   imgUpload = false,
   maxImgs = 0,
   onFormDataChange,
+  className,
 }) => {
   const [formData, setFormData] = useState<WriteInFormData>({
     subject: "",
@@ -67,14 +69,17 @@ const WriteIn: React.FC<WriteInProps> = ({
   };
 
   return (
-    <div id="write-in" className="body bg-penni-background-light-mode p-4">
+    <div
+      id="write-in"
+      className={`body bg-penni-background-light-mode p-4 ${className}`}
+    >
       <div className="mb-4">
         <input
           type="text"
           id="subject"
           name="subject"
           placeholder="Subject"
-          className="px-1 py-1.5 text-penni-text-regular-light-mode"
+          className="w-full px-1 py-1.5 text-penni-text-regular-light-mode"
           value={formData.subject}
           onChange={handleChange}
         />

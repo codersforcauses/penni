@@ -34,8 +34,11 @@ export default function Report() {
   };
 
   return (
-    <div id="report" className="bg-penni-background-input-light-mode">
-      <div className="flex flex-row items-center justify-center bg-penni-background-light-mode px-4 pb-2 pt-6">
+    <div
+      id="report"
+      className="flex min-h-screen flex-col bg-penni-background-input-light-mode"
+    >
+      <div className="flex flex-grow-0 flex-row items-center justify-center bg-penni-background-light-mode px-4 pb-4 pt-6">
         <Button onClick={handleBackClick} variant="link">
           <Image
             src="/icons/arrow_back.svg"
@@ -46,22 +49,27 @@ export default function Report() {
         </Button>
         <h2 className="body-medium flex-grow text-center">Report a problem</h2>
       </div>
-      <div className="h-[0.12rem] bg-penni-background-input-light-mode pt-3"></div>
-      <form onSubmit={handleSubmit}>
-        <WriteIn imgUpload={true} onFormDataChange={handleFormDataChange} />
-        <div className="h-0.5 bg-penni-background-input-light-mode pt-8"></div>
-        <div className="mt-4 flex items-center justify-center rounded-t-3xl bg-penni-background-light-mode px-4 pt-4 shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px]">
-          <Button
-            type="submit"
-            className=""
-            disabled={!formReady}
-            variant="floating"
-            size="penni"
-          >
-            Submit report
-          </Button>
-        </div>
-      </form>
+      <div className="h-[0.12rem] grow-0 bg-penni-background-input-light-mode pt-3"></div>
+      <div className="flex-grow overflow-auto">
+        <form onSubmit={handleSubmit} className="flex h-full flex-col">
+          <WriteIn
+            imgUpload={true}
+            onFormDataChange={handleFormDataChange}
+            className="flex-grow"
+          />
+          <div className="h-0.5 bg-penni-background-input-light-mode pt-8"></div>
+          <div className="mt-4 flex flex-grow-0 items-center justify-center rounded-t-3xl bg-penni-background-light-mode p-4 shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px]">
+            <Button
+              type="submit"
+              disabled={!formReady}
+              variant="floating"
+              size="penni"
+            >
+              Submit report
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
