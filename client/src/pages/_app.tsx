@@ -7,6 +7,8 @@ import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import type { ReactElement, ReactNode } from "react";
 
+import { ThemeProvider } from "@/components/ui/theme-provider";
+
 /**
  * Type definition for page with layout
  *
@@ -29,7 +31,20 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return getLayout(
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
-      <Component {...pageProps} />
+      {/**
+       * Can force specific theme by setting `defaultTheme` to "system" | "light" | "dark"
+       *
+       * TODO: To implement theme toggle, see:
+       * @see https://ui.shadcn.com/docs/dark-mode/next#add-a-mode-toggle
+       */}
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="light"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <Component {...pageProps} />
+      </ThemeProvider>
     </QueryClientProvider>,
   );
 }

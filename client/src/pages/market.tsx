@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 
 import MeLayout from "@/components/ui/MeLayout";
-import TaskCard, { TaskCardProps } from "@/components/ui/TaskCard";
+import TaskCard, { TaskCardProps } from "@/components/ui/task-card";
 
 import type { NextPageWithLayout } from "./_app";
 
