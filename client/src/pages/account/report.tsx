@@ -56,6 +56,7 @@ export default function Report() {
             imgUpload={true}
             onFormDataChange={handleFormDataChange}
             className="flex-grow"
+            maxImgs={5}
           />
           <div className="h-0.5 bg-penni-background-input-light-mode pt-8"></div>
           <div className="mt-4 flex flex-grow-0 items-center justify-center rounded-t-3xl bg-penni-background-light-mode p-4 shadow-[rgba(0,0,0,0.05)_0px_-10px_15px_0px]">
