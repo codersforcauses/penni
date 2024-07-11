@@ -1,8 +1,6 @@
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-import BottomNav from "./bottom-nav";
-import { Button } from "./button";
+import EmptyListDisplay from "./empty-list-display";
 import TaskCard from "./task-card";
 import TopNavtab from "./top-navtab";
 
@@ -24,6 +22,7 @@ interface TaskListProps {
   state: string[];
 }
 
+// using user name and state to filter task
 const filterTasks = (tasks: Task[], name: string, states: string[]) => {
   return tasks.filter(
     (task) => task.name === name && states.includes(task.state),
@@ -34,7 +33,7 @@ const TaskList = ({ name, state }: TaskListProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  // client-side data fetching, using mock data in "/api/tasks-test" to test it
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -64,22 +63,16 @@ const TaskList = ({ name, state }: TaskListProps) => {
   const userTasks = filterTasks(tasks, name, state);
   if (userTasks.length === 0) {
     return (
-      <div className="relative top-36 flex flex-col items-center justify-center gap-5 px-4">
-        <Image
-          width={178}
-          height={171}
-          src="/no-task-img.svg"
-          alt="Image of a girl and flowers"
-        />
-        <p className="body">You do not have any tasks yet</p>
-        <Button className="headline h-14 w-full">Start Browsing</Button>
+      <div className="relative top-36 flex w-full justify-center">
+        <EmptyListDisplay type="bidder" />
       </div>
     );
   } else {
     return (
       <div>
-        {userTasks.map((task) => (
+        {userTasks.map((task, id) => (
           <TaskCard
+            key={id}
             title={task.title}
             category={task.category}
             date={task.date}
@@ -96,7 +89,11 @@ const TaskList = ({ name, state }: TaskListProps) => {
   }
 };
 
-export default function MyTasks(name: string) {
+interface BidderMyTasksProp {
+  name: string;
+}
+
+export default function BidderMyTasks({ name }: BidderMyTasksProp) {
   const myTasksStates = ["COMPLETED", "ONGOING"];
   const myBidsStates = ["BIDDING", "EXPIRED"];
 

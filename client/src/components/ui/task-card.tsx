@@ -14,6 +14,7 @@ interface TaskCardProps {
   estimatePrice: string;
   myOfferPrice: string;
   priceType: "Estimated Price" | "My Offer";
+  key?: number; //to use map to iterate
 }
 
 // the task card
