@@ -61,6 +61,27 @@ const TaskList = ({ name, state }: TaskListProps) => {
   if (error) return <div>Error: {error}</div>;
 
   const userTasks = filterTasks(tasks, name, state);
+  userTasks.sort((a, b) => {
+    const typeA = a.state;
+    const typeB = b.state;
+    const dateA = a.date;
+    const dateB = b.date;
+    if (
+      (typeA === "ONGOING" || typeA === "BIDDING") &&
+      (typeB === "COMPLETED" || typeB === "EXPIRED")
+    ) {
+      return -1;
+    } else if (
+      (typeA === "COMPLETED" || typeA === "EXPIRED") &&
+      (typeB === "ONGOING" || typeB === "BIDDING")
+    ) {
+      return 1;
+    } else if (dateA > dateB) {
+      return -1;
+    } else if (dateA < dateB) {
+      return 1;
+    } else return 0;
+  });
   if (userTasks.length === 0) {
     return (
       <div className="relative top-36 flex w-full justify-center">
