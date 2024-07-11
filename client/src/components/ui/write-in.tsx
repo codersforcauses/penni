@@ -85,7 +85,7 @@ const WriteIn: React.FC<WriteInProps> = ({
           id="description"
           name="description"
           placeholder="Description"
-          className="w-full px-1 py-1.5 text-penni-text-regular-light-mode"
+          className="w-full resize-none px-1 py-1.5 text-penni-text-regular-light-mode"
           value={formData.description}
           onChange={handleChange}
         />
