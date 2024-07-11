@@ -9,9 +9,8 @@ import {
   WarningCallout,
 } from "@/components/ui/callout";
 import { MarketDropdown } from "@/components/ui/dropdown";
-
-import { Form } from "@/components/ui/form";
 import EmptyListDisplay from "@/components/ui/empty-list-display";
+import { Form } from "@/components/ui/form";
 import {
   DropdownIcon,
   EditIcon,
@@ -221,7 +220,7 @@ export default function ComponentShowcase() {
               options={["Yes", "Yes", "Yes"]}
               label="Thy answer"
             />
-            <Button className="w-full" variant={"outline"} type="button">
+            <Button className="w-full" variant={"link"} type="button">
               Cancel
             </Button>
             <Button className="w-full" type="submit">
