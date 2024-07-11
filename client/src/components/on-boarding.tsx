@@ -45,10 +45,10 @@ interface OnBoardingProps {
  * ];
  * <OnBoarding followingContent={<Ping />} slides={slides}
  */
-const OnBoarding: React.FC<OnBoardingProps> = ({
+export default function OnBoarding({
   followingContent,
   slides,
-}) => {
+}: OnBoardingProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showOnBoarding, setShowOnBoarding] = useState(true);
   const [api, setApi] = useState<CarouselApi | undefined>(undefined); // Allow no state when initialised
@@ -122,10 +122,8 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
         <div className="mt-[4vh] flex w-screen max-w-[50vh] items-center justify-between pl-[2.5vh] pr-[2.5vh]">
           <Button
             onClick={handleSkip}
-            className={
-              "headline hover:bg-light-mode text-penni-grey-inactive hover:text-penni-main"
-            }
-            variant="ghost" // Button variant
+            className="headline hover:bg-light-mode text-penni-grey-inactive hover:text-penni-main"
+            variant="ghost"
           >
             Skip
           </Button>
@@ -143,9 +141,7 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
           </div>
           <Button
             onClick={handleNext}
-            className={
-              "headline text-penni-main hover:bg-background hover:text-penni-text-regular-light-mode"
-            }
+            className="headline text-penni-main hover:bg-background hover:text-penni-text-regular-light-mode"
             variant="ghost"
           >
             {currentSlide === slides.length - 1 ? "Finish" : "Next"}
@@ -156,6 +152,4 @@ const OnBoarding: React.FC<OnBoardingProps> = ({
   ) : (
     <>{followingContent}</> // Ensure following content is direct child of parent (completely remove onboarding related tags)
   );
-};
-
-export default OnBoarding;
+}
