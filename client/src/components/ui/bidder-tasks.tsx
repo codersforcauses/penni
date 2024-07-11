@@ -3,14 +3,9 @@ import React, { useEffect, useState } from "react";
 
 import BottomNav from "./bottom-nav";
 import { Button } from "./button";
-// import GetUserTasks from "./search";
 import TaskCard from "./task-card";
 import TopNavtab from "./top-navtab";
 
-interface SearchTaskProp {
-  userID?: number;
-  state?: string;
-}
 interface Task {
   name: string;
   title: string;
@@ -22,14 +17,6 @@ interface Task {
   myOfferPrice: string;
   state: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   priceType: string;
-}
-
-async function GetUserTasks() {
-  const response = await fetch("/api/tasks-test");
-  if (!response.ok) {
-    throw new Error("Failed to fetch");
-  }
-  return response.json();
 }
 
 interface TaskListProps {
