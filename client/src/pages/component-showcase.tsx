@@ -73,6 +73,7 @@ export default function ComponentShowcase() {
           <Button variant="secondary">hello</Button>
           <Button variant="ghost">hello</Button>
           <Button variant="link">hello</Button>
+          <Button variant="inactive">hello</Button>
         </ComponentSection>
 
         <ComponentSection title="Callouts">
