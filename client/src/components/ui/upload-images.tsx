@@ -4,11 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 interface UploadImageProps {
   onImagesChange: (files: File[]) => void;
   showPreviews?: boolean;
+  maxImgs?: number;
 }
 
 export default function UploadImages({
   onImagesChange,
   showPreviews = true,
+  maxImgs = Infinity,
 }: UploadImageProps) {
   const [images, setImages] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -31,8 +33,12 @@ export default function UploadImages({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
-      setImages((prev) => [...prev, ...selectedFiles]);
-      onImagesChange([...images, ...selectedFiles]);
+      if (images.length + selectedFiles.length <= maxImgs) {
+        setImages((prev) => [...prev, ...selectedFiles]);
+        onImagesChange([...images, ...selectedFiles]);
+      } else {
+        alert(`You can only upload a maximum of ${maxImgs} images.`);
+      }
     }
   };
 
@@ -54,26 +60,28 @@ export default function UploadImages({
             />
           </div>
         ))}
-      <button
-        type="button"
-        onClick={handleClick}
-        className="relative mb-2 mr-2 flex h-24 w-24 items-center justify-center rounded-md border border-dashed border-gray-400"
-      >
-        <Image
-          src="/icons/upload_image.svg"
-          alt="Upload an image."
-          width={32}
-          height={32}
-        />
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          multiple
-          accept="image/*"
-          className="hidden"
-        />
-      </button>
+      {images.length < maxImgs && (
+        <button
+          type="button"
+          onClick={handleClick}
+          className="relative mb-2 mr-2 flex h-24 w-24 items-center justify-center rounded-md border border-dashed border-gray-400"
+        >
+          <Image
+            src="/icons/upload_image.svg"
+            alt="Upload an image."
+            width={32}
+            height={32}
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            multiple
+            accept="image/*"
+            className="hidden"
+          />
+        </button>
+      )}
     </div>
   );
 }

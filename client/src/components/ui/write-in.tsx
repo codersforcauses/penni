@@ -7,6 +7,7 @@ export interface WriteInFormData {
   subject: string;
   description: string;
   imgs?: File[];
+  maxImgs?: number;
 }
 
 interface WriteInProps {
@@ -19,10 +20,10 @@ interface WriteInProps {
 
 export default function WriteIn({
   imgUpload = false,
-  maxImgs = 0,
   onFormDataChange,
   className,
   showImagePreviews,
+  maxImgs,
 }: WriteInProps) {
   const [formData, setFormData] = useState<WriteInFormData>({
     subject: "",
@@ -88,6 +89,7 @@ export default function WriteIn({
           <UploadImages
             onImagesChange={handleFileChange}
             showPreviews={showImagePreviews}
+            maxImgs={maxImgs}
           />
         </>
       )}
