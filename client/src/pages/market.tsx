@@ -1,5 +1,7 @@
 import type { ReactElement } from "react";
+import React, { useState } from "react";
 
+import { MarketDropdown } from "@/components/ui/dropdown";
 import MeLayout from "@/components/ui/MeLayout";
 import TaskCard, { TaskCardProps } from "@/components/ui/task-card";
 
@@ -43,19 +45,51 @@ const MarketPage: NextPageWithLayout = () => {
       myOfferPrice: "90",
       priceType: "Estimated Price",
     },
+    {
+      id: "loo223",
+      state: "BIDDING",
+      category: "Cleaning",
+      title: "Clean the house",
+      date: "2024-07-15",
+      location: "789 Oak St",
+      duration: "4",
+      estimatePrice: "100",
+      myOfferPrice: "90",
+      priceType: "Estimated Price",
+    },
   ];
+  const [selectedCategory, setSelectedCategory] = useState("All Category");
+  const [selectedLocation, setSelectedLocation] = useState("All Location");
+  const categories = ["All Category", "Cleaning", "Painting", "Construction"];
+  const locations = ["All Location", "123 Main St", "456 Elm St", "789 Oak St"];
 
   return (
-    <>
-      {tasks.map((task) => (
-        <TaskCard key={task.id} {...task} />
-      ))}
-    </>
+    <MeLayout>
+      <div className="m-4 flex justify-start space-x-4">
+        <MarketDropdown
+          value={selectedCategory}
+          options={categories}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        />
+        <MarketDropdown
+          value={selectedLocation}
+          options={locations}
+          onChange={(e) => setSelectedLocation(e.target.value)}
+        />
+      </div>
+      {tasks
+        .filter(
+          (task) =>
+            (selectedCategory === "All Category" ||
+              task.category === selectedCategory) &&
+            (selectedLocation === "All Location" ||
+              task.location === selectedLocation),
+        )
+        .map((task) => (
+          <TaskCard key={task.id} {...task} />
+        ))}
+    </MeLayout>
   );
-};
-
-MarketPage.getLayout = function getLayout(page: ReactElement) {
-  return <MeLayout>{page}</MeLayout>;
 };
 
 export default MarketPage;
