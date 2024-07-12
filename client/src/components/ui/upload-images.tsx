@@ -46,6 +46,12 @@ export default function UploadImages({
     fileInputRef.current?.click();
   };
 
+  const handleRemoveImage = (index: number) => {
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
+    onImagesChange(newImages);
+  };
+
   return (
     <div className="flex flex-wrap items-center">
       {showPreviews &&
@@ -58,6 +64,17 @@ export default function UploadImages({
               objectFit="cover"
               className="rounded-md"
             />
+            <div
+              className="absolute inset-0 flex cursor-pointer items-center justify-center bg-gray-800 bg-opacity-50 opacity-0 transition-opacity hover:opacity-100"
+              onClick={() => handleRemoveImage(index)}
+            >
+              <Image
+                src="/icons/delete.svg"
+                alt="Remove an image."
+                width={32}
+                height={32}
+              />
+            </div>
           </div>
         ))}
       {images.length < maxImgs && (
