@@ -61,11 +61,6 @@ const Ping = () => {
 };
 
 export default function Home() {
-  const [clicked, setClicked] = useState(false);
-  const { data, isLoading } = usePings({
-    enabled: clicked,
-  });
-
   const slides = [
     {
       title: "Penni jobs for some extra cash",

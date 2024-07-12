@@ -1,22 +1,33 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect } from "react";
 
 interface CardProps {
   isVisible: boolean;
   onClose: () => void;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 /**
  * The popup card component.
  *
- * @param onClose - The function called when the component is closed.
- * @param children - (OPTIONAL) The children inside the popup.
- * @returns The card component.
+ * @param {CardProps} props - The props for the component.
+ * @param {boolean} prop.isVisible - The variable used to determine if the component is visible or not.
+ * @param {() => void} prop.onClose - The function called when the component is closed.
+ * @param {ReactNode} children - The children inside the popup. (OPTIONAL)
+ * @returns {JSX.Element} The card component.
  *
  * @example
- * <Card onClose={handleCardClose}> </Card>
+ * const [isCardVisible, setIsCardVisible] = useState(false);
+ * const toggleCardVisibility = () => {
+    setIsCardVisible((prev) => !prev);
+   };
+ * return ( ...
+      <Button onClick={toggleCardVisibility}>Show Card</Button>
+      <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
+        <p>Your card content goes here.</p>
+      </Card> ...
+   );
  */
-const Card: React.FC<CardProps> = ({ isVisible, onClose, children }) => {
+export default function Card({ isVisible, onClose, children }: CardProps) {
   useEffect(() => {
     if (isVisible) {
       document.body.style.overflow = "hidden"; // Prevent background scroll when the card is open
@@ -36,7 +47,7 @@ const Card: React.FC<CardProps> = ({ isVisible, onClose, children }) => {
   return (
     <>
       <div className="overlay" onClick={onClose}></div>
-      <div className="card-container z-50">
+      <div className="card-container z-50 p-2">
         <div className="card">
           <button className="close-button" onClick={onClose}>
             ✖
@@ -46,6 +57,4 @@ const Card: React.FC<CardProps> = ({ isVisible, onClose, children }) => {
       </div>
     </>
   );
-};
-
-export default Card;
+}
