@@ -157,18 +157,7 @@ const ChevronRightIcon: React.FC<BottomNavIconProps> = ({ className="text-penni-
   );
 };
 
-const Info: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#0B1920" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12 16V12" stroke="#0B1920" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12 8H12.01" stroke="#0B1920" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-
-  );
-};
-
-const Logout: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
+const LogoutIcon: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="#0B1920" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -179,7 +168,7 @@ const Logout: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warn
   );
 };
 
-const Settings: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
+const SettingsIcon: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_8084_947)">
@@ -196,7 +185,7 @@ const Settings: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-wa
   );
 };
 
-const Inbox: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
+const InboxIcon: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warning", ...props }) => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M22 12H16L14 15H10L8 12H2" stroke="#0B1920" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -206,4 +195,4 @@ const Inbox: React.FC<BottomNavIconProps> = ({ className="text-penni-alert-warni
   );
 };
 
-export { ChevronRightIcon, Inbox,Info, Logout, Settings };
+export { ChevronRightIcon, InboxIcon, LogoutIcon, SettingsIcon };
