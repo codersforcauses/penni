@@ -7,6 +7,22 @@ interface UploadImageProps {
   maxImgs?: number;
 }
 
+/**
+ * UploadImages component allows users to upload images and shows previews if enabled.
+ *
+ * @param {UploadImageProps} props - The props for the component.
+ * @param {function} props.onImagesChange - Callback function that gets called when images change.
+ * @param {boolean} [props.showPreviews=true] - Whether to show image previews. (OPTIONAL) (DEFAULT: True)
+ * @param {number} [props.maxImgs=Infinity] - Maximum number of images that can be uploaded. (OPTIONAL) (DEFAULT: Infinity)
+ * @returns {JSX.Element} The UploadImages component.
+ * 
+ * @example
+ * <UploadImages
+      onImagesChange={handleFileChange}
+      showPreviews={showImagePreviews}
+      maxImgs={maxImgs}
+    />
+ */
 export default function UploadImages({
   onImagesChange,
   showPreviews = true,

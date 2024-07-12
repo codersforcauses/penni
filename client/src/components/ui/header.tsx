@@ -10,6 +10,18 @@ interface HeaderProps {
   hideBackButton?: boolean; // Optional prop to hide the back button
 }
 
+/**
+ * Header component that displays a title and optionally a back button.
+ *
+ * @param {HeaderProps} props - The props for the component.
+ * @param {string} props.title - Title of the header.
+ * @param {boolean} [props.hideBackButton=false] - Flag to hide the back button. (OPTIONAL) (DEFAULT: False)
+ * @param {string} [props.className] - Additional CSS classes to apply to the component. (OPTIONAL)
+ * @returns {JSX.Element} The Header component.
+ *
+ * @example
+ * <Header title="Report a problem" />
+ */
 export default function Header({
   title,
   className,

@@ -17,6 +17,25 @@ interface WriteInProps {
   className?: string;
 }
 
+/**
+ * WriteIn component allows users to input a subject, description, and optionally upload images.
+ *
+ * @param {WriteInProps} props - The props for the component.
+ * @param {function} props.onFormDataChange - Callback function that gets called when form data changes.
+ * @param {boolean} [props.imgUpload=false] - Whether to allow image uploads. (OPTIONAL) (DEFAULT: False)
+ * @param {number} [props.maxImgs] - Maximum number of images that can be uploaded. (OPTIONAL)
+ * @param {boolean} [props.showImagePreviews] - Whether to show image previews. (OPTIONAL)
+ * @param {string} [props.className] - Additional CSS classes to apply to the component. (OPTIONAL)
+ * @returns {JSX.Element} The WriteIn component.
+ *
+ * @example
+ * <WriteIn
+      imgUpload={true}
+      onFormDataChange={handleFormDataChange}
+      className="flex-grow"
+      maxImgs={5}
+   />
+ */
 export default function WriteIn({
   imgUpload = false,
   onFormDataChange,

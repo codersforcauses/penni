@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/ui/header";
 import WriteIn, { WriteInFormData } from "@/components/ui/write-in";
 
+/**
+ * The Report component allows users to report a problem by filling out a form with a subject, description, and optional images.
+ *
+ * @returns {JSX.Element} The Report component.
+ */
 export default function Report() {
   const [formReady, setFormReady] = useState(false);
   const [formData, setFormData] = useState<WriteInFormData>({
