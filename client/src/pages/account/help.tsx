@@ -1,6 +1,7 @@
 import Link from "next/link";
+import React from "react";
 
-import Header from "@/components/ui/Header";
+import Header from "@/components/ui/header";
 import { InfoIcon } from "@/components/ui/icons";
 import { ProfileTag } from "@/components/ui/profile_page_tags";
 
