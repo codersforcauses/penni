@@ -1,4 +1,3 @@
-
 import Image from "next/image"; // Use more efficient image tag
 import React, { useEffect, useState } from "react";
 
