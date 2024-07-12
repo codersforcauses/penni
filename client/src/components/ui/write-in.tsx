@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import UploadImages from "./upload-images";
@@ -11,11 +10,11 @@ export interface WriteInFormData {
 }
 
 interface WriteInProps {
+  onFormDataChange: (data: WriteInFormData) => void;
   imgUpload?: boolean;
   maxImgs?: number;
-  onFormDataChange: (data: WriteInFormData) => void;
-  className?: string;
   showImagePreviews?: boolean;
+  className?: string;
 }
 
 export default function WriteIn({
