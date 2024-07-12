@@ -18,15 +18,19 @@ export default function UploadImages({
 
   // Generate image previews and clean up URLs
   useEffect(() => {
-    if (showPreviews && images.length) {
-      const previewsArray = images.map((file) => URL.createObjectURL(file));
-      setPreviews(previewsArray);
+    if (showPreviews) {
+      if (images.length) {
+        const previewsArray = images.map((file) => URL.createObjectURL(file));
+        setPreviews(previewsArray);
 
-      // Clean up the URLs when component unmounts or imgs change
-      // Without this the uploaded image was flickering
-      return () => {
-        previewsArray.forEach((url) => URL.revokeObjectURL(url));
-      };
+        // Clean up the URLs when component unmounts or imgs change
+        // Without this the uploaded image was flickering
+        return () => {
+          previewsArray.forEach((url) => URL.revokeObjectURL(url));
+        };
+      } else {
+        setPreviews([]); // Clear previews if there are no images
+      }
     }
   }, [images, showPreviews]);
 
@@ -34,8 +38,9 @@ export default function UploadImages({
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
       if (images.length + selectedFiles.length <= maxImgs) {
-        setImages((prev) => [...prev, ...selectedFiles]);
-        onImagesChange([...images, ...selectedFiles]);
+        const newImages = [...images, ...selectedFiles];
+        setImages(newImages);
+        onImagesChange(newImages);
       } else {
         alert(`You can only upload a maximum of ${maxImgs} images.`);
       }
