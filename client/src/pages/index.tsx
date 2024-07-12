@@ -15,10 +15,11 @@ const fontSans = FontSans({
 export default function Home() {
   const [clicked, setClicked] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
-  const [showCard, setShowCard] = useState(false);
   const { data, isLoading } = usePings({
     enabled: clicked,
   });
+
+  const [isCardVisible, setIsCardVisible] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -27,8 +28,8 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleCardClose = () => {
-    setShowCard(false);
+  const toggleCardVisibility = () => {
+    setIsCardVisible((prev) => !prev);
   };
 
   if (showSplash) {
@@ -37,8 +38,10 @@ export default function Home() {
 
   return (
     <main className={cn("flex min-h-screen flex-col items-center gap-4 p-24")}>
-      <Button onClick={() => setShowCard(true)}>Show Card</Button>{" "}
-      {showCard && <Card onClose={handleCardClose}> </Card>}
+      <Button onClick={toggleCardVisibility}>Show Card</Button>
+      <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
+        <p>Your card content goes here.</p>
+      </Card>
     </main>
   );
 }

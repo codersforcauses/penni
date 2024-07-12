@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 
 interface CardProps {
+  isVisible: boolean;
   onClose: () => void;
   children: ReactNode;
 }
@@ -15,28 +16,35 @@ interface CardProps {
  * @example
  * <Card onClose={handleCardClose}> </Card>
  */
-const Card: React.FC<CardProps> = ({ onClose, children }) => {
-  const [isVisible, setIsVisible] = useState(true);
+const Card: React.FC<CardProps> = ({ isVisible, onClose, children }) => {
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden"; // Prevent background scroll when the card is open
+    } else {
+      document.body.style.overflow = "auto";
+    }
 
-  const handleClose = () => {
-    setIsVisible(false);
-    onClose();
-  };
+    return () => {
+      document.body.style.overflow = "auto"; // Cleanup on unmount
+    };
+  }, [isVisible]);
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
-    isVisible && (
-      <>
-        <div className="overlay" onClick={handleClose}></div>
-        <div className="card-container z-50">
-          <div className="card">
-            <button className="close-button" onClick={handleClose}>
-              ✖
-            </button>
-            {children}
-          </div>
+    <>
+      <div className="overlay" onClick={onClose}></div>
+      <div className="card-container z-50">
+        <div className="card">
+          <button className="close-button" onClick={onClose}>
+            ✖
+          </button>
+          {children}
         </div>
-      </>
-    )
+      </div>
+    </>
   );
 };
 
