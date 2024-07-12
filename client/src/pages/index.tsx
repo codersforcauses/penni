@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import OnBoarding from "@/components/on-boarding";
 import { Button } from "@/components/ui/button";
-import Card from "@/components/ui/Card";
+import Card from "@/components/ui/card";
 import SplashScreen from "@/components/ui/splash-screen";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
