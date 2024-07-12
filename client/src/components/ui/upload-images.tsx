@@ -19,8 +19,7 @@ interface UploadImageProps {
  * @example
  * <UploadImages
       onImagesChange={handleFileChange}
-      showPreviews={showImagePreviews}
-      maxImgs={maxImgs}
+      maxImgs={5}
     />
  */
 export default function UploadImages({
