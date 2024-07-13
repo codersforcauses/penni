@@ -272,6 +272,7 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Task Card">
           <TaskCard
+            id="abc124"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -283,6 +284,7 @@ export default function ComponentShowcase() {
             priceType="Estimated Price"
           />
           <TaskCard
+            id="abc125"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -294,6 +296,7 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            id="abc126"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -305,6 +308,7 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            id="abc127"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -316,6 +320,7 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            id="abc128"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"

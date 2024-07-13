@@ -4,9 +4,11 @@ import React, { useState } from "react";
 
 import { ChevronRightIcon } from "./icons"; // Adjust the import path as necessary
 
-// Define the props for ProfileTag
-interface ProfileTagProps {
-  icon: string | React.ElementType;
+// the props
+export interface TaskCardProps {
+  id: string;
+  state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
+  category: string;
   title: string;
   description: string;
   link?: string;
