@@ -12,12 +12,16 @@ import { MarketDropdown } from "@/components/ui/dropdown";
 import EmptyListDisplay from "@/components/ui/empty-list-display";
 import { Form } from "@/components/ui/form";
 import {
+  ChevronRightIcon,
   DropdownIcon,
   EditIcon,
+  InboxIcon,
   InfoIcon,
+  LogoutIcon,
   MarketIcon,
   MeIcon,
   MyTasksIcon,
+  SettingsIcon,
 } from "@/components/ui/icons";
 import {
   DropdownInput,
@@ -25,6 +29,7 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
+import ProfileTag from "@/components/ui/profile-tags";
 import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
 
@@ -112,8 +117,12 @@ export default function ComponentShowcase() {
             <SuccessCallout text="Success callout" />,
             <WarningCallout text="Warning callout" />,
             <ErrorCallout text="Error callout" />,
-          ].map((callout) => {
-            return <div className="w-full px-4 py-3">{callout}</div>;
+          ].map((callout, index) => {
+            return (
+              <div key={index} className="w-full px-4 py-3">
+                {callout}
+              </div>
+            );
           })}
         </ComponentSection>
 
@@ -126,6 +135,10 @@ export default function ComponentShowcase() {
           <EditIcon strokeColour="penni-alert-error" />
           <InfoIcon />
           <DropdownIcon />
+          <InboxIcon />
+          <LogoutIcon />
+          <SettingsIcon />
+          <ChevronRightIcon />
         </ComponentSection>
 
         <ComponentSection title="Inputs">
@@ -259,6 +272,7 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Task Card">
           <TaskCard
+            id="abc124"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -270,6 +284,7 @@ export default function ComponentShowcase() {
             priceType="Estimated Price"
           />
           <TaskCard
+            id="abc125"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -281,6 +296,7 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            id="abc126"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -292,6 +308,7 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            id="abc127"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -303,6 +320,7 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
+            id="abc128"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -320,6 +338,20 @@ export default function ComponentShowcase() {
             onChange={(e) => setSelectedDropdown(e.target.value)}
           />
           <EmptyListDisplay type="poster" />
+        </ComponentSection>
+        <ComponentSection title="Profile Tags">
+          <ProfileTag
+            icon={InfoIcon}
+            title="About"
+            description="Lorem ipsum dolor sit amet."
+            link="/profile/about"
+          />
+          <ProfileTag
+            icon={LogoutIcon} // Pass the component directly
+            title="Logout"
+            description=""
+            nestedContent={<div>Logout content goes here</div>} // Use nested content for Logout
+          />
         </ComponentSection>
       </div>
     </div>
