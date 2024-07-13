@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import UploadImages from "./upload-images";
+import UploadImages from "@/components/ui/upload-images";
 
 export interface WriteInFormData {
   subject: string;
