@@ -37,10 +37,14 @@ export default function Header({
   return (
     <div
       id="header"
-      className={`flex flex-grow-0 flex-row items-center justify-center bg-penni-background-light-mode px-4 pb-4 pt-6 ${className}`}
+      className={`relative flex flex-grow-0 flex-row items-center justify-center bg-penni-background-light-mode px-4 pb-4 pt-6 ${className}`}
     >
       {!hideBackButton && (
-        <Button onClick={handleBackClick} variant="link">
+        <Button
+          onClick={handleBackClick}
+          variant="link"
+          className="absolute left-4 top-1/2 -translate-y-1/2 transform"
+        >
           <Image
             src="/icons/arrow_back.svg"
             alt="Back"
