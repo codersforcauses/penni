@@ -5,6 +5,7 @@ import OnBoarding from "@/components/on-boarding";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
+import TaskDetails from "../components/task-details";
 import { Button } from "../components/ui/button";
 import SplashScreen from "../components/ui/splash-screen";
 
@@ -22,7 +23,6 @@ const Ping: React.FC<PingProps> = ({ clicked, setClicked }) => {
   const { data, isLoading } = usePings({
     enabled: clicked,
   });
-
   return (
     <main
       className={cn(
