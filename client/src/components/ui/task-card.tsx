@@ -1,8 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
-import { ChevronRightIcon } from "./icons"; // Adjust the import path as necessary
+// please try to understand the "pricetype", not sure if we need to do useState for this part
 
 // the props
 export interface TaskCardProps {
@@ -10,65 +9,95 @@ export interface TaskCardProps {
   state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   category: string;
   title: string;
-  description: string;
-  link?: string;
-  nestedContent?: React.ReactNode;
+  date: string;
+  location: string;
+  duration: string;
+  estimatePrice: string;
+  myOfferPrice: string;
+  priceType: "Estimated Price" | "My Offer";
 }
 
-const ProfileTag: React.FC<ProfileTagProps> = ({
-  icon,
+// the task card
+const TaskCard = ({
   title,
-  description,
-  link,
-  nestedContent,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const IconComponent = typeof icon === "string" ? null : icon;
-
-  const handleClick = () => {
-    if (nestedContent) {
-      setIsOpen(!isOpen);
-    }
-  };
-
+  category,
+  date,
+  location,
+  duration,
+  estimatePrice,
+  myOfferPrice,
+  state,
+  priceType,
+}: TaskCardProps) => {
   return (
     <div
-      className="relative flex flex-col bg-white"
-      style={{ height: "64px", width: "375px" }}
+      className={`m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
     >
-      <Link href={link || "#"} onClick={handleClick}>
-        <div className="flex cursor-pointer items-center justify-between p-4 hover:bg-gray-100">
-          <div className="flex items-center">
-            <div className="ml-4 mr-4 h-6 w-6">
-              {IconComponent ? (
-                <IconComponent className="h-full w-full" />
-              ) : (
-                <Image
-                  src={icon as string}
-                  alt={title}
-                  width={24}
-                  height={24}
-                />
-              )}
+      {/* the state (expried or bidding) */}
+      {state && (
+        <div
+          className={`footnote inline-block rounded-lg px-3 py-1.5 font-medium ${state === "BIDDING" ? "bg-blue-100 text-blue-800" : state === "ONGOING" ? "bg-orange-100 text-orange-700" : state === "COMPLETED" ? "bg-green-100 text-green-700" : "bg-gray-300 text-gray-700"}`}
+        >
+          {state}
+        </div>
+      )}
+
+      {/* the category & title (in 1 column) */}
+      <div className="mb-4 mt-2">
+        <h5 className="footnote mb-1 mt-1 text-gray-500">{category}</h5>
+        <h3 className="body-medium">{title}</h3>
+      </div>
+
+      {/* the date, location, duration & Price, price type (estimate or myoffer price)   (in 2 columns)*/}
+      <div className="mb-2 grid grid-cols-2 items-center gap-8 text-sm">
+        {/* Column 1 with icons */}
+        <div className="flex flex-col space-y-2">
+          <div className="flex items-center space-x-2">
+            <div className="relative h-4 w-4">
+              <Image
+                src="/icons/calendar.svg"
+                alt="Date"
+                layout="fill"
+                objectFit="contain"
+              />
             </div>
-            <div>
-              <h3 className="text-hb font-normal leading-hb text-penni-text-regular-light-mode">
-                {title}
-              </h3>
-              <p className="text-fn font-normal leading-fn text-penni-text-secondary-light-mode">
-                {description}
-              </p>
-            </div>
+            <p className="subheadline text-gray-500">{date}</p>
           </div>
-          <div className="absolute right-8 top-5">
-            <ChevronRightIcon className="h-6 w-6 text-gray-400" />
+          <div className="flex items-center space-x-2">
+            <div className="relative h-4 w-4">
+              <Image
+                src="/icons/marker.svg"
+                alt="Location"
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+            <p className="subheadline text-gray-500">{location}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <div className="relative h-4 w-4">
+              <Image
+                src="/icons/clock.svg"
+                alt="Duration"
+                layout="fill"
+                objectFit="contain"
+              />
+            </div>
+            <p className="subheadline text-gray-500">{duration} hours</p>
           </div>
         </div>
-      </Link>
-      {nestedContent && isOpen && <div className="p-4">{nestedContent}</div>}
-      <div className="w-full border-t border-penni-grey-border-light-mode"></div>
+
+        {/* Column 2 */}
+        <div className="flex flex-col space-y-2 text-right">
+          <p className="title3">
+            {/* show the different price based on the different price type */}$
+            {priceType === "My Offer" ? myOfferPrice : estimatePrice}
+          </p>
+          <p className="caption">{priceType}</p>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default ProfileTag;
+export default TaskCard;
