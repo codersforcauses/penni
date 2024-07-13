@@ -100,7 +100,7 @@ DATABASES = {
         "NAME": os.environ.get("POSTGRES_NAME") or "postgres",
         "USER": os.environ.get("POSTGRES_USER") or "postgres",
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD") or "password",
-        "HOST": os.environ.get("POSTGRES_HOST") or "host.docker.internal",
+        "HOST": "host.docker.internal",
         "PORT": os.environ.get("POSTGRES_PORT") or 5432,
     }
 }
