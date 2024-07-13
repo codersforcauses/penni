@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import React, { useState } from "react";
 
 import { MarketDropdown } from "@/components/ui/dropdown";
-import MeLayout from "@/components/ui/MeLayout";
+import MeLayout from "@/components/ui/me-page";
 import TaskCard, { TaskCardProps } from "@/components/ui/task-card";
 
 import type { NextPageWithLayout } from "./_app";

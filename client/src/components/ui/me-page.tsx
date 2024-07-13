@@ -1,3 +1,5 @@
+//this page is the personla page payout
+
 import { ReactNode } from "react";
 
 import BottomNav from "./bottom-nav";

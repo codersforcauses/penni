@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import MeLayout from "@/components/ui/MeLayout";
+import MeLayout from "@/components/ui/me-page";
 
 import type { NextPageWithLayout } from "./_app";
 
