@@ -5,7 +5,6 @@ import React from "react";
 
 // the props
 export interface TaskCardProps {
-  id: string;
   state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   category: string;
   title: string;
