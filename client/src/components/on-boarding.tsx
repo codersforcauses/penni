@@ -18,6 +18,7 @@ interface Slide {
 interface OnBoardingProps {
   followingContent: React.ReactNode; // Content to follow onboarding carousel
   slides: Slide[]; // Slides used for onboarding to be passed as a prop
+  onComplete: () => void; // Completion callback
 }
 
 /**
@@ -43,11 +44,12 @@ interface OnBoardingProps {
  *   img: "/img/OnBoarding/carousel-3.svg",
  *  }
  * ];
- * <OnBoarding followingContent={<Ping />} slides={slides}
+ * <OnBoarding followingContent={<Ping />} slides={slides} onComplete={handleOnBoardingComplete} />
  */
 export default function OnBoarding({
   followingContent,
   slides,
+  onComplete,
 }: OnBoardingProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showOnBoarding, setShowOnBoarding] = useState(true);
@@ -72,6 +74,7 @@ export default function OnBoarding({
   // Skip onboarding carousel
   const handleSkip = () => {
     setShowOnBoarding(false);
+    onComplete(); // Call onComplete when skipping
   };
 
   // Move to next slide or finish if on last slide
@@ -82,13 +85,6 @@ export default function OnBoarding({
       } else {
         handleSkip();
       }
-    }
-  };
-
-  // Move to previous slide if not at first slide (....not used in design)
-  const handlePrev = () => {
-    if (currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
     }
   };
 
