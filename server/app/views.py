@@ -38,22 +38,22 @@ class BidsViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(detail=True, methods=['post'])
-    def accept(self, request, pk=None):
-        bid = self.get_object()
-        bid.status = 'accepted'
-        bid.save()
-        return Response({'status': 'success', 'message': 'Bid accepted.'})
+    def change_bid_status(self, request, pk=None):
+        valid_statuses = ['accepted', 'rejected', 'pending']
+        action_type = request.data.get('action_type')
 
-    @action(detail=True, methods=['post'])
-    def reject(self, request, pk=None):
-        bid = self.get_object()
-        bid.status = 'rejected'
-        bid.save()
-        return Response({'status': 'success', 'message': 'Bid rejected.'})
+        if action_type not in valid_statuses:
+            return Response({'status': 'error', 'message': 'Invalid action type.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'])
-    def pending(self, request, pk=None):
         bid = self.get_object()
-        bid.status = 'pending'
+        bid.status = action_type
         bid.save()
-        return Response({'status': 'success', 'message': 'Bid pending.'})
+
+        action_messages = {
+            'accepted': 'Bid accepted.',
+            'rejected': 'Bid rejected.',
+            'pending': 'Bid pending.'
+        }
+
+        return Response({'status': 'success', 'message': action_messages[action_type]})
+

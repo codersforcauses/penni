@@ -7,21 +7,7 @@ bids_list = BidsViewSet.as_view({
     'post': 'create'
 })
 
-bids_accept = BidsViewSet.as_view({
-    'post': 'accept'
-})
-
-bids_reject = BidsViewSet.as_view({
-    'post': 'reject'
-})
-
-bids_pending = BidsViewSet.as_view({
-    'post': 'pending'
-})
-
 urlpatterns = [
     path('tasks/<int:task_id>/bids/', bids_list, name='bids-list'),
-    path('tasks/<int:task_id>/bids/<int:pk>/accept/', bids_accept, name='bids-accept'),
-    path('tasks/<int:task_id>/bids/<int:pk>/reject/', bids_reject, name='bids-reject'),
-    path('tasks/<int:task_id>/bids/<int:pk>/review/', bids_pending, name='bids-pending'),
+    path('tasks/<int:task_id>/bids/<int:pk>/change_status/', BidsViewSet.as_view({'post': 'change_bid_status'}), name='bids-change-status'),
 ]
