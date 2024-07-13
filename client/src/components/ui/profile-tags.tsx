@@ -4,19 +4,6 @@ import React, { useState } from "react";
 
 import { ChevronRightIcon } from "./icons";
 
-// Example usecase:
-/* <ProfileTag
-        icon={Logout} // Pass the component directly
-        title="Logout"
-        description=""
-        nestedContent={<div>Logout content goes here</div>} // Use nested content for Logout
-        or 
-        link="/profile/about"
-        or 
-        link="https://example.com"
-      />
-*/
-// Define the props for the ProfileTag component
 interface ProfileTagProps {
   icon: string | React.ElementType;
   title: string;
@@ -25,7 +12,38 @@ interface ProfileTagProps {
   nestedContent?: React.ReactNode;
 }
 
-// ProfileTag component definition
+/**
+ * ProfileTag component displays a profile tag with an icon, title, description, and optional nested content.
+ *
+ * @param {object} props - Props for the ProfileTag component.
+ * @param {string | React.ElementType} props.icon - Icon to display. It can be a URL string or a React component.
+ * @param {string} props.title - Title of the profile tag.
+ * @param {string} props.description - Description of the profile tag.
+ * @param {string} [props.link] - Optional link URL. If provided, clicking the tag will navigate to this URL.
+ * @param {React.ReactNode} [props.nestedContent] - Optional nested content to display when the tag is clicked.
+ *
+ * @returns {React.FC<ProfileTagProps>} The ProfileTag component.
+ *
+ * @example
+ * // Usage with a URL icon and link
+ * <ProfileTag
+ *   icon="/icons/user-icon.png"
+ *   title="Profile"
+ *   description="View and edit your profile"
+ *   link="/profile"
+ * />
+ *
+ * @example
+ * // Usage with a React component icon and nested content
+ * import { LogoutIcon } from "./icons";
+ * <ProfileTag
+ *   icon={LogoutIcon}
+ *   title="Logout"
+ *   description=""
+ *   nestedContent={<div>Logout content goes here</div>}
+ * />
+ */
+
 const ProfileTag: React.FC<ProfileTagProps> = ({
   icon,
   title,
@@ -33,16 +51,12 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
   link,
   nestedContent,
 }) => {
-  // useState hook to manage the state of the nested content visibility
   const [isOpen, setIsOpen] = useState(false);
-
-  // Determine if the icon is a string (URL) or a React component
   const IconComponent = typeof icon === "string" ? null : icon;
 
-  // Function to handle click events
   const handleClick = () => {
     if (nestedContent) {
-      setIsOpen(!isOpen); // Toggle the isOpen state
+      setIsOpen(!isOpen);
     }
   };
 
