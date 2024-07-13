@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Tab {
   name: string;
@@ -15,7 +15,6 @@ export default function TopNavtab({ tabs, isFixed = false }: TopNavtabProps) {
 
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
-    // console.log(`Active tab is now: ${tabName}`);
   };
 
   const buttonClass = (tabName: string) =>
@@ -36,7 +35,7 @@ export default function TopNavtab({ tabs, isFixed = false }: TopNavtabProps) {
     <div className="relative flex w-full flex-col">
       <div
         ref={targetDivRef}
-        className={`${isFixed ? "fixed top-0" : ""} z-40 flex w-full border-b bg-white`}
+        className={`${isFixed ? "fixed top-0" : ""} z-40 flex w-full border-b bg-penni-background-light-mode`}
       >
         {tabs.map((tab) => (
           <button

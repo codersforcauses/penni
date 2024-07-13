@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import EmptyListDisplay from "./empty-list-display";
 import TaskCard from "./task-card";
@@ -29,7 +29,7 @@ const filterTasks = (tasks: Task[], name: string, states: string[]) => {
   );
 };
 
-const TaskList = ({ name, state }: TaskListProps) => {
+function TaskList({ name, state }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +108,7 @@ const TaskList = ({ name, state }: TaskListProps) => {
       </div>
     );
   }
-};
+}
 
 interface BidderMyTasksProp {
   name: string;
