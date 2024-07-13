@@ -2,7 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import Tasks
-from .serialiser import TasksSerializer
+from .serialiser import TasksSerializer, UsersSerializer
 
 
 class TasksViewSet(viewsets.ModelViewSet):
@@ -14,8 +14,10 @@ class TasksViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             task = serializer.save(status='open')
+            owner_data = UsersSerializer(task.owner_id).data
             response_data = {
                 'task_id': task.task_id,
+                'user': owner_data,
                 'status': 'success',
                 'message': 'Task created successfully.'
             }
