@@ -5,6 +5,17 @@ interface Tab {
   content: React.ReactNode;
 }
 
+/**
+ * use case is as follows:
+ * 
+ * 
+ * const tabData = [
+  { name: 'Task Details', content: <div>Content for Task Details</div> },
+  { name: 'Other Details', content: <div>Content for Other Details</div> }
+];
+
+<TopNavtab tabs={tabData} />
+ */
 interface TopNavtabProps {
   tabs: Tab[];
 }
