@@ -10,13 +10,13 @@ export default function Help() {
       <Header title="Help centre" />
       <div className="h-[0.12rem] grow-0 bg-penni-background-input-light-mode pt-3"></div>
       <div className="flex flex-grow flex-col overflow-auto">
+        <ProfileTag icon={InfoIcon} title="Contact us" description="" />
         <ProfileTag
           icon={InfoIcon}
           title="Report a problem"
           description=""
           link="/account/report"
         />
-        <ProfileTag icon={InfoIcon} title="Contact us" description="" />
       </div>
     </div>
   );
