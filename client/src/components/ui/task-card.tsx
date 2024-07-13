@@ -4,7 +4,8 @@ import React from "react";
 // please try to understand the "pricetype", not sure if we need to do useState for this part
 
 // the props
-interface TaskCardProps {
+export interface TaskCardProps {
+  id: string;
   state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   category: string;
   title: string;
