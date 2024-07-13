@@ -81,22 +81,22 @@ body {
 
 /* Card Container */
 .card-container {
-  @apply fixed bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-96 bg-white rounded-t-lg shadow-lg;
+  @apply fixed bottom-0 left-1/2 h-96 w-72 -translate-x-1/2 transform rounded-t-lg bg-white shadow-lg;
   animation: slide-up 0.3s ease-out;
 }
 
 /* Card */
 .card {
-  @apply p-4 relative;
+  @apply relative p-4;
 }
 
 /* Close Button */
 .close-button {
-  @apply absolute top-2 right-2 bg-transparent border-none text-lg cursor-pointer;
+  @apply absolute right-2 top-2 cursor-pointer border-none bg-transparent text-lg;
 }
 
 .overlay {
-  @apply fixed inset-0 bg-black bg-opacity-50 z-40;
+  @apply fixed inset-0 z-40 bg-black bg-opacity-50;
 }
 
 @keyframes slide-up {
