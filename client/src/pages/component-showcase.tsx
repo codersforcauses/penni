@@ -29,6 +29,7 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
+import PosterTaskCard from "@/components/ui/poster/task-card";
 import ProfileTag from "@/components/ui/profile-tags";
 import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
@@ -351,6 +352,32 @@ export default function ComponentShowcase() {
             title="Logout"
             description=""
             nestedContent={<div>Logout content goes here</div>} // Use nested content for Logout
+          />
+        </ComponentSection>
+        <ComponentSection title="Poster Task Card">
+          <PosterTaskCard
+            state="BIDDING"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={8}
+          />
+          <PosterTaskCard
+            state="ONGOING"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={10}
+          />
+          <PosterTaskCard
+            state="COMPLETED"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={20}
+          />
+          <PosterTaskCard
+            state="EXPIRED"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={8}
           />
         </ComponentSection>
       </div>
