@@ -20,6 +20,7 @@ const buttonVariants = cva(
         pay: `bg-penni-main text-white subheadline rounded-penni-special`,
         finish: `bg-penni-grey-finished text-penni-text-finish body-medium rounded-penni-special`,
         cutout: `bg-white text-penni-main headline border border-2 border-penni-main rounded-lg border-solid`,
+        round: `bg-penni-grey-finished text-black headline rounded-full hover:text-white hover:bg-black`,
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -30,6 +31,7 @@ const buttonVariants = cva(
         floating: "w-32 h-10",
         pay: "w-14 h-6",
         finish: "w-full h-14",
+        round: "w-14 h-14",
       },
     },
     defaultVariants: {
