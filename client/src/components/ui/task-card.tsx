@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useState } from 'react';
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
 
-import { ChevronRightIcon } from './icons'; // Adjust the import path as necessary
+import { ChevronRightIcon } from "./icons"; // Adjust the import path as necessary
 
 // Define the props for ProfileTag
 interface ProfileTagProps {
@@ -13,9 +13,15 @@ interface ProfileTagProps {
   nestedContent?: React.ReactNode;
 }
 
-const ProfileTag: React.FC<ProfileTagProps> = ({ icon, title, description, link, nestedContent }) => {
+const ProfileTag: React.FC<ProfileTagProps> = ({
+  icon,
+  title,
+  description,
+  link,
+  nestedContent,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const IconComponent = typeof icon === 'string' ? null : icon;
+  const IconComponent = typeof icon === "string" ? null : icon;
 
   const handleClick = () => {
     if (nestedContent) {
@@ -24,33 +30,41 @@ const ProfileTag: React.FC<ProfileTagProps> = ({ icon, title, description, link,
   };
 
   return (
-    <div className="relative flex flex-col bg-white" style={{ height: '64px', width: '375px' }}>
+    <div
+      className="relative flex flex-col bg-white"
+      style={{ height: "64px", width: "375px" }}
+    >
       <Link href={link || "#"} onClick={handleClick}>
-        <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100">
+        <div className="flex cursor-pointer items-center justify-between p-4 hover:bg-gray-100">
           <div className="flex items-center">
-            <div className="w-6 h-6 mr-4 ml-4">
+            <div className="ml-4 mr-4 h-6 w-6">
               {IconComponent ? (
-                <IconComponent className="w-full h-full" />
+                <IconComponent className="h-full w-full" />
               ) : (
-                <Image src={icon as string} alt={title} width={24} height={24} />
+                <Image
+                  src={icon as string}
+                  alt={title}
+                  width={24}
+                  height={24}
+                />
               )}
             </div>
             <div>
-              <h3 className="text-hb leading-hb font-normal text-penni-text-regular-light-mode">{title}</h3>
-              <p className="text-fn leading-fn font-normal text-penni-text-secondary-light-mode">{description}</p>
+              <h3 className="text-hb font-normal leading-hb text-penni-text-regular-light-mode">
+                {title}
+              </h3>
+              <p className="text-fn font-normal leading-fn text-penni-text-secondary-light-mode">
+                {description}
+              </p>
             </div>
           </div>
           <div className="absolute right-8 top-5">
-            <ChevronRightIcon className="w-6 h-6 text-gray-400" />
+            <ChevronRightIcon className="h-6 w-6 text-gray-400" />
           </div>
         </div>
       </Link>
-      {nestedContent && isOpen && (
-        <div className="p-4">
-          {nestedContent}
-        </div>
-      )}
-      <div className="border-t border-penni-grey-border-light-mode w-full"></div>
+      {nestedContent && isOpen && <div className="p-4">{nestedContent}</div>}
+      <div className="w-full border-t border-penni-grey-border-light-mode"></div>
     </div>
   );
 };
