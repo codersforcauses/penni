@@ -1,11 +1,10 @@
-import type { ReactElement } from "react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { MarketDropdown } from "@/components/ui/dropdown";
 import MeLayout from "@/components/ui/me-page";
 import TaskCard, { TaskCardProps } from "@/components/ui/task-card";
 
-import type { NextPageWithLayout } from "./_app";
+import type { NextPageWithLayout } from "../_app";
 
 const MarketPage: NextPageWithLayout = () => {
   const tasks: TaskCardProps[] = [

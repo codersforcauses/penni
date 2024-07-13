@@ -23,12 +23,14 @@ const iconLists: Icon[] = [
     alt: "Icon of my tasks",
     text: "My Tasks",
     id: 0,
+    link: "/bidder",
   },
   {
     IconComponent: MarketIcon,
     alt: "Icon of market",
     text: "Market",
     id: 1,
+    link: "/bidder/market",
   },
   {
     IconComponent: MeIcon,
