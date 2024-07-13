@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
-import TaskDetails from "../components/TaskDetails";
+import TaskDetails from "../components/task-details";
 import { Button } from "../components/ui/button";
 import SplashScreen from "../components/ui/SplashScreen";
 
