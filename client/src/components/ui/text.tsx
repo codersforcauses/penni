@@ -14,7 +14,11 @@ interface ParagraphProps {
 }
 
 export const Heading: React.FC<HeadingProps> = ({ text }) => {
-  return <div className="body-medium pb-2.5 pt-7 text-penni-text-regular-light-mode">{text}</div>;
+  return (
+    <div className="body-medium pb-2.5 pt-7 text-penni-text-regular-light-mode">
+      {text}
+    </div>
+  );
 };
 
 export const Subheading: React.FC<SubheadingProps> = ({ text, children }) => {
