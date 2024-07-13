@@ -3,6 +3,8 @@ from .models import Profiles
 
 
 class ProfleSerializer(serializers.ModelSerializer):
+    image_url = serializers.ImageField(required=False)
+
     class Meta:
         model = Profiles
         fields = '__all__'

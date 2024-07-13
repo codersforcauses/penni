@@ -16,6 +16,7 @@ gunicorn = "^22.0.0"
 python-dotenv = "^1.0.1"
 drf-yasg = "^1.21.7"
 setuptools = "^70.2.0"
+pillow = "^10.4.0"
 
 
 [tool.poetry.group.dev.dependencies]

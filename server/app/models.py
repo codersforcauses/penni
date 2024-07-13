@@ -43,7 +43,7 @@ class Profiles(models.Model):
     profile_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
-    avatar_url = models.CharField(max_length=255, blank=True)
+    avatar_url = models.ImageField(upload_to="avatars/", blank=True, null=True)
     bio = models.TextField(blank=True)
 
     def __str__(self):
@@ -55,8 +55,6 @@ class Profiles(models.Model):
         super().clean()
         if any(char.isdigit() for char in self.full_name):
             raise ValidationError({'full_name': 'Full name must not contain numbers.'})
-        if not self.avatar_url.startswith('http://') and not self.avatar_url.startswith('https://'):
-            raise ValidationError({'avatar_url': 'Avatar URL must start with http:// or https://'})
 
     class Meta:
         verbose_name_plural = "Profiles"
