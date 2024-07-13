@@ -4,7 +4,7 @@ from .views import ProfileViewSet
 
 
 router = DefaultRouter()
-router.register(r"profiles", ProfileViewSet, basename="profile")
+router.register(r"profiles", ProfileViewSet, basename="profiles")
 
 urlpatterns = [
     path("", include(router.urls)),
