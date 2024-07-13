@@ -1,10 +1,8 @@
 import Image from "next/image";
-import Link from "next/link";
 
 interface personInfo {
   personName: string;
   personImg: string;
-  link?: string;
 }
 
 interface personPic {
@@ -50,7 +48,6 @@ const PersonImg = (props: personPic) => {
  * @param props - The properties for the PersonImg component.
  * @param props.personName - personName: string.
  * @param props.personImg - personImg address: string.
- * @param props.link - link to user detail page: string. **Optional**
 
  * @returns circle shape personImg
  *
@@ -61,13 +58,12 @@ const PersonImg = (props: personPic) => {
 
 const PersonDetail = (props: personInfo) => {
   return (
-    <Link href={props.link || ""}>
-      <div className="body-medium flex items-center gap-2 text-penni-text-regular-light-mode">
-        <PersonImg personImg={props.personImg} size={48} />
-        <p>{props.personName}</p>
-      </div>
-    </Link>
+    <div className="body-medium flex items-center gap-2 text-penni-text-regular-light-mode">
+      <PersonImg personImg={props.personImg} size={48} />
+      <p>{props.personName}</p>
+    </div>
   );
 };
 
-export { PersonDetail, PersonImg };
+export default PersonDetail;
+export { PersonImg };
