@@ -2,7 +2,7 @@ import React from "react";
 
 import Header from "@/components/ui/header";
 import { InfoIcon, PhoneIcon } from "@/components/ui/icons";
-import ProfileTag from "@/components/ui/profile_page_tags";
+import ProfileTag from "@/components/ui/profile-tags";
 
 export default function Help() {
   return (
