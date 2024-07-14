@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Heading, Paragraph, Subheading } from "./ui/text";
+import { Heading, Paragraph, Subheading } from "./text";
 
 // Mapping between database column names and display subheading titles to reduce further data processesing
 const sectionNamesMap: { [key: string]: string } = {
