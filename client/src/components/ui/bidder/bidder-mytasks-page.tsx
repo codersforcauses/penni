@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import EmptyListDisplay from "./empty-list-display";
+import EmptyListDisplay from "../empty-list-display";
 import TaskCard from "./task-card";
 import TopNavtab from "./top-navtab";
 

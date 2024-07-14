@@ -74,7 +74,7 @@ export function DropdownIcon({
 }
 
 /* Bottom navBar icons */
-interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
+export interface BottomNavIconProps extends React.SVGProps<SVGSVGElement> {
   className?: string; // use to change color of the svg pic
   alt?: string;
 }

@@ -1,15 +1,14 @@
 import { useState } from "react";
 
+import BottomNav from "@/components/ui/bidder/bottom-nav";
+import TaskCard, { TaskCardProps } from "@/components/ui/bidder/task-card";
 import { MarketDropdown } from "@/components/ui/dropdown";
-import MeLayout from "@/components/ui/me-page";
-import TaskCard, { TaskCardProps } from "@/components/ui/task-card";
 
 import type { NextPageWithLayout } from "../_app";
 
 const MarketPage: NextPageWithLayout = () => {
   const tasks: TaskCardProps[] = [
     {
-      state: "BIDDING",
       category: "Construction",
       title: "Fix the roof",
       date: "2024-07-10",
@@ -20,7 +19,6 @@ const MarketPage: NextPageWithLayout = () => {
       priceType: "Estimated Price",
     },
     {
-      state: "EXPIRED",
       category: "Painting",
       title: "Paint the fence",
       date: "2024-07-12",
@@ -28,10 +26,9 @@ const MarketPage: NextPageWithLayout = () => {
       duration: "1",
       estimatePrice: "200",
       myOfferPrice: "180",
-      priceType: "My Offer",
+      priceType: "Estimated Price",
     },
     {
-      state: "BIDDING",
       category: "Cleaning",
       title: "Clean the house",
       date: "2024-07-15",
@@ -42,7 +39,6 @@ const MarketPage: NextPageWithLayout = () => {
       priceType: "Estimated Price",
     },
     {
-      state: "BIDDING",
       category: "Cleaning",
       title: "Clean the house",
       date: "2024-07-15",
@@ -59,7 +55,7 @@ const MarketPage: NextPageWithLayout = () => {
   const locations = ["All Location", "123 Main St", "456 Elm St", "789 Oak St"];
 
   return (
-    <MeLayout>
+    <BottomNav>
       <div className="m-4 flex justify-start space-x-4">
         <MarketDropdown
           value={selectedCategory}
@@ -83,11 +79,7 @@ const MarketPage: NextPageWithLayout = () => {
         .map((task, index) => (
           <TaskCard key={index} {...task} />
         ))}
-
-      <br />
-      <br />
-      <br />
-    </MeLayout>
+    </BottomNav>
   );
 };
 

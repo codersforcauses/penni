@@ -1,11 +1,12 @@
-import BidderMyTasks from "@/components/ui/bidder-mytasks-page";
-import BottomNav from "@/components/ui/bottom-nav";
+import BidderMyTasks from "@/components/ui/bidder/bidder-mytasks-page";
+import BottomNav from "@/components/ui/bidder/bottom-nav";
 
 export default function Bidder() {
   return (
     <div>
-      <BidderMyTasks name="Leanne Graham" />
-      <BottomNav navIndex={0} />
+      <BottomNav>
+        <BidderMyTasks name="Leanne Graham" />
+      </BottomNav>
     </div>
   );
 }
