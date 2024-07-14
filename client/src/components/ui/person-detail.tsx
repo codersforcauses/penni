@@ -24,7 +24,7 @@ interface personPic {
  * <PersonImg personImg="/penni-logo.svg" size={48} />
  */
 
-const PersonImg = (props: personPic) => {
+function PersonImg(props: personPic) {
   return (
     <div className="flex justify-center">
       <div
@@ -40,7 +40,7 @@ const PersonImg = (props: personPic) => {
       </div>
     </div>
   );
-};
+}
 
 /**
  * personImg component for the circle shape personImg for different size.
@@ -56,14 +56,14 @@ const PersonImg = (props: personPic) => {
  * <PersonDetail personName="abc" personImg="/penni-logo.svg" />
  */
 
-const PersonDetail = (props: personInfo) => {
+function PersonDetail(props: personInfo) {
   return (
     <div className="body-medium flex items-center gap-2 text-penni-text-regular-light-mode">
       <PersonImg personImg={props.personImg} size={48} />
       <p>{props.personName}</p>
     </div>
   );
-};
+}
 
 export default PersonDetail;
 export { PersonImg };
