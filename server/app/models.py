@@ -70,7 +70,8 @@ class Users(AbstractUser):
     def clean(self):
         super().clean()
         if not self.mobile.isdigit():
-            raise ValidationError({'mobile': 'Mobile must contain only digits.'})
+            raise ValidationError(
+                {'mobile': 'Mobile must contain only digits.'})
         if not self.status:
             raise ValidationError({'status': 'This field cannot be blank.'})
 
