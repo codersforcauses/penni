@@ -1,24 +1,49 @@
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import Header from "@/components/ui/header";
+import PersonDetail from "@/components/ui/person-detail";
 
-interface TipProps {
+interface PayProps {
   taskID: string;
 }
 
-export default function Tip({ taskID }: TipProps) {
+export default function Pay({ taskID }: PayProps) {
   return (
-    <div className="flex h-screen items-center justify-center bg-white">
-      <p>Task: {taskID}</p>
-      <Button variant="round" size="round" className="mr-4">
-        $1
-      </Button>
-      <Button variant="round" size="round" className="mr-4">
-        $10
-      </Button>
-      <Button variant="round" size="round" className="mr-4">
-        $100
-      </Button>
+    <div id="payment" className="flex min-h-screen flex-col">
+      <Header title="Payment Details" />
+      <hr />
+      <div className="mx-4">
+        <div id="task-details">
+          <h3 className="title3 h py-4">Task Details</h3>
+          <div>
+            <div className="text-xs">Task Title</div>
+            <p>Cleaning my house.</p>
+          </div>
+          <div>
+            <div className="text-xs">Date</div>
+            <p>10 Dec, 2022</p>
+          </div>
+        </div>
+        <hr />
+        <div id="bidder-details">
+          <h2>Bidder Details</h2>
+          <PersonDetail personName="abc" />
+        </div>
+        <hr />
+        <div id="payment-details" className="flex flex-row">
+          <button>
+            <div>
+              <h2>Payment Method</h2>
+              <p>1300</p>
+            </div>
+            <div>{">"}</div>
+          </button>
+        </div>
+        <hr />
+        <div id="payment-total"></div>
+        <Button>Confirm and Pay</Button>
+      </div>
     </div>
   );
 }

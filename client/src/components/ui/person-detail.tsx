@@ -1,8 +1,9 @@
 import Image from "next/image";
+import { useState } from "react";
 
 interface personInfo {
   personName: string;
-  personImg: string;
+  personImg?: string;
 }
 
 interface personPic {
@@ -47,7 +48,7 @@ function PersonImg(props: personPic) {
  *
  * @param props - The properties for the PersonImg component.
  * @param props.personName - personName: string.
- * @param props.personImg - personImg address: string.
+ * @param props.personImg - personImg address: string. (OPTIONAL)
 
  * @returns circle shape personImg
  *
@@ -57,9 +58,13 @@ function PersonImg(props: personPic) {
  */
 
 function PersonDetail(props: personInfo) {
+  // Set profile image to default if not provided.
+  const img: string = props.personImg
+    ? props.personImg
+    : "/default-profile.svg";
   return (
     <div className="body-medium flex items-center gap-2 text-penni-text-regular-light-mode">
-      <PersonImg personImg={props.personImg} size={48} />
+      <PersonImg personImg={img} size={48} />
       <p>{props.personName}</p>
     </div>
   );
