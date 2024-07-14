@@ -32,7 +32,7 @@ const navLists: Nav[] = [
     IconComponent: MeIcon,
     alt: "Icon of me",
     text: "Me",
-    link: "/bidder/market",
+    link: "/bidder/profile",
   },
 ];
 
