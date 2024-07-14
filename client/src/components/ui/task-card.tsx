@@ -4,7 +4,7 @@ import React from "react";
 // please try to understand the "pricetype", not sure if we need to do useState for this part
 
 // the props
-interface TaskCardProps {
+export interface TaskCardProps {
   state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   category: string;
   title: string;
@@ -14,6 +14,7 @@ interface TaskCardProps {
   estimatePrice: string;
   myOfferPrice: string;
   priceType: "Estimated Price" | "My Offer";
+  key?: number; //to use map to iterate
 }
 
 // the task card
@@ -82,7 +83,7 @@ const TaskCard = ({
                 objectFit="contain"
               />
             </div>
-            <p className="subheadline text-gray-500">{duration} hours</p>
+            <p className="subheadline text-gray-500">{duration}</p>
           </div>
         </div>
 

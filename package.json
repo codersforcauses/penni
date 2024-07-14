@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "embla-carousel-react": "^8.1.6",
     "next-themes": "^0.3.0"
   }
 }

@@ -8,6 +8,8 @@ import time
 class TaskModelTests(TestCase):
 
     def setUp(self):
+        Tasks.objects.all().delete()
+
         self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="1234567890",
