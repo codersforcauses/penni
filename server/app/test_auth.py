@@ -1,23 +1,59 @@
-# This is a draft test before ERM review finished;
-# Test CRUD on table Bids and Payments;
-# Assume user and task are already created with no problems before testing Bids and Payments.
 from django.test import TestCase
-from django.core.exceptions import ValidationError
-from django.contrib.auth.hashers import make_password
-from .models import Users, Tasks, Bids, Payments
-from datetime import datetime, timedelta
+from django.urls import reverse
+from rest_framework.test import APIClient
 
 
 class AuthRegistrationTestCase(TestCase):
-
     def setUp(self):
-        # Create a test user
-        self.user = Users.objects.create(
-            email="testuser@example.com",
-            mobile="1234567890",
-            password_hash=make_password("secure_password"),
-            status="active"
-        )
+        self.client = APIClient()
 
     def test_get_jwt_token(self):
         return
+
+    def test_registration_success(self):
+        valid_data = {
+            "username": "test_user",
+            "password": "test_password",
+            "email": "test@example.com"
+        }
+        url = reverse('register')
+        response = self.client.post(url, data=valid_data)
+        self.assertEqual(response.status_code, 201)  # create user successfully
+
+    def test_registration_invalid_data(self):
+        invalid_data = {
+            "username": "",
+            "password": "test_password",
+            "email": "test@example.com"
+        }
+        try:
+            url = reverse('register')
+            response = self.client.post(url, data=invalid_data)
+            self.assertEqual(response.status_code, 400)
+        except Exception as e:
+            print(f"An exception occurred: {e}")
+
+    def test_login_success(self):
+        valid_data = {
+            "username": "test_user",
+            "password": "test_password",
+            "email": "test@example.com"
+        }
+        response = self.client.post(reverse('register'), data=valid_data)
+
+        # valid password
+        data = {
+            "username": "test_user",
+            "password": "test_password",
+        }
+        response = self.client.post(reverse('get-jwt-token'), data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_login_failure(self):
+        # invalid password
+        data = {
+            "username": "test_user",
+            "password": "test_password_wrong",
+        }
+        response = self.client.post(reverse('get-jwt-token'), data)
+        self.assertEqual(response.status_code, 400)
