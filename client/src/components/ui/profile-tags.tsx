@@ -64,7 +64,7 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
     <div className="relative flex flex-col bg-white">
       <Link href={link || "#"} onClick={handleClick}>
         <div
-          className="flex cursor-pointer items-center justify-between p-4 hover:bg-gray-100"
+          className="flex cursor-pointer items-center justify-between hover:bg-gray-100"
           style={{ height: "64px" }}
         >
           <div className="flex items-center">
@@ -89,7 +89,7 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
               </p>
             </div>
           </div>
-          <div className="absolute right-8 top-1/2 -translate-y-1/2 transform">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 transform">
             <ChevronRightIcon className="h-6 w-6 text-gray-400" />
           </div>
         </div>
