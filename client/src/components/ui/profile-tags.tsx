@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-import { ChevronRightIcon } from "./icons";
+import { ChevronRightIcon } from "@/components/ui/icons";
 
 interface ProfileTagProps {
   icon: string | React.ElementType;
