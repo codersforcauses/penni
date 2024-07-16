@@ -23,7 +23,7 @@ export default function Pay({ taskID, cardInfo }: PayProps) {
     <div id="payment" className="flex min-h-screen flex-col">
       <Header title="Payment Details" />
       <hr />
-      <div className="mx-4">
+      <div className="mx-4 flex-grow">
         <div id="task-details" className="py-6">
           <h3 className="title3">Task Details</h3>
           <div className="py-4">
@@ -69,7 +69,11 @@ export default function Pay({ taskID, cardInfo }: PayProps) {
             Total <span>$15.00</span>
           </h4>
         </div>
-        <Button>Confirm and Pay</Button>
+      </div>
+      <div className="mt-auto px-4 py-6">
+        <Button className="w-full" size="penni">
+          Confirm and Pay
+        </Button>
       </div>
     </div>
   );
