@@ -92,6 +92,8 @@ const config = {
             "secondary-dark-mode": "#BCBCBC",
             "tertiary-light-mode": "#858C8F",
             "tertiary-dark-mode": "#77797D",
+            "subheading-light-mode": "#485358",
+            "subheading-dark-mode": "#B7ACA7",
           },
         },
         border: "hsl(var(--border))",

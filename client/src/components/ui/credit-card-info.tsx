@@ -21,7 +21,7 @@ export default function CreditCardInfo({
   cardType,
   last4Digits,
 }: CreditCardInfoProps) {
-  const obfuscatedNumber = `•••• •••• •••• ${last4Digits}`;
+  const obfuscatedText = `···· ···· ···· `;
   return (
     <div id="credit-card-info" className="flex items-center">
       <Image
@@ -30,7 +30,14 @@ export default function CreditCardInfo({
         width={40}
         height={25}
       />
-      <p className="ml-2">{obfuscatedNumber}</p>
+      <p className="ml-2">
+        <span className="text-penni-text-subheading-light-mode">
+          {obfuscatedText}
+        </span>
+        <span className="text-penni-text-regular-light-mode">
+          {last4Digits}
+        </span>
+      </p>
     </div>
   );
 }
