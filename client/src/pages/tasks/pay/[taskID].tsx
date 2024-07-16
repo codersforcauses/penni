@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -44,12 +45,19 @@ export default function Pay({
   bidderInfo,
   amountInfo,
 }: PayProps) {
+  const router = useRouter();
+
   const formatMoney = (value: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD", // Can be modifed for different currencies
       minimumFractionDigits: 2,
     }).format(value);
+  };
+
+  const onConfirm = () => {
+    // Send info to database via API
+    router.back(); // Send back to task view??
   };
 
   return (
@@ -82,7 +90,9 @@ export default function Pay({
         </div>
         <hr />
         <div id="payment-details" className="py-6">
-          <button className="flex w-full flex-row items-center justify-between">
+          <button
+            className="flex w-full flex-row items-center justify-between" /* NO DESIGNS EXIST FOR PAYMENT CHANGES! */
+          >
             <div className="">
               <h3 className="title3 text-left">Payment Method</h3>
               <CreditCardInfo
@@ -115,7 +125,7 @@ export default function Pay({
         </div>
       </div>
       <div className="mt-auto px-4 py-6">
-        <Button className="w-full" size="penni">
+        <Button className="w-full" size="penni" onClick={onConfirm}>
           Confirm and Pay
         </Button>
       </div>
