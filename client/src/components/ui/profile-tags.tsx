@@ -81,16 +81,16 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
               )}
             </div>
             <div>
-              <h3 className="text-hb font-normal leading-hb text-penni-text-regular-light-mode">
+              <h3 className="text-hb font-sans font-normal leading-hb text-penni-text-regular-light-mode">
                 {title}
               </h3>
-              <p className="text-fn font-normal leading-fn text-penni-text-secondary-light-mode">
+              <p className="text-fn font-sans font-normal leading-fn text-penni-text-secondary-light-mode">
                 {description}
               </p>
             </div>
-          </div>
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 transform">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 transform">
             <ChevronRightIcon className="h-6 w-6 text-gray-400" />
+            </div>
           </div>
         </div>
       </Link>
