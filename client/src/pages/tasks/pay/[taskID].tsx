@@ -13,12 +13,45 @@ interface CardInfo {
   last4Digits: string;
 }
 
+interface TaskInfo {
+  title: string;
+  date: string;
+}
+
+interface BidderInfo {
+  profileImg: string;
+  username: string;
+}
+
+interface AmountInfo {
+  taskCost: number;
+  tip: number;
+  fee: number;
+}
+
 interface PayProps {
   taskID: string;
   cardInfo: CardInfo;
+  taskInfo: TaskInfo;
+  bidderInfo: BidderInfo;
+  amountInfo: AmountInfo;
 }
 
-export default function Pay({ taskID, cardInfo }: PayProps) {
+export default function Pay({
+  taskID,
+  cardInfo,
+  taskInfo,
+  bidderInfo,
+  amountInfo,
+}: PayProps) {
+  const formatMoney = (value: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD", // Can be modifed for different currencies
+      minimumFractionDigits: 2,
+    }).format(value);
+  };
+
   return (
     <div id="payment" className="flex min-h-screen flex-col">
       <Header title="Payment Details" />
@@ -30,19 +63,22 @@ export default function Pay({ taskID, cardInfo }: PayProps) {
             <div className="text-xs text-penni-text-subheading-light-mode">
               Task Title
             </div>
-            <p>Cleaning my house.</p>
+            <p>{taskInfo?.title}</p>
           </div>
           <div>
             <div className="text-xs text-penni-text-subheading-light-mode">
               Date
             </div>
-            <p>10 Dec, 2022</p>
+            <p>{taskInfo?.date}</p>
           </div>
         </div>
         <hr />
         <div id="bidder-details" className="py-6">
           <h3 className="title3 pb-2">Bidder Details</h3>
-          <PersonDetail personName="abc" />
+          <PersonDetail
+            personName={bidderInfo?.username}
+            personImg={bidderInfo?.profileImg}
+          />
         </div>
         <hr />
         <div id="payment-details" className="py-6">
@@ -50,8 +86,8 @@ export default function Pay({ taskID, cardInfo }: PayProps) {
             <div className="">
               <h3 className="title3 text-left">Payment Method</h3>
               <CreditCardInfo
-                cardType={cardInfo.cardType}
-                last4Digits={cardInfo.last4Digits}
+                cardType={cardInfo?.cardType}
+                last4Digits={cardInfo?.last4Digits}
               />
             </div>
             <ChevronRightIcon className="ml-auto" />
@@ -60,13 +96,21 @@ export default function Pay({ taskID, cardInfo }: PayProps) {
         <hr />
         <div id="payment-total" className="py-6">
           <p className="flex justify-between">
-            Subtotal <span className="ml-auto">$15.00</span>
+            Subtotal{" "}
+            <span className="ml-auto">
+              {formatMoney(amountInfo?.taskCost + amountInfo?.tip)}
+            </span>
           </p>
           <p className="flex justify-between">
-            Service Fee <span>$0.00</span>
+            Service Fee <span>{formatMoney(amountInfo?.fee)}</span>
           </p>
           <h4 className="title4 flex justify-between font-semibold">
-            Total <span>$15.00</span>
+            Total{" "}
+            <span>
+              {formatMoney(
+                amountInfo?.taskCost + amountInfo?.tip + amountInfo?.fee,
+              )}
+            </span>
           </h4>
         </div>
       </div>
@@ -96,20 +140,40 @@ export async function getServerSideProps({ params }: any) {
   // const res = await fetch(`https://api.example.com/tasks/${sanitizedTaskID}`);
   // const taskData = await res.json();
 
-  const cardNumber = "511111111111111"; // This should be fetched SECURELY
-
   // Determine card type and last four digits
+  const cardNumber = "411111111111111"; // This should be fetched SECURELY (alternatively, only the first digit & last 4 digits are needed)
   const firstDigit = cardNumber.charAt(0);
   const cardInfo: CardInfo = {
     cardType: getCardTypeFromMII(firstDigit),
     last4Digits: cardNumber.slice(-4),
   };
 
+  // Determine task details
+  const taskInfo: TaskInfo = {
+    title: "Cleaning up my house", // Obtained from API
+    date: "10 Dec, 2022", // Obtained from API & processed to match form required
+  };
+
+  // Determine bidder details
+  const bidderInfo: BidderInfo = {
+    profileImg: "/default-profile.svg", // Again obtained via API
+    username: "Jackson Anderson",
+  };
+
+  // Determine amounts to be payed
+  const amountInfo: AmountInfo = {
+    taskCost: 15,
+    tip: 1,
+    fee: 0,
+  };
+
   return {
     props: {
       taskID,
       cardInfo,
-      // taskData, // Pass additional task data as props
+      taskInfo,
+      bidderInfo,
+      amountInfo,
     },
   };
 }
