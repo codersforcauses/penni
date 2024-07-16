@@ -1,9 +1,9 @@
-import { GetServerSideProps } from "next";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
 import CreditCardInfo from "@/components/ui/credit-card-info";
 import Header from "@/components/ui/header";
+import { ChevronRightIcon } from "@/components/ui/icons";
 import PersonDetail from "@/components/ui/person-detail";
 import { CardType } from "@/lib/card-types";
 import { getCardTypeFromMII } from "@/lib/utils";
@@ -45,16 +45,16 @@ export default function Pay({ taskID, cardInfo }: PayProps) {
           <PersonDetail personName="abc" />
         </div>
         <hr />
-        <div id="payment-details" className="flex flex-row py-6">
-          <button>
-            <div>
-              <h3 className="title3">Payment Method</h3>
+        <div id="payment-details" className="py-6">
+          <button className="flex w-full flex-row items-center justify-between">
+            <div className="">
+              <h3 className="title3 text-left">Payment Method</h3>
               <CreditCardInfo
                 cardType={cardInfo.cardType}
                 last4Digits={cardInfo.last4Digits}
               />
             </div>
-            <div>{">"}</div>
+            <ChevronRightIcon className="ml-auto" />
           </button>
         </div>
         <hr />

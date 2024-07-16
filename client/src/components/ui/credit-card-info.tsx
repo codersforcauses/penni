@@ -31,7 +31,7 @@ export default function CreditCardInfo({
         height={25}
       />
       <p className="ml-2">
-        <span className="text-penni-text-subheading-light-mode">
+        <span className="text-t3 tracking-widest text-penni-text-subheading-light-mode">
           {obfuscatedText}
         </span>
         <span className="text-penni-text-regular-light-mode">
