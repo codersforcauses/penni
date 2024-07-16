@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import BottomNav from "@/components/ui/bottom-nav";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,6 +52,7 @@ function ComponentSection({
 export default function ComponentShowcase() {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedDropdown, setSelectedDropdown] = useState("HTML");
+  const bidder_exmaple_profile = "/bidder-exmaple-profile.svg";
   return (
     <div className="flex h-full w-screen items-center justify-center bg-penni-background-dark-mode">
       <div className="m-0 h-auto w-[375px] bg-penni-background-light-mode">
@@ -346,6 +348,14 @@ export default function ComponentShowcase() {
             title="Logout"
             description=""
             nestedContent={<div>Logout content goes here</div>} // Use nested content for Logout
+          />
+        </ComponentSection>
+        <ComponentSection title="Bidder Offer Card">
+          <BidderOfferCard
+            profile={bidder_exmaple_profile}
+            name="Jackson Anderson"
+            price={400}
+            bio="I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this."
           />
         </ComponentSection>
       </div>
