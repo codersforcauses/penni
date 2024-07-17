@@ -164,19 +164,19 @@ export async function getServerSideProps({ params }: any) {
 
   // Determine task details
   const taskInfo: TaskInfo = {
-    title: taskData.title, // Obtained from API
-    date: formatDate(taskData.date), // Obtained from API & processed to match form required
+    title: taskData.title ?? "N/A", // Default to N/A if missing from API call
+    date: taskData.date ? formatDate(taskData.date) : "N/A", // Format date to match specifications OR N/A if missing
   };
 
   // Determine bidder details
   const bidderInfo: BidderInfo = {
-    profileImg: "/default-profile.svg", // **Again obtained via API (might be seperate api call if not with data)**
-    username: taskData.name, // **NOT SURE IF ITS USERNAME OR JUST NAME**
+    profileImg: taskData.profileImg ?? "/default-profile.svg", // **Again obtained via API (might be seperate api call if not with data)**
+    username: taskData.username ?? "N/A", // **NOT SURE IF ITS USERNAME OR JUST NAME**
   };
 
   // Determine amounts to be payed
   const amountInfo: AmountInfo = {
-    taskCost: taskData.budget,
+    taskCost: taskData.budget, // Error on missing budget data (cant be payed regardless)
     tip: 1, // Obtained from the fee page that appears before the payment page.
     fee: 0, // **Not sure how fee is calculated or obtained**
   };
