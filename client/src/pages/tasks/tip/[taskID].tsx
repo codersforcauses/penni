@@ -3,7 +3,8 @@ import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
-import CreditCardInfo from "@/components/ui/credit-card-info";
+import CreditCardInfo from "@/components/ui/payment/credit-card-info";
+import { CardType } from "@/lib/card-types";
 import { validateTaskID } from "@/lib/task-id";
 
 interface TipProps {
@@ -48,8 +49,7 @@ export default function Tip({ taskID }: TipProps) {
           $30
         </Button>
       </div>
-      <p className="mb-4">Enter a custom number</p>
-      <Button variant="round" size="round" onClick={toggleCardVisibility}>
+      <Button variant="link" onClick={toggleCardVisibility}>
         Enter a custom number
       </Button>
       <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
@@ -61,7 +61,7 @@ export default function Tip({ taskID }: TipProps) {
             placeholder="Enter custom tip"
             className="mb-4 rounded border px-2 py-1"
           />
-          <CreditCardInfo cardType="Visa" last4Digits="1234" />
+          <CreditCardInfo cardType={CardType.Visa} last4Digits="1234" />
         </div>
       </Card>
     </div>

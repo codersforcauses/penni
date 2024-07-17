@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import CreditCardInfo from "@/components/ui/credit-card-info";
 import Header from "@/components/ui/header";
 import { ChevronRightIcon } from "@/components/ui/icons";
+import CreditCardInfo from "@/components/ui/payment/credit-card-info";
+import Tip from "@/components/ui/payment/tip";
 import PersonDetail from "@/components/ui/person-detail";
 import { CardType } from "@/lib/card-types";
 import { formatDate } from "@/lib/date";
@@ -21,14 +22,13 @@ interface TaskInfo {
   date: string;
 }
 
-interface BidderInfo {
+export interface BidderInfo {
   profileImg: string;
-  username: string;
+  name: string;
 }
 
 interface AmountInfo {
   taskCost: number;
-  tip: number;
   fee: number;
 }
 
@@ -48,6 +48,7 @@ export default function Pay({
   amountInfo,
 }: PayProps) {
   const router = useRouter();
+  const [tipAmount, setTipAmount] = useState<number | null>(null); // Handled from tip page
 
   const formatMoney = (value: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -61,6 +62,20 @@ export default function Pay({
     // Send info to database via API
     router.back(); // Send back to task view??
   };
+
+  const handleTipSubmit = (amount: number) => {
+    setTipAmount(amount);
+  };
+
+  if (!tipAmount) {
+    return (
+      <Tip
+        taskID={taskID}
+        onTipSubmit={handleTipSubmit}
+        bidderInfo={bidderInfo}
+      />
+    );
+  }
 
   return (
     <div id="payment" className="flex min-h-screen flex-col">
@@ -86,7 +101,7 @@ export default function Pay({
         <div id="bidder-details" className="py-6">
           <h3 className="title3 pb-2">Bidder Details</h3>
           <PersonDetail
-            personName={bidderInfo?.username}
+            personName={bidderInfo?.name}
             personImg={bidderInfo?.profileImg}
           />
         </div>
@@ -110,7 +125,7 @@ export default function Pay({
           <p className="flex justify-between">
             Subtotal{" "}
             <span className="ml-auto">
-              {formatMoney(amountInfo?.taskCost + amountInfo?.tip)}
+              {formatMoney(amountInfo?.taskCost + tipAmount)}
             </span>
           </p>
           <p className="flex justify-between">
@@ -119,9 +134,7 @@ export default function Pay({
           <h4 className="title4 flex justify-between font-semibold">
             Total{" "}
             <span>
-              {formatMoney(
-                amountInfo?.taskCost + amountInfo?.tip + amountInfo?.fee,
-              )}
+              {formatMoney(amountInfo?.taskCost + tipAmount + amountInfo?.fee)}
             </span>
           </h4>
         </div>
@@ -171,13 +184,12 @@ export async function getServerSideProps({ params }: any) {
   // Determine bidder details
   const bidderInfo: BidderInfo = {
     profileImg: taskData.profileImg ?? "/default-profile.svg", // **Again obtained via API (might be seperate api call if not with data)**
-    username: taskData.username ?? "N/A", // **NOT SURE IF ITS USERNAME OR JUST NAME**
+    name: taskData.username ?? "N/A", // **NOT SURE IF ITS USERNAME OR JUST NAME**
   };
 
   // Determine amounts to be payed
   const amountInfo: AmountInfo = {
     taskCost: taskData.budget, // Error on missing budget data (cant be payed regardless)
-    tip: 1, // Obtained from the fee page that appears before the payment page.
     fee: 0, // **Not sure how fee is calculated or obtained**
   };
 
