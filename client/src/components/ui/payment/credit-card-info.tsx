@@ -24,8 +24,8 @@ interface CreditCardInfoProps {
  * and the last four digits of the card number. The first 12 digits are obfuscated
  * for security reasons.
  *
- * @param {CardType} cardType - The type of the credit card (Visa, MasterCard, Amex, Discover, or Unknown).
- * @param {string} last4Digits - The last four digits of the credit card number.
+ * @param {CardType} props.cardType - The type of the credit card (Visa, MasterCard, Amex, Discover, or Unknown).
+ * @param {string} props.last4Digits - The last four digits of the credit card number.
  * @returns {JSX.Element} The rendered CreditCardInfo component.
  *
  * @example
@@ -34,7 +34,7 @@ interface CreditCardInfoProps {
 export default function CreditCardInfo({
   cardType,
   last4Digits,
-}: CreditCardInfoProps) {
+}: CreditCardInfoProps): JSX.Element {
   const obfuscatedText = `···· ···· ···· `;
   return (
     <div id="credit-card-info" className="flex items-center">

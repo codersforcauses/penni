@@ -9,7 +9,7 @@
  * @example
  * formatDate("15/07/2023"); // Returns "Jul 15, 2023"
  */
-export function formatDate(dateString: string) {
+export function formatDate(dateString: string): string {
   // Split the date string into day, month, and year
   const [day, month, year] = dateString.split("/");
 
