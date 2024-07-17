@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { LocalBaseURL } from "@/lib/api";
 
-const LOGIN_URL = LocalBaseURL.concat("/app/login");
+const LOGIN_URL = LocalBaseURL.concat("/app/login/");
 
 const TestPostRequestPage = () => {
   const [username, setUsername] = useState("");
@@ -36,9 +36,9 @@ const TestPostRequestPage = () => {
 
   const handleTestRegisterRequest = () => {
     axios
-      .post("http://localhost:8000/api/app/register", {
+      .post("http://localhost:8000/api/app/register/", {
         email: "user123@example.com",
-        password: "password123",
+        password: "user123abc!@#",
         username: "user123",
       })
       .then(function (response) {
