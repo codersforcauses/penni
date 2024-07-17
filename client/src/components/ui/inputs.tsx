@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useId, useState } from "react";
 
 import { DropdownButton } from "./dropdown";
 
@@ -20,9 +20,6 @@ const labelStyleSmall = "caption text-penni-text-secondary-light-mode";
 // Style for value that user type in
 const valueStyle =
   "callout placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
-
-// Generate unique ID for each component, used for label htmlFor attribute
-const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
 export type HTMLTextTargetElement = HTMLInputElement | HTMLTextAreaElement;
 
@@ -141,7 +138,7 @@ export function SingleLineInput({
   type,
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
-  const [id] = useState(uniqueId());
+  const id = useId();
   const context = useContext(InputContext);
   value = context?.value ?? value ?? "";
   onChange = context?.onChange ?? onChange ?? ((e) => {});
@@ -224,7 +221,7 @@ export function ParagraphInput({
   placeholder,
 }: ParagraphInputProps) {
   const [isSelected, setIsSelected] = useState(false);
-  const [id] = useState(uniqueId());
+  const id = useId();
   const context = useContext(InputContext);
   value = context?.value ?? value ?? "";
   onChange = context?.onChange ?? onChange ?? ((e) => {});
@@ -279,7 +276,7 @@ export function DropdownInput({
   onChange,
   label,
 }: DropdownInputProps) {
-  const [menuId] = useState(uniqueId());
+  const menuId = useId();
   const style = "h-14 px-4";
 
   return (
