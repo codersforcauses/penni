@@ -1,4 +1,3 @@
-import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -8,12 +7,14 @@ import PersonDetail from "@/components/ui/person-detail";
 
 export default function BidDetail() {
   const router = useRouter();
-  const bidder = router.query;
-  const profile = String(bidder.profile);
-  const name = String(bidder.name);
-  const bio = String(bidder.bio);
-  const { taskid } = useParams();
-  // api fetch bidders[] where taskid = id,
+  const bidder = JSON.parse(router.query.bidder as string);
+  const taskid = router.query.taskid;
+  console.log(bidder);
+  console.log(taskid);
+  if (bidder === undefined || taskid === undefined) {
+    return <div>Loading...</div>;
+  }
+
   function OnClick() {
     // axios.post to api
     router.push(`/poster/task/${taskid}/${bidder.id}/payment`);
@@ -22,8 +23,8 @@ export default function BidDetail() {
     <div className="w-screenbg-green-400 h-lvh">
       <Header title="Bid Details" className="sticky top-0 z-10 w-full" />
       <div className="absolute flex h-5/6 w-full flex-col p-4">
-        <PersonDetail personName={name} personImg={profile} />
-        <p className="mt-4 self-center">{bio}</p>
+        <PersonDetail personName={bidder.name} personImg={bidder.profile} />
+        <p className="mt-4 self-center">{bidder.bio}</p>
         <Button
           size="penni"
           onClick={OnClick}

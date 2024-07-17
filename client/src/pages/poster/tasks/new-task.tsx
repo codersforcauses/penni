@@ -23,8 +23,7 @@ export default function NewTask() {
   const [suburb, setSuburb] = React.useState("");
   const [details, setDetails] = React.useState("What is the task about?");
   const router = useRouter();
-  const backImg = "/back.svg";
-  const titleStyle = "relative bottom-2 left-4 text-xl font-bold";
+  const titleStyle = "relative pt-4 bottom-2 left-4 text-xl font-bold";
   function OnSubmit() {
     // api post data to backend.
     formData.append("category", category);
@@ -74,7 +73,7 @@ export default function NewTask() {
             />,
           ].map((input, index) => {
             return (
-              <div key={index} className="w-full px-4 pb-4">
+              <div key={index} className="w-full px-4">
                 {input}
               </div>
             );
@@ -103,13 +102,13 @@ export default function NewTask() {
             />,
           ].map((input, index) => {
             return (
-              <div key={index} className="w-full px-4 pb-4">
+              <div key={index} className="w-full px-4">
                 {input}
               </div>
             );
           })}
           <p className={titleStyle}>Task Details</p>
-          <div className="w-full px-4 pb-4">
+          <div className="w-full px-4 py-2">
             <ParagraphInput
               label=""
               value={details}

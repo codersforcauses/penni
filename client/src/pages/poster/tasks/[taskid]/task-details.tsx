@@ -64,7 +64,7 @@ function BidderOfferCardList(taskid: number) {
   function NaviagetWithData(bidder: Bidder): void {
     router.push({
       pathname: `/poster/tasks/${taskid}/${bidder.id}/bid-details`,
-      query: bidder,
+      query: { bidder: JSON.stringify(bidder), taskid: taskid },
     });
   }
 
