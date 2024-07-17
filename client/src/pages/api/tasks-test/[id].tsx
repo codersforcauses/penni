@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { validateTaskID } from "@/lib/task-id";
+
 const tasks = [
   {
     task_id: 6,
@@ -132,11 +134,8 @@ const tasks = [
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
-  // Define a regex pattern for a valid task ID (only numbers)
-  const validTaskIDPattern = /^[0-9]+$/;
-
-  // Validate the taskID
-  if (!id || !validTaskIDPattern.test(id as string)) {
+  // Validate the task ID
+  if (!validateTaskID(id as string)) {
     return res.status(404).json({ message: "Invalid task ID" });
   }
 

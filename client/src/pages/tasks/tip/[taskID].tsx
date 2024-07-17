@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { validateTaskID } from "@/lib/task-id";
 
 interface TipProps {
   taskID: string;
@@ -26,11 +27,8 @@ export default function Tip({ taskID }: TipProps) {
 export async function getServerSideProps({ params }: any) {
   const taskID = params?.taskID as string; // Prevent type errors if not defined
 
-  // Define a regex pattern for a valid task ID (only numbers)
-  const validTaskIDPattern = /^[0-9]+$/;
-
-  // Validate the taskID
-  if (!taskID || !validTaskIDPattern.test(taskID)) {
+  // Validate the task ID
+  if (!validateTaskID(taskID)) {
     return {
       notFound: true, // Redirect to an error page on invalid ID
     };

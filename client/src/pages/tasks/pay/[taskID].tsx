@@ -7,6 +7,8 @@ import Header from "@/components/ui/header";
 import { ChevronRightIcon } from "@/components/ui/icons";
 import PersonDetail from "@/components/ui/person-detail";
 import { CardType } from "@/lib/card-types";
+import { formatDate } from "@/lib/date";
+import { validateTaskID } from "@/lib/task-id";
 import { getCardTypeFromMII } from "@/lib/utils";
 
 interface CardInfo {
@@ -136,19 +138,21 @@ export default function Pay({
 export async function getServerSideProps({ params }: any) {
   const taskID = params?.taskID as string; // Prevent type errors if not defined
 
-  // Define a regex pattern for a valid task ID (only numbers)
-  const validTaskIDPattern = /^[0-9]+$/;
-
-  // Validate the taskID
-  if (!taskID || !validTaskIDPattern.test(taskID)) {
+  // Validate the task ID
+  if (!validateTaskID(taskID)) {
     return {
       notFound: true, // Redirect to an error page on invalid ID
     };
   }
 
-  // Fetch additional data about the task if needed
-  // const res = await fetch(`https://api.example.com/tasks/${sanitizedTaskID}`);
-  // const taskData = await res.json();
+  // Fetch additional data about the task
+  const res = await fetch(`http://localhost:3000/api/tasks-test/${taskID}`);
+  if (!res.ok) {
+    return {
+      notFound: true, // Handle error response from the API
+    };
+  }
+  const taskData = await res.json();
 
   // Determine card type and last four digits
   const cardNumber = "411111111111111"; // This should be fetched SECURELY (alternatively, only the first digit & last 4 digits are needed)
@@ -160,21 +164,21 @@ export async function getServerSideProps({ params }: any) {
 
   // Determine task details
   const taskInfo: TaskInfo = {
-    title: "Cleaning up my house", // Obtained from API
-    date: "10 Dec, 2022", // Obtained from API & processed to match form required
+    title: taskData.title, // Obtained from API
+    date: formatDate(taskData.date), // Obtained from API & processed to match form required
   };
 
   // Determine bidder details
   const bidderInfo: BidderInfo = {
-    profileImg: "/default-profile.svg", // Again obtained via API
-    username: "Jackson Anderson",
+    profileImg: "/default-profile.svg", // **Again obtained via API (might be seperate api call if not with data)**
+    username: taskData.name, // **NOT SURE IF ITS USERNAME OR JUST NAME**
   };
 
   // Determine amounts to be payed
   const amountInfo: AmountInfo = {
-    taskCost: 15,
-    tip: 1,
-    fee: 0,
+    taskCost: taskData.budget,
+    tip: 1, // Obtained from the fee page that appears before the payment page.
+    fee: 0, // **Not sure how fee is calculated or obtained**
   };
 
   return {
