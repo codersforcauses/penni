@@ -188,8 +188,12 @@ export default function ComponentShowcase() {
               value={selectedValue}
               onChange={(e) => setSelectedValue(e.target.value)}
             />,
-          ].map((input) => {
-            return <div className="w-full px-4 pb-4">{input}</div>;
+          ].map((input, index) => {
+            return (
+              <div className="w-full px-4 pb-4" key={index}>
+                {input}
+              </div>
+            );
           })}
         </ComponentSection>
 
