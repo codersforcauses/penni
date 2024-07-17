@@ -80,9 +80,12 @@ export default function UploadImages({
             <Image
               src={preview}
               alt={`uploaded-img-${index}`}
-              layout="fill"
-              objectFit="cover"
               className="rounded-md"
+              fill
+              sizes="100vw"
+              style={{
+                objectFit: "cover",
+              }}
             />
             <div
               className="absolute inset-0 flex cursor-pointer items-center justify-center bg-gray-800 bg-opacity-50 opacity-0 transition-opacity hover:opacity-100"
@@ -93,6 +96,10 @@ export default function UploadImages({
                 alt="Remove an image."
                 width={32}
                 height={32}
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                }}
               />
             </div>
           </div>
@@ -108,6 +115,10 @@ export default function UploadImages({
             alt="Upload an image."
             width={32}
             height={32}
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
           />
           <input
             type="file"
