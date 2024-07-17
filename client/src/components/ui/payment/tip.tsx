@@ -120,10 +120,10 @@ export default function Tip({
           </Button>
         </div>
       </Card>
-      <div>
+      <div className="absolute bottom-12 w-1/3 px-4">
         <Button
           variant="default"
-          className={tip !== null ? "" : "hidden"}
+          className={tip !== null ? "w-full py-3" : "hidden"}
           onClick={handleSubmit}
         >
           Confirm
