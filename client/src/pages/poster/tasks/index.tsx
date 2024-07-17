@@ -1,10 +1,11 @@
-import Link from "next/link";
 import React from "react";
 
-import Create from "./create";
-import New from "./new";
+import Create from "./create-task";
+import TaskList from "./task-list";
 
 export default function PosterTasksPage() {
-  const hasTask = false;
-  return <div>{!hasTask ? <Create /> : <New />}</div>;
+  // TODO api get from api/tasks
+  const tasks = [];
+  const hasTask = tasks.length > 0;
+  return <div>{!hasTask ? <Create /> : <TaskList />}</div>;
 }
