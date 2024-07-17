@@ -46,10 +46,10 @@ const MarketPage: NextPageWithLayout = () => {
   );
 
   const categories = ["All Category"].concat(
-    taskList.map((task) => task.category),
+    Array.from(new Set(taskList.map((task) => task.category))),
   );
   const locations = ["All Location"].concat(
-    taskList.map((task) => task.location),
+    Array.from(new Set(taskList.map((task) => task.location))),
   );
 
   return (

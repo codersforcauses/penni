@@ -91,7 +91,10 @@ function TaskList({ name, state }: TaskListProps) {
   if (userTasks.length === 0) {
     return (
       <div className="relative top-36 flex w-full justify-center">
-        <EmptyListDisplay type="bidder" />
+        <EmptyListDisplay
+          type="bidder"
+          onClick={() => router.push(`/bidder/market`)}
+        />
       </div>
     );
   } else {
