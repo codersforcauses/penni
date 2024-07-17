@@ -70,13 +70,13 @@ export default function Tip({
           Skip
         </Button>
       </div>
-      <div className="relative mb-6 h-24 w-24">
+      <div className="relative mb-6 h-32 w-32">
         <Image
           src={bidderInfo.profileImg}
           alt={`${bidderInfo.name}'s profile image.`}
           className="rounded-full object-cover"
-          width={96} // Adjust the width and height as needed
-          height={96}
+          width={128} // Adjust the width and height to make it bigger
+          height={128}
         />
       </div>
       <p className="mb-4 text-xl font-medium">
