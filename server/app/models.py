@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password, check_password
 from django.utils.timezone import now
+import hashlib
 
 
 class Users(models.Model):
@@ -39,11 +40,18 @@ class Users(models.Model):
         return check_password(raw_password, self.password_hash)
 
 
+# Function that hash the avatar image name, so image name will keep consistant
+def get_avatar_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    hash_name = hashlib.md5(str(instance.user_id).encode('utf-8')).hexdigest()
+    return f"avatars/{hash_name}.{ext}"
+
+
 class Profiles(models.Model):
     profile_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
-    avatar_url = models.ImageField(upload_to="avatars/", blank=True, null=True)
+    avatar_url = models.ImageField(upload_to=get_avatar_upload_path, blank=True, null=True)
     bio = models.TextField(blank=True)
 
     def __str__(self):
@@ -55,6 +63,17 @@ class Profiles(models.Model):
         super().clean()
         if any(char.isdigit() for char in self.full_name):
             raise ValidationError({'full_name': 'Full name must not contain numbers.'})
+
+    # Override save function, so now it will delete old avatar, if a user who
+    # has existing profile pic upload a new profile pic
+    def save(self, *args, **kwargs):
+        try:
+            this = Profiles.objects.get(profile_id=self.profile_id)
+            if this.avatar_url != self.avatar_url:
+                this.avatar_url.delete(save=False)
+        except Profiles.DoesNotExist:
+            pass
+        super(Profiles, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Profiles"
