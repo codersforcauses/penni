@@ -7,10 +7,10 @@ import { ChevronRightIcon } from "@/components/ui/icons";
 import CreditCardInfo from "@/components/ui/payment/credit-card-info";
 import Tip from "@/components/ui/payment/tip";
 import PersonDetail from "@/components/ui/person-detail";
-import { CardType } from "@/lib/card-types";
-import { formatDate } from "@/lib/date";
-import { validateTaskID } from "@/lib/task-id";
+import { formatDate } from "@/lib/format";
+import { CardType } from "@/lib/types";
 import { getCardTypeFromMII } from "@/lib/utils";
+import { validateTaskID } from "@/lib/validation";
 
 interface CardInfo {
   cardType: CardType;

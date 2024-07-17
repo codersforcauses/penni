@@ -11,6 +11,24 @@ interface TipProps {
   bidderInfo: BidderInfo;
 }
 
+/**
+ * Tip component
+ *
+ * This component renders a tipping interface where users can choose to tip a bidder.
+ * It allows users to select predefined tip amounts or enter a custom tip.
+ * The component also includes a profile image and name of the bidder.
+ *
+ * @param {string} taskID - The ID of the task for which the tip is being given.
+ * @param {function} onTipSubmit - Callback to pass the tip amount to the parent component.
+ * @param {BidderInfo} bidderInfo - Object containing information about the bidder, including their profile image and name.
+ * @returns {JSX.Element} The rendered Tip component.
+ * @example
+ * <Tip
+    taskID={taskID}
+    onTipSubmit={handleTipSubmit}
+    bidderInfo={bidderInfo}
+   />
+ */
 export default function Tip({ taskID, onTipSubmit, bidderInfo }: TipProps) {
   const [tip, setTip] = useState<number | null>(null);
   const [isCardVisible, setIsCardVisible] = useState(false);

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import { CardType } from "@/lib/card-types";
+import { CardType } from "@/lib/types";
 
 // Map of card types to their respective icons
 const cardTypeIcons: { [key in CardType]: string } = {

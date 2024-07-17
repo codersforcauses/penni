@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { validateTaskID } from "@/lib/task-id";
+import { validateTaskID } from "@/lib/validation";
 
 const tasks = [
   {
