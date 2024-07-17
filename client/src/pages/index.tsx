@@ -1,12 +1,13 @@
 import { Inter as FontSans } from "next/font/google";
 import { useEffect, useState } from "react";
 
-import OnBoarding from "@/components/on-boarding";
+import OnBoarding from "@/components/ui/on-boarding";
 import { usePings } from "@/hooks/pings";
 import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
 import SplashScreen from "../components/ui/splash-screen";
+import TaskDetails from "../components/ui/task-details";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,7 +23,6 @@ const Ping: React.FC<PingProps> = ({ clicked, setClicked }) => {
   const { data, isLoading } = usePings({
     enabled: clicked,
   });
-
   return (
     <main
       className={cn(

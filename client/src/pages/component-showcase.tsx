@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import BottomNav from "@/components/ui/bottom-nav";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,12 +13,16 @@ import { MarketDropdown } from "@/components/ui/dropdown";
 import EmptyListDisplay from "@/components/ui/empty-list-display";
 import { Form } from "@/components/ui/form";
 import {
+  ChevronRightIcon,
   DropdownIcon,
   EditIcon,
+  InboxIcon,
   InfoIcon,
+  LogoutIcon,
   MarketIcon,
   MeIcon,
   MyTasksIcon,
+  SettingsIcon,
 } from "@/components/ui/icons";
 import {
   DropdownInput,
@@ -25,6 +30,8 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
+import PosterTaskCard from "@/components/ui/poster/task-card";
+import ProfileTag from "@/components/ui/profile-tags";
 import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
 
@@ -46,6 +53,7 @@ function ComponentSection({
 export default function ComponentShowcase() {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedDropdown, setSelectedDropdown] = useState("HTML");
+  const bidder_exmaple_profile = "/bidder-exmaple-profile.svg";
   return (
     <div className="flex h-full w-screen items-center justify-center bg-penni-background-dark-mode">
       <div className="m-0 h-auto w-[375px] bg-penni-background-light-mode">
@@ -130,6 +138,10 @@ export default function ComponentShowcase() {
           <EditIcon strokeColour="penni-alert-error" />
           <InfoIcon />
           <DropdownIcon />
+          <InboxIcon />
+          <LogoutIcon />
+          <SettingsIcon />
+          <ChevronRightIcon />
         </ComponentSection>
 
         <ComponentSection title="Inputs">
@@ -324,6 +336,54 @@ export default function ComponentShowcase() {
             onChange={(e) => setSelectedDropdown(e.target.value)}
           />
           <EmptyListDisplay type="poster" />
+        </ComponentSection>
+        <ComponentSection title="Profile Tags">
+          <ProfileTag
+            icon={InfoIcon}
+            title="About"
+            description="Lorem ipsum dolor sit amet."
+            link="/profile/about"
+          />
+          <ProfileTag
+            icon={LogoutIcon} // Pass the component directly
+            title="Logout"
+            description=""
+            nestedContent={<div>Logout content goes here</div>} // Use nested content for Logout
+          />
+        </ComponentSection>
+        <ComponentSection title="Poster Task Card">
+          <PosterTaskCard
+            state="BIDDING"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={8}
+          />
+          <PosterTaskCard
+            state="ONGOING"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={10}
+          />
+          <PosterTaskCard
+            state="COMPLETED"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={20}
+          />
+          <PosterTaskCard
+            state="EXPIRED"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={8}
+          />
+        </ComponentSection>
+        <ComponentSection title="Bidder Offer Card">
+          <BidderOfferCard
+            profile={bidder_exmaple_profile}
+            name="Jackson Anderson"
+            price={400}
+            bio="I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this."
+          />
         </ComponentSection>
       </div>
     </div>
