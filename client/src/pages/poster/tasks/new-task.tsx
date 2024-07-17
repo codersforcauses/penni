@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import Header from "@/components/ui/header";
 import {
   DropdownInput,
   ParagraphInput,
@@ -21,7 +20,7 @@ export default function NewTask() {
   const [price, setPrice] = React.useState(0.0);
   const [date, setDate] = React.useState("");
   const [state, setState] = React.useState("");
-  const [address, setAddress] = React.useState("");
+  const [suburb, setSuburb] = React.useState("");
   const [details, setDetails] = React.useState("What is the task about?");
   const router = useRouter();
   const backImg = "/back.svg";
@@ -34,7 +33,7 @@ export default function NewTask() {
     formData.append("price", price.toString());
     formData.append("date", date);
     formData.append("state", state);
-    formData.append("address", address);
+    formData.append("suburb", suburb);
     formData.append("details", details);
     // TODO api post formData to backend. awiat navigate to my task list page.
     router.push(`/poster/tasks/task-list`);
@@ -42,21 +41,7 @@ export default function NewTask() {
   return (
     <div>
       <div className="flex flex-col items-center">
-        <div className="sticky top-0 z-10 mt-3 flex h-12 w-screen justify-center bg-white">
-          <Link href="/poster/tasks/create-task">
-            <Image
-              className="absolute left-10 top-2"
-              src={backImg}
-              alt="back"
-              width={30}
-              height={30}
-            />
-          </Link>
-          <h1 className="absolute top-2 text-center font-mono text-2xl font-bold">
-            New Task
-          </h1>
-          <hr className="mt-12 w-full" />
-        </div>
+        <Header title="New Task" className="sticky top-0 z-10 w-full" />
         <Form className="mt-4 w-10/12" onSubmit={OnSubmit}>
           <p className={titleStyle}>Task Information</p>
           {[
@@ -84,11 +69,15 @@ export default function NewTask() {
                 let num = parseFloat(e.target.value);
                 setPrice(Number(num.toFixed(2)));
               }}
-              value={price}
+              value={price.toString()}
               type="price"
             />,
-          ].map((input) => {
-            return <div className="w-full px-4 pb-4">{input}</div>;
+          ].map((input, index) => {
+            return (
+              <div key={index} className="w-full px-4 pb-4">
+                {input}
+              </div>
+            );
           })}
           <p className={titleStyle}>Date and Location</p>
           {[
@@ -102,8 +91,8 @@ export default function NewTask() {
             />,
             <SingleLineInput
               label="Address"
-              onChange={(e) => setAddress(e.target.value)}
-              value={address}
+              onChange={(e) => setSuburb(e.target.value)}
+              value={suburb}
               type="text"
             />,
             <DropdownInput
@@ -112,8 +101,12 @@ export default function NewTask() {
               value={state}
               onChange={(e) => setState(e.target.value)}
             />,
-          ].map((input) => {
-            return <div className="w-full px-4 pb-4">{input}</div>;
+          ].map((input, index) => {
+            return (
+              <div key={index} className="w-full px-4 pb-4">
+                {input}
+              </div>
+            );
           })}
           <p className={titleStyle}>Task Details</p>
           <div className="w-full px-4 pb-4">

@@ -4,16 +4,16 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import PosterTaskCard from "@/components/ui/poster/task-card";
 import TaskTopBar from "@/components/ui/task-top-bar";
-// Dummy Data will be replaced by api fetch
+// Dummy Data will be replaced by api fetch || axios.get
 type TaskState = "BIDDING" | "ONGOING" | "COMPLETED" | "EXPIRED";
-
-const DummyTasks: {
+export type Task = {
   id: number;
   title: string;
   numberOfBidders: number;
   date: string;
   state: TaskState;
-}[] = [
+};
+const DummyTasks: Task[] = [
   {
     id: 1,
     title: "Cleaning up my house",
@@ -23,28 +23,28 @@ const DummyTasks: {
   },
   {
     id: 2,
-    title: "Cleaning up my house",
+    title: "Moving House",
     numberOfBidders: 8,
     date: "10 Mar, 2022",
     state: "ONGOING",
   },
   {
     id: 3,
-    title: "Cleaning up my house",
+    title: "Clean Garden",
     numberOfBidders: 8,
     date: "10 Apr, 2012",
     state: "COMPLETED",
   },
   {
     id: 4,
-    title: "Cleaning up my house",
+    title: "Take care old people",
     numberOfBidders: 8,
     date: "10 Aug, 2022",
     state: "EXPIRED",
   },
   {
     id: 5,
-    title: "Cleaning up my house",
+    title: "Take card children",
     numberOfBidders: 8,
     date: "10 Aug, 2022",
     state: "EXPIRED",
@@ -71,24 +71,30 @@ type TaskListProp = {
 
 export default function TaskList({ className }: TaskListProp) {
   const router = useRouter();
-  // TODO api fetch tasklist replace dummy data.
+  // TODO api fetch tasklist replace dummy data.in reverse order.
+  // pass taskid and title to next page.
+  function NavigateWithData(task: Task): void {
+    router.push({
+      pathname: `/poster/tasks/${task.id}/task-details`,
+      query: task,
+    });
+  }
   return (
     <div
       className={`m-4 flex flex-col items-center justify-between ${className}`}
     >
       <TaskTopBar />
       <div className="mt-20 w-full">
-        {DummyTasks.map((task) => (
-          <div className={`mt-1`}>
+        {DummyTasks.map((task, id) => (
+          <div className={`mt-1`} key={id}>
             <PosterTaskCard
               title={task.title}
               numberOfBidders={task.numberOfBidders}
               date={task.date}
               state={task.state}
-              onClick={() =>
-                router.push(`/poster/tasks/${task.id}/task-details`)
-              }
-              // On Click Navigate to Task Details.
+              onClick={() => {
+                NavigateWithData(task);
+              }}
             ></PosterTaskCard>
           </div>
         ))}
@@ -98,7 +104,6 @@ export default function TaskList({ className }: TaskListProp) {
         variant="floating"
         onClick={() => router.push("/poster/tasks/new-task")}
         className={`fixed bottom-10 right-10`}
-        // Naviaget to New Task page.
       >
         + New Task
       </Button>
