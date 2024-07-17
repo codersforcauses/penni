@@ -53,7 +53,7 @@ export default function Card({ isVisible, onClose, children }: CardProps) {
           <button className="close-button" onClick={onClose}>
             <Image src="/icons/cross.svg" alt="Close" width={24} height={24} />
           </button>
-          {children}
+          <div className="pt-6">{children}</div>
         </div>
       </div>
     </>
