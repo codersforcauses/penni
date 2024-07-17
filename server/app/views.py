@@ -6,6 +6,7 @@ from .serializers import RegistrationSerializer, ProfleSerializer
 from .models import Profiles
 from rest_framework.parsers import MultiPartParser, FormParser
 
+
 class RegistrationView(CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = RegistrationSerializer
