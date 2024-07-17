@@ -58,8 +58,8 @@ export default function Tip({
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center bg-white p-4">
-      <div>
+    <div className="relative flex h-screen flex-col items-center justify-center bg-white p-4">
+      <div className="absolute right-4 top-4">
         <Button
           variant="link"
           onClick={() => {
