@@ -1,13 +1,11 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password, check_password
 from django.utils.timezone import now
 
 
 class Users(models.Model):
-    """
-    Model class: Users
-    Represents users in the system.
-    """
     user_id = models.AutoField(primary_key=True)
     email = models.CharField(max_length=255)
     mobile = models.CharField(max_length=20)
@@ -18,32 +16,108 @@ class Users(models.Model):
     status = models.CharField(max_length=50)
     user_role = models.CharField(max_length=50, default='')
 
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
     def __str__(self):
         return (f"User {self.user_id}: email={self.email}, "
                 f"mobile={self.mobile}, "
-                f"password_hash={self.password_hash}, "
                 f"created_at={self.created_at}, "
-                f"updated_at={self.updated_at}, last_login={self.last_login},"
+                f"updated_at={self.updated_at}, last_login={self.last_login}, "
                 f"status={self.status}")
 
     def clean(self):
-        """
-        Perform custom validation.
-        """
         super().clean()
-        # Example validation: Ensure mobile number contains only digits
         if not self.mobile.isdigit():
-            raise ValidationError('Mobile number must contain only digits.')
-        # Example validation: Ensure status is not empty
+            raise ValidationError({'mobile': 'Mobile must contain only digits.'})
         if not self.status:
-            raise ValidationError('Status must not be empty.')
+            raise ValidationError({'status': 'This field cannot be blank.'})
+
+    def set_password(self, raw_password):
+        self.password_hash = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password_hash)
+
+
+class AuthUserManager(BaseUserManager):
+    use_in_migrations = True
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def create_user(self, email, password, username=None, **extra_fields):
+        if not email:
+            raise ValueError("Users must have an email address")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True")
+
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True")
+
+        if extra_fields.get("is_active") is not True:
+            raise ValueError("Superuser must have is_active=True")
+
+        return self.create_user(email, password, **extra_fields)
+
+
+class AuthUsers(AbstractUser):
+    user_id = models.AutoField(primary_key=True)
+    email = models.CharField(max_length=255)
+    mobile = models.CharField(max_length=20)
+    password = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_login = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=50)
+    user_role = models.CharField(max_length=50, default='')
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    groups = models.ManyToManyField('auth.Group',
+                                    related_name='custom_user_set', blank=True)
+    user_permissions = models.ManyToManyField(
+        'auth.Permission', related_name='custom_user_set', blank=True)
+
+    objects = AuthUserManager()
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["grade", "first_name", "last_name", "password"]
+
+    def __str__(self):
+        return (f"User {self.user_id}: email={self.email}, "
+                f"mobile={self.mobile}, "
+                f"created_at={self.created_at}, "
+                f"updated_at={self.updated_at}, last_login={self.last_login}, "
+                f"status={self.status}")
+
+    def clean(self):
+        super().clean()
+        if not self.mobile.isdigit():
+            raise ValidationError(
+                {'mobile': 'Mobile must contain only digits.'})
+        if not self.status:
+            raise ValidationError({'status': 'This field cannot be blank.'})
+
+    def set_password(self, raw_password):
+        self.password_hash = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password_hash)
 
 
 class Profiles(models.Model):
-    """
-    Model class: Profiles
-    Represents user profiles.
-    """
     profile_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
@@ -56,18 +130,11 @@ class Profiles(models.Model):
                 f"avatar_url={self.avatar_url}, bio={self.bio}")
 
     def clean(self):
-        """
-        Perform custom validation.
-        """
         super().clean()
-        # Example validation: Ensure full_name does not contain numbers
         if any(char.isdigit() for char in self.full_name):
-            raise ValidationError('Full name must not contain numbers.')
-        # Example validation: Ensure avatar_url is a valid URL (basic check)
-        if self.avatar_url and \
-           not self.avatar_url.startswith(('http://', 'https://')):
-            raise ValidationError('Avatar URL must start' +
-                                  'with http:// or https://')
+            raise ValidationError({'full_name': 'Full name must not contain numbers.'})
+        if not self.avatar_url.startswith('http://') and not self.avatar_url.startswith('https://'):
+            raise ValidationError({'avatar_url': 'Avatar URL must start with http:// or https://'})
 
     class Meta:
         verbose_name_plural = "Profiles"
@@ -113,7 +180,7 @@ class Tasks(models.Model):
             raise ValidationError('Price must be a valid number.')
         # Example validation: Ensure deadline is in the future
         if self.deadline <= now():
-            raise ValidationError('Deadline must be in the future.')
+            raise ValidationError({'deadline': 'Deadline must be in the future.'})
 
     class Meta:
         verbose_name_plural = "Tasks"
@@ -138,6 +205,10 @@ class Bids(models.Model):
                 f"bidder_id={self.bidder_id}, price={self.price}, "
                 f"message={self.message}, status={self.status}, "
                 f"created_at={self.created_at}, updated_at={self.updated_at}")
+
+    @classmethod
+    def acceptedBids(cls):
+        return cls.objects.filter(status='accepted')
 
     def clean(self):
         """
