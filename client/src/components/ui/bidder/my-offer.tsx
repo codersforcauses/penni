@@ -2,22 +2,21 @@ import { EditIcon } from "../icons";
 
 interface MyOfferProp {
   text: string;
-  amount: string;
-  onClick?: (...args: any[]) => void;
+  value: string;
+  onClick: React.MouseEventHandler;
 }
 
-function MyOffer({ text, amount, onClick }: MyOfferProp) {
+function MyOffer({ text, value, onClick }: MyOfferProp) {
   return (
     <div className="px-4 py-3" onClick={onClick}>
-      <div className="flex h-14 w-full flex-row items-center rounded-lg bg-penni-text-regular-light-mode bg-opacity-5 p-4">
-        <span className="w-full text-lg font-medium text-penni-text-regular-light-mode">
-          {text}: {amount}
+      <div className="flex h-14 w-full flex-row items-center rounded-lg border border-penni-grey-border-light-mode bg-gray-100 p-4">
+        <span className="body-medium w-full text-penni-text-regular-light-mode">
+          {text}: ${value}
         </span>
-        {onClick && (
-          <div className="ml-4 size-6">
-            <EditIcon strokeColour="penni-text-regular-light-mode" />
-          </div>
-        )}
+
+        <div className="ml-4 size-6">
+          <EditIcon strokeColour="penni-text-regular-light-mode" />
+        </div>
       </div>
     </div>
   );

@@ -36,7 +36,7 @@ const ProfilePage: React.FC = () => {
             icon={InboxIcon}
             title="Payouts"
             description="To receive your funds"
-            link="/profile/payouts"
+            link="bidder/profile/payouts"
           />
           <ProfileTag
             icon={SettingsIcon}

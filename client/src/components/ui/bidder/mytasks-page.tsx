@@ -1,10 +1,12 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import EmptyListDisplay from "../empty-list-display";
 import TaskCard from "./task-card";
 import TopNavtab from "./top-navtab";
 
-interface Task {
+export interface Task {
+  task_id: number;
   name: string;
   title: string;
   category: string;
@@ -13,8 +15,11 @@ interface Task {
   duration: string;
   estimatePrice: string;
   myOfferPrice: string;
-  state: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
+  state: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED" | "UNTAKEN";
   priceType: string;
+  suburb: string;
+  description: string;
+  deadline: string;
 }
 
 interface TaskListProps {
@@ -33,6 +38,7 @@ function TaskList({ name, state }: TaskListProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   // client-side data fetching, using mock data in "/api/tasks-test" to test it
   useEffect(() => {
     const fetchTasks = async () => {
@@ -90,7 +96,7 @@ function TaskList({ name, state }: TaskListProps) {
     );
   } else {
     return (
-      <div>
+      <div className="m-4 flex flex-col gap-4">
         {userTasks.map((task, id) => (
           <TaskCard
             key={id}
@@ -103,6 +109,7 @@ function TaskList({ name, state }: TaskListProps) {
             myOfferPrice={task.myOfferPrice}
             state={task.state}
             priceType="My Offer"
+            onClick={() => router.push(`/bidder/market/${task.task_id}`)}
           />
         ))}
       </div>

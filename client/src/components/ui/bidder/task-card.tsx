@@ -5,7 +5,7 @@ import React from "react";
 
 // the props
 export interface TaskCardProps {
-  state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
+  state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED" | "UNTAKEN";
   category: string;
   title: string;
   date: string;
@@ -15,6 +15,7 @@ export interface TaskCardProps {
   myOfferPrice: string;
   priceType: "Estimated Price" | "My Offer";
   key?: number; //to use map to iterate
+  onClick: React.MouseEventHandler;
 }
 
 // the task card
@@ -28,10 +29,13 @@ const TaskCard = ({
   myOfferPrice,
   state,
   priceType,
+  onClick,
 }: TaskCardProps) => {
   return (
-    <div
-      className={`m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
+    <button
+      type="button"
+      className={`rounded-lg border p-4 text-left ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
+      onClick={onClick}
     >
       {/* the state (expried or bidding) */}
       {state && (
@@ -96,7 +100,7 @@ const TaskCard = ({
           <p className="caption">{priceType}</p>
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
