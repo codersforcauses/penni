@@ -375,6 +375,7 @@ export default function ComponentShowcase() {
             title="Cleaning up my hosue"
             date="10 Dec, 2022"
             numberOfBidders={8}
+          />
         </ComponentSection>
         <ComponentSection title="Bidder Offer Card">
           <BidderOfferCard
