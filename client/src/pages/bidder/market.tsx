@@ -1,16 +1,14 @@
-import type { ReactElement } from "react";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import { MarketDropdown } from "@/components/ui/dropdown";
 import MeLayout from "@/components/ui/me-page";
 import TaskCard, { TaskCardProps } from "@/components/ui/task-card";
 
-import type { NextPageWithLayout } from "./_app";
+import type { NextPageWithLayout } from "../_app";
 
 const MarketPage: NextPageWithLayout = () => {
   const tasks: TaskCardProps[] = [
     {
-      id: "abc123",
       state: "BIDDING",
       category: "Construction",
       title: "Fix the roof",
@@ -22,7 +20,6 @@ const MarketPage: NextPageWithLayout = () => {
       priceType: "Estimated Price",
     },
     {
-      id: "xyz000",
       state: "EXPIRED",
       category: "Painting",
       title: "Paint the fence",
@@ -34,7 +31,6 @@ const MarketPage: NextPageWithLayout = () => {
       priceType: "My Offer",
     },
     {
-      id: "lol223",
       state: "BIDDING",
       category: "Cleaning",
       title: "Clean the house",
@@ -46,7 +42,6 @@ const MarketPage: NextPageWithLayout = () => {
       priceType: "Estimated Price",
     },
     {
-      id: "loo223",
       state: "BIDDING",
       category: "Cleaning",
       title: "Clean the house",
@@ -85,8 +80,8 @@ const MarketPage: NextPageWithLayout = () => {
             (selectedLocation === "All Location" ||
               task.location === selectedLocation),
         )
-        .map((task) => (
-          <TaskCard key={task.id} {...task} />
+        .map((task, index) => (
+          <TaskCard key={index} {...task} />
         ))}
 
       <br />

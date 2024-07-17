@@ -13,7 +13,7 @@ export default function EmptyListDisplay({
   onClick,
 }: EmptyListDisplayProp) {
   return (
-    <div className="relative flex flex-col items-center gap-5 px-4">
+    <div className="relative flex w-full flex-col items-center gap-5 px-4">
       <Image
         width={178}
         height={171}
