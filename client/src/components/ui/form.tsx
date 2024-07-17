@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import { Button } from "./button";
+import { ErrorCallout } from "./callout";
 import {
   DropdownInput,
   HTMLTextTargetElement,
@@ -76,6 +77,7 @@ export function Form({ children, onSubmit, className }: FormProps) {
 
   const values: { name?: string; value: string; required: boolean }[] = [];
   const setValues: React.Dispatch<React.SetStateAction<string>>[] = [];
+  const [errors, setErrors] = useState<{ [key: string]: boolean }>({});
 
   // Populate values and setValues
   Children.forEach(children, (child) => {
@@ -97,19 +99,28 @@ export function Form({ children, onSubmit, className }: FormProps) {
   });
 
   const childArray = Children.toArray(children); // get array so can check next item arr[idx + 1]
-  const filledAllRequired = values.every((item) => {
-    return item.required ? item.value : true;
-  });
   let inputIdx = 0; // Children are not all input components, so need to keep track of input index
 
   function formAction(e: React.FormEvent) {
     e.preventDefault();
 
     const formValues: FormData = {};
+    const newErrors: { [key: string]: boolean } = {};
+
     values.forEach((nameVal) => {
-      if (nameVal.name) formValues[nameVal.name] = nameVal.value;
+      if (nameVal.name) {
+        formValues[nameVal.name] = nameVal.value;
+        if (nameVal.required && !nameVal.value) {
+          newErrors[nameVal.name] = true;
+        }
+      }
     });
-    onSubmit(formValues);
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit(formValues);
+    }
   }
 
   // Return spacing based on the current element and the next element
@@ -147,7 +158,7 @@ export function Form({ children, onSubmit, className }: FormProps) {
         if (
           child.type == Button &&
           child.props.type == "submit" &&
-          !filledAllRequired
+          Object.keys(errors).length > 0
         ) {
           child = (
             <Button variant="inactive" disabled={true} {...child.props} />
@@ -164,6 +175,7 @@ export function Form({ children, onSubmit, className }: FormProps) {
           );
 
         const i = inputIdx++; // Needed for some reason, can't use inputIdx directly
+
         return (
           <div key={idx} className={`w-full ${spacing}`}>
             <InputContext.Provider
@@ -171,11 +183,20 @@ export function Form({ children, onSubmit, className }: FormProps) {
                 value: values[i].value,
                 onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => {
                   setValues[i](e.target.value);
+                  if (errors[values[i].name || ""]) {
+                    setErrors((prev) => {
+                      const { [values[i].name || ""]: _, ...rest } = prev;
+                      return rest;
+                    });
+                  }
                 },
               }}
             >
               {child}
             </InputContext.Provider>
+            {errors[values[i].name || ""] && (
+              <ErrorCallout text="This is a required field!" />
+            )}
           </div>
         );
       })}
