@@ -23,12 +23,14 @@ const iconLists: Icon[] = [
     alt: "Icon of my tasks",
     text: "My Tasks",
     id: 0,
+    link: "/bidder",
   },
   {
     IconComponent: MarketIcon,
     alt: "Icon of market",
     text: "Market",
     id: 1,
+    link: "/bidder/market",
   },
   {
     IconComponent: MeIcon,
@@ -53,7 +55,7 @@ const BottomNav = ({
 
   return (
     <div
-      className={`border-t-penni-border-light-mode ${isFixed ? "fixed bottom-0" : ""} h-20 w-full border-t-2 bg-white`}
+      className={`border-t-penni-border-light-mode ${isFixed ? "fixed bottom-0" : ""} h-20 w-full border-t-2 bg-penni-background-light-mode`}
     >
       <ul className="flex h-12 cursor-pointer text-xs leading-3">
         {iconLists.map((iconItem) => (

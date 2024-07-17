@@ -5,7 +5,6 @@ import React from "react";
 
 // the props
 export interface TaskCardProps {
-  id: string;
   state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
   category: string;
   title: string;
@@ -15,6 +14,7 @@ export interface TaskCardProps {
   estimatePrice: string;
   myOfferPrice: string;
   priceType: "Estimated Price" | "My Offer";
+  key?: number; //to use map to iterate
 }
 
 // the task card
@@ -83,7 +83,7 @@ const TaskCard = ({
                 objectFit="contain"
               />
             </div>
-            <p className="subheadline text-gray-500">{duration} hours</p>
+            <p className="subheadline text-gray-500">{duration}</p>
           </div>
         </div>
 

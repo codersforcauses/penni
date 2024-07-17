@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import BottomNav from "@/components/ui/bottom-nav";
 import { Button } from "@/components/ui/button";
 import {
@@ -52,6 +53,7 @@ function ComponentSection({
 export default function ComponentShowcase() {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedDropdown, setSelectedDropdown] = useState("HTML");
+  const bidder_exmaple_profile = "/bidder-exmaple-profile.svg";
   return (
     <div className="flex h-full w-screen items-center justify-center bg-penni-background-dark-mode">
       <div className="m-0 h-auto w-[375px] bg-penni-background-light-mode">
@@ -273,7 +275,6 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Task Card">
           <TaskCard
-            id="abc124"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -285,7 +286,6 @@ export default function ComponentShowcase() {
             priceType="Estimated Price"
           />
           <TaskCard
-            id="abc125"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -297,7 +297,6 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
-            id="abc126"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -309,7 +308,6 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
-            id="abc127"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -321,7 +319,6 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
-            id="abc128"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -378,6 +375,13 @@ export default function ComponentShowcase() {
             title="Cleaning up my hosue"
             date="10 Dec, 2022"
             numberOfBidders={8}
+        </ComponentSection>
+        <ComponentSection title="Bidder Offer Card">
+          <BidderOfferCard
+            profile={bidder_exmaple_profile}
+            name="Jackson Anderson"
+            price={400}
+            bio="I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this."
           />
         </ComponentSection>
       </div>
