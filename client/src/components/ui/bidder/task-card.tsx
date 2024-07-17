@@ -15,7 +15,7 @@ export interface TaskCardProps {
   myOfferPrice: string;
   priceType: "Estimated Price" | "My Offer";
   key?: number; //to use map to iterate
-  onClick: React.MouseEventHandler;
+  onClick?: React.MouseEventHandler;
 }
 
 // the task card
