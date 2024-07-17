@@ -51,16 +51,16 @@ const TestPostRequestPage = () => {
 
   return (
     <div>
-      <h1>Test POST Request</h1>
+      <h1>Test register POST Request</h1>
       <Button onClick={handleTestRegisterRequest}>Register</Button>
 
-      <div className="login-page">
+      <div className="mt-5 border-2">
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Username:</label>
             <input
-              className="border border-2"
+              className="border-2"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -69,7 +69,7 @@ const TestPostRequestPage = () => {
           <div>
             <label>Password:</label>
             <input
-              className="border border-2"
+              className="border-2"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
