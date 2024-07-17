@@ -17,6 +17,20 @@ interface CreditCardInfoProps {
   last4Digits: string;
 }
 
+/**
+ * CreditCardInfo component
+ *
+ * This component displays credit card information, including the card type icon
+ * and the last four digits of the card number. The first 12 digits are obfuscated
+ * for security reasons.
+ *
+ * @param {CardType} cardType - The type of the credit card (Visa, MasterCard, Amex, Discover, or Unknown).
+ * @param {string} last4Digits - The last four digits of the credit card number.
+ * @returns {JSX.Element} The rendered CreditCardInfo component.
+ *
+ * @example
+ * <CreditCardInfo cardType={CardType.Visa} last4Digits="1234" />
+ */
 export default function CreditCardInfo({
   cardType,
   last4Digits,
