@@ -195,7 +195,7 @@ export function Form({ children, onSubmit, className }: FormProps) {
               {child}
             </InputContext.Provider>
             {errors[values[i].name || ""] && (
-              <ErrorCallout text="This is a required field!"/>
+              <ErrorCallout text="This is a required field!" />
             )}
           </div>
         );
