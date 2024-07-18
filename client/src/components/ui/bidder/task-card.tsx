@@ -32,9 +32,8 @@ const TaskCard = ({
   onClick,
 }: TaskCardProps) => {
   return (
-    <button
-      type="button"
-      className={`rounded-lg border p-4 text-left ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
+    <div
+      className={`cursor-pointer rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
       onClick={onClick}
     >
       {/* the state (expried or bidding) */}
@@ -100,7 +99,7 @@ const TaskCard = ({
           <p className="caption">{priceType}</p>
         </div>
       </div>
-    </button>
+    </div>
   );
 };
 
