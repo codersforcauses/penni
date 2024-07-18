@@ -98,9 +98,13 @@ export default function OnBoarding({
                 <div className="relative -mt-4 ml-1 h-[82vh] w-full">
                   <Image
                     src={slide.img}
-                    alt="" // No alt as title handles that
+                    // No alt as title handles that
+                    alt=""
                     fill
-                    style={{ objectFit: "contain" }}
+                    style={{
+                      objectFit: "contain",
+                      maxWidth: "100%",
+                    }}
                   />
                 </div>
                 <p className="title1 -mt-[0.7vh] ml-1 max-w-[39vh] text-center text-penni-text-regular-light-mode">

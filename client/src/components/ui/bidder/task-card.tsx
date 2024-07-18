@@ -60,8 +60,11 @@ const TaskCard = ({
               <Image
                 src="/icons/calendar.svg"
                 alt="Date"
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "contain",
+                }}
               />
             </div>
             <p className="subheadline text-gray-500">{date}</p>
@@ -71,8 +74,11 @@ const TaskCard = ({
               <Image
                 src="/icons/marker.svg"
                 alt="Location"
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "contain",
+                }}
               />
             </div>
             <p className="subheadline text-gray-500">{location}</p>
@@ -82,8 +88,11 @@ const TaskCard = ({
               <Image
                 src="/icons/clock.svg"
                 alt="Duration"
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "contain",
+                }}
               />
             </div>
             <p className="subheadline text-gray-500">{duration}</p>
