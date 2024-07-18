@@ -53,7 +53,7 @@ export default function TaskDetailPage() {
   if (error) return <div>Error: {error}</div>;
 
   const taskInDetail = tasks.filter(
-    (task) => task.task_id.toString() === router.query.slug,
+    (task) => task.task_id.toString() === router.query.taskid,
   )[0];
 
   const sampleTaskData = {
