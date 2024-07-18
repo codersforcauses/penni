@@ -4,7 +4,16 @@ import React from "react";
 const SplashScreen: React.FC = () => {
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Image src="/penni-logo.svg" alt="Penni logo" width={85} height={70} />
+      <Image
+        src="/penni-logo.svg"
+        alt="Penni logo"
+        width={85}
+        height={70}
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+        }}
+      />
     </div>
   );
 };

@@ -50,6 +50,10 @@ export default function Header({
             alt="Back"
             width={24}
             height={24}
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
           />
         </Button>
       )}
