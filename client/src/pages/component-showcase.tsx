@@ -258,7 +258,7 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Bottom Nav">
           <div className="w-full">
-            <BottomNav isFixed={false} children={<></>} />
+            <BottomNav isFixed={false} />
           </div>
         </ComponentSection>
 

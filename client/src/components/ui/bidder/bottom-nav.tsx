@@ -42,7 +42,7 @@ export default function BottomNav({
   children,
 }: {
   isFixed?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   const router = useRouter();
   const [paddingBottom, setPaddingBottom] = useState<number>(0);
