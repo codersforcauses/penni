@@ -87,7 +87,16 @@ function SignUp() {
               onClick={multistepForm.Back}
               className="fixed left-5 top-10 rounded-lg bg-blue-700"
             >
-              <Image src={BackArrow} alt="Back Arrow" width={20} height={20} />
+              <Image
+                src={BackArrow}
+                alt="Back Arrow"
+                width={20}
+                height={20}
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                }}
+              />
             </Button>
             <Button
               className="font-bod fixed right-5 top-10 bg-slate-100 font-mono text-2xl text-blue-700"
@@ -109,7 +118,7 @@ function SignUp() {
         {multistepForm.isFirstStep && (
           <div className="flex justify-center">
             <Button
-              type="submit"
+              type="button"
               className="mt-5 flex w-10/12 self-center rounded-lg bg-slate-200 text-center font-mono text-2xl font-bold text-blue-600"
               onClick={SwitchUser}
             >

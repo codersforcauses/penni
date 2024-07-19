@@ -34,8 +34,9 @@ function PersonImg(props: personPic) {
         <Image
           src={props.personImg}
           alt="Picture of the person"
-          layout="fill"
           className="rounded-full object-cover"
+          fill
+          sizes="100vw"
         />
       </div>
     </div>
