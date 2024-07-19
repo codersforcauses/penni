@@ -303,3 +303,6 @@ pyproject.toml
 .vscode/*
 .vscode/settings.json
 
+
+# Custom docker compose file, don't push
+docker-compose-copy.yml
