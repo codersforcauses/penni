@@ -136,6 +136,7 @@ export function SingleLineInput({
   label,
   placeholder = "",
   type,
+  required,
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
   const id = useId();
@@ -162,13 +163,15 @@ export function SingleLineInput({
           },
         });
       }
+    } else {
+      onChange?.(e);
     }
   }
 
   return (
     <TextInputContainer
       value={value}
-      label={label}
+      label={label + (required ? " (required)" : "")}
       placeholder={placeholder}
       id={id}
       isSelected={isSelected}
@@ -185,7 +188,7 @@ export function SingleLineInput({
         type={type === "price" ? "number" : type}
         value={value}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={handleOnChange}
         onBlur={handleOnChange}
         className={valueStyle}
       />

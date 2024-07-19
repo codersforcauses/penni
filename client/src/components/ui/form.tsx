@@ -181,18 +181,26 @@ export function Form({ children, onSubmit, className }: FormProps) {
             <InputContext.Provider
               value={{
                 value: values[i].value,
-                onChange: (e: React.ChangeEvent<HTMLTextTargetElement>) => {
+                onChange: (e) => {
                   setValues[i](e.target.value);
-                  if (errors[values[i].name || ""]) {
+
+                  if (child.props.required) {
                     setErrors((prev) => {
-                      const { [values[i].name || ""]: _, ...rest } = prev;
-                      return rest;
+                      const updatedErrors = {
+                        ...prev,
+                        [values[i].name || ""]: !e.target.value,
+                      };
+                      return updatedErrors;
                     });
                   }
                 },
               }}
             >
-              {child}
+              <div
+                className={`${errors[child.props.name] ? "rounded-lg outline outline-2 outline-red-500" : ""}`}
+              >
+                {child}
+              </div>
             </InputContext.Provider>
             {errors[values[i].name || ""] && (
               <ErrorCallout text="This is a required field!" />
