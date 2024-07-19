@@ -73,12 +73,12 @@ export default function TaskList({ className }: TaskListProp) {
   const router = useRouter();
   // TODO api fetch tasklist replace dummy data.in reverse order.
   // pass taskid and title to next page.
-  function NavigateWithData(task: Task): void {
+  const NavigateWithData = (task: Task) => {
     router.push({
       pathname: `/poster/tasks/${task.id}/task-details`,
       query: task,
     });
-  }
+  };
   return (
     <div
       className={`m-4 flex flex-col items-center justify-between ${className}`}

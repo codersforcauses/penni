@@ -7,14 +7,11 @@ import PersonDetail from "@/components/ui/person-detail";
 
 export default function BidDetail() {
   const router = useRouter();
-  const bidder = JSON.parse(router.query.bidder as string);
-  const taskid = router.query.taskid;
-  console.log(bidder);
-  console.log(taskid);
-  if (bidder === undefined || taskid === undefined) {
-    return <div>Loading...</div>;
+  if (router.query.bidder === undefined || router.query.taskid === undefined) {
+    return <>Loading...</>;
   }
-
+  const bidder = JSON.parse(String(router.query.bidder));
+  const taskid = String(router.query.taskid);
   function OnClick() {
     // axios.post to api
     router.push(`/poster/task/${taskid}/${bidder.id}/payment`);

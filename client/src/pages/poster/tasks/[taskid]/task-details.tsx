@@ -12,7 +12,7 @@ const bidder_exmaple_profile3 = "/bidder-exmaple-profile3.svg";
 const bidder_exmaple_profile4 = "/bidder-exmaple-profile4.svg";
 const bios =
   "I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this.";
-type Bidder = {
+export type Bidder = {
   id: number;
   name: string;
   profile: string;
@@ -61,12 +61,12 @@ const BiddersOffer: Bidder[] = [
 function BidderOfferCardList(taskid: number) {
   // TODO fetch / axios.get(api/taskid) bidders.
   const router = useRouter();
-  function NaviagetWithData(bidder: Bidder): void {
+  const NavigateWithData = (bidder: Bidder) => {
     router.push({
       pathname: `/poster/tasks/${taskid}/${bidder.id}/bid-details`,
       query: { bidder: JSON.stringify(bidder), taskid: taskid },
     });
-  }
+  };
 
   return (
     <div>
@@ -78,7 +78,7 @@ function BidderOfferCardList(taskid: number) {
             price={bidder.price}
             bio={bidder.bio}
             onClick={() => {
-              NaviagetWithData(bidder);
+              NavigateWithData(bidder);
             }}
           />
         </div>
