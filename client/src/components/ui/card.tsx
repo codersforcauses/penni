@@ -47,7 +47,7 @@ export default function Card({ isVisible, onClose, children }: CardProps) {
 
   return (
     <>
-      <div className="overlay" onClick={onClose}></div>
+      <div className="overlay w-full" onClick={onClose}></div>
       <div className="card-container z-50 p-2">
         <div className="card">
           <button className="close-button" onClick={onClose}>
@@ -62,8 +62,8 @@ export default function Card({ isVisible, onClose, children }: CardProps) {
               }}
             />
           </button>
-          {children}
         </div>
+        {children}
       </div>
     </>
   );
