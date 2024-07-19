@@ -136,7 +136,6 @@ export function SingleLineInput({
   label,
   placeholder = "",
   type,
-  required,
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
   const id = useId();
@@ -171,7 +170,7 @@ export function SingleLineInput({
   return (
     <TextInputContainer
       value={value}
-      label={label + (required ? " (required)" : "")}
+      label={label}
       placeholder={placeholder}
       id={id}
       isSelected={isSelected}
