@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
 import SplashScreen from "../components/ui/splash-screen";
-import TaskDetails from "../components/ui/task-details";
+import SignUp from "./signup";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -46,7 +46,7 @@ const Ping: React.FC<PingProps> = ({ clicked, setClicked }) => {
 const Home: React.FC = () => {
   const [clicked, setClicked] = useState(false);
   const [currentScreen, setCurrentScreen] = useState<
-    "splash" | "onboarding" | "ping"
+    "splash" | "onboarding" | "ping" | "signup"
   >("splash");
   const [opacity, setOpacity] = useState(0);
 
@@ -121,7 +121,7 @@ const Home: React.FC = () => {
   ];
 
   const handleOnBoardingComplete = () => {
-    setCurrentScreen("ping");
+    setCurrentScreen("signup");
   };
 
   if (currentScreen === "splash") {
@@ -150,6 +150,9 @@ const Home: React.FC = () => {
         <Ping clicked={clicked} setClicked={setClicked} />
       </div>
     );
+  }
+  if (currentScreen === "signup") {
+    return <SignUp />;
   }
 
   return null; // This should never be reached
