@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import EmptyListDisplay from "../empty-list-display";
+import TopNavtab from "../top-navtab";
 import TaskCard from "./task-card";
-import TopNavtab from "./top-navtab";
 
 export interface Task {
   task_id: number;

@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 
-import TopNavtab from "@/components/ui/bidder/top-navtab";
 import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import Header from "@/components/ui/header";
 import TaskDetails from "@/components/ui/task-details";
+import TopNavtab from "@/components/ui/top-navtab";
 
 const bidder_exmaple_profile0 = "/bidder-exmaple-profile.svg";
 const bidder_exmaple_profile1 = "/bidder-exmaple-profile1.svg";
