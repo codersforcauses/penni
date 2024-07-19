@@ -1,4 +1,5 @@
 import { Inter as FontSans } from "next/font/google";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import OnBoarding from "@/components/ui/on-boarding";
@@ -49,7 +50,12 @@ const Home: React.FC = () => {
     "splash" | "onboarding" | "ping" | "signup"
   >("splash");
   const [opacity, setOpacity] = useState(0);
-
+  const router = useRouter();
+  useEffect(() => {
+    if (currentScreen === "signup") {
+      router.push("/signup");
+    }
+  }, [currentScreen, router]);
   useEffect(() => {
     let fadeOutInterval: NodeJS.Timeout;
     let fadeInNextScreenInterval: NodeJS.Timeout;
@@ -152,7 +158,11 @@ const Home: React.FC = () => {
     );
   }
   if (currentScreen === "signup") {
-    return <SignUp />;
+    return (
+      <p className="title1 flex h-screen items-center justify-center">
+        Redirecting...
+      </p>
+    );
   }
 
   return null; // This should never be reached
