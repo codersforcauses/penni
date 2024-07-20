@@ -70,12 +70,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "app.middleware.request_log.RequestLogMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -137,8 +138,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-FORMATTERS = (
-    {
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
         "verbose": {
             "format": "{levelname} {asctime:s} {threadName} {thread:d} {module} {filename} {lineno:d} {name} {funcName} {process:d} {message}",
             "style": "{",
@@ -148,55 +151,36 @@ FORMATTERS = (
             "style": "{",
         },
     },
-)
-
-
-HANDLERS = {
-    "console_handler": {
-        "class": "logging.StreamHandler",
-        "formatter": "simple",
+    "handlers": {
+        "console_handler": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+        "my_handler": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_PATH,
+            "mode": "a",
+            "encoding": "utf-8",
+            "formatter": "simple",
+            "backupCount": 5,
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+        },
+        "my_handler_detailed": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_PATH,
+            "mode": "a",
+            "formatter": "verbose",
+            "backupCount": 5,
+            "maxBytes": 1024 * 1024 * 5,  # 5 MB
+        },
     },
-    "my_handler": {
-        "class": "logging.handlers.RotatingFileHandler",
-        "filename": LOG_PATH,
-        "mode": "a",
-        "encoding": "utf-8",
-        "formatter": "simple",
-        "backupCount": 5,
-        "maxBytes": 1024 * 1024 * 5,  # 5 MB
-    },
-    "my_handler_detailed": {
-        "class": "logging.handlers.RotatingFileHandler",
-        "filename": LOG_PATH,
-        "mode": "a",
-        "formatter": "verbose",
-        "backupCount": 5,
-        "maxBytes": 1024 * 1024 * 5,  # 5 MB
-    },
-}
-
-LOGGERS = (
-    {
+    "loggers": {
         "django": {
             "handlers": ["console_handler", "my_handler_detailed"],
             "level": "INFO",
-            "propagate": False,
-        },
-        "django.request": {
-            "handlers": ["my_handler"],
-            "level": "WARNING",
-            "propagate": False,
+            "propagate": True,
         },
     },
-)
-
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": FORMATTERS[0],
-    "handlers": HANDLERS,
-    "loggers": LOGGERS[0],
 }
 
 # Internationalization
