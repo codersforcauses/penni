@@ -56,4 +56,3 @@ class BidsViewSet(viewsets.ModelViewSet):
         }
 
         return Response({'status': 'success', 'message': action_messages[action_type]})
-
