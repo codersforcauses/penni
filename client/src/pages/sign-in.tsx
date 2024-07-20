@@ -1,9 +1,9 @@
+import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
 import { Form, FormData } from "@/components/ui/form";
-import { PenniLogoIcon } from "@/components/ui/icons";
 import { SingleLineInput } from "@/components/ui/inputs";
 // TODO: REMOVE
 function fakeApiCall(
@@ -46,7 +46,12 @@ export default function SignIn({ account }: { account: string }) {
       <div className="flex h-screen flex-col items-center justify-center px-4">
         <div className="flex size-full flex-col items-center justify-center">
           <div className="flex w-full flex-col items-center justify-center">
-            <PenniLogoIcon />
+            <Image
+              src="/penni-logo.svg"
+              alt="Penni logo"
+              width={87}
+              height={86}
+            />
             <span className="body mb-7 mt-4 text-penni-text-regular-light-mode">
               Enter your email address or mobile number and the password to
               login.
