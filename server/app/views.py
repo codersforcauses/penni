@@ -1,8 +1,10 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
 from .models import Tasks
-from .serialiser import TasksSerializer, UsersSerializer
+from .serialiser import TasksSerializer, UsersSerializer, RegistrationSerializer
 
 
 class TasksViewSet(viewsets.ModelViewSet):
@@ -28,3 +30,14 @@ class TasksViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+class RegistrationView(CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = RegistrationSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

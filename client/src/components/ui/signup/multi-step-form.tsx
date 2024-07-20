@@ -49,6 +49,10 @@ export function InputEmailPhone({
         width={100}
         height={100}
         priority
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+        }}
       />
       <h2 className="mt-2 font-mono text-3xl font-bold">Penni</h2>
       <p className="mx-4 mt-3 text-center font-mono text-xl">
@@ -164,6 +168,10 @@ export function InputImage({ avatarSrc, updateFields }: ImageProps) {
             width={100}
             height={100}
             className="h-60 w-60 rounded-full border-4 object-cover"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
           />
         </button>
         {showCamera && (

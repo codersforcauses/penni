@@ -18,6 +18,7 @@ interface Slide {
 interface OnBoardingProps {
   followingContent: React.ReactNode; // Content to follow onboarding carousel
   slides: Slide[]; // Slides used for onboarding to be passed as a prop
+  onComplete: () => void; // Completion callback
 }
 
 /**
@@ -43,11 +44,12 @@ interface OnBoardingProps {
  *   img: "/img/OnBoarding/carousel-3.svg",
  *  }
  * ];
- * <OnBoarding followingContent={<Ping />} slides={slides}
+ * <OnBoarding followingContent={<Ping />} slides={slides} onComplete={handleOnBoardingComplete} />
  */
 export default function OnBoarding({
   followingContent,
   slides,
+  onComplete,
 }: OnBoardingProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showOnBoarding, setShowOnBoarding] = useState(true);
@@ -72,6 +74,7 @@ export default function OnBoarding({
   // Skip onboarding carousel
   const handleSkip = () => {
     setShowOnBoarding(false);
+    onComplete(); // Call onComplete when skipping
   };
 
   // Move to next slide or finish if on last slide
@@ -85,13 +88,6 @@ export default function OnBoarding({
     }
   };
 
-  // Move to previous slide if not at first slide (....not used in design)
-  const handlePrev = () => {
-    if (currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
-
   return showOnBoarding ? (
     <div id="onboarding" className="flex min-h-screen flex-col items-center">
       <Carousel setApi={setApi}>
@@ -102,9 +98,13 @@ export default function OnBoarding({
                 <div className="relative -mt-4 ml-1 h-[82vh] w-full">
                   <Image
                     src={slide.img}
-                    alt="" // No alt as title handles that
+                    // No alt as title handles that
+                    alt=""
                     fill
-                    style={{ objectFit: "contain" }}
+                    style={{
+                      objectFit: "contain",
+                      maxWidth: "100%",
+                    }}
                   />
                 </div>
                 <p className="title1 -mt-[0.7vh] ml-1 max-w-[39vh] text-center text-penni-text-regular-light-mode">
