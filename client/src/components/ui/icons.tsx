@@ -347,4 +347,4 @@ function PenniLogoIcon() {
   );
 }
 
-export { ChevronRightIcon, InboxIcon, LogoutIcon, PenniLogoIcon,SettingsIcon };
+export { ChevronRightIcon, InboxIcon, LogoutIcon, PenniLogoIcon, SettingsIcon };
