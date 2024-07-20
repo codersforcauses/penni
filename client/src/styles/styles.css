@@ -64,6 +64,10 @@ body {
   @apply text-fn font-normal leading-fn;
 }
 
+.footnote-bold {
+  @apply text-fn font-semibold leading-fn;
+}
+
 /* Caption-Semibold Inter - SB11, 13L */
 .caption-semibold {
   @apply text-ct font-semibold leading-ct;
@@ -81,7 +85,7 @@ body {
 
 /* Card Container */
 .card-container {
-  @apply fixed bottom-0 left-1/2 h-96 w-72 -translate-x-1/2 transform rounded-t-lg bg-white shadow-lg;
+  @apply fixed bottom-0 left-1/2 h-96 w-full -translate-x-1/2 transform rounded-t-lg bg-white shadow-lg;
   animation: slide-up 0.3s ease-out;
 }
 

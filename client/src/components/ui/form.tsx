@@ -22,7 +22,7 @@ interface FormProps {
 }
 
 // Each field is returned by form as a name-value pair
-interface FormData {
+export interface FormData {
   [name: string]: string;
 }
 
@@ -163,6 +163,7 @@ export function Form({ children, onSubmit, className }: FormProps) {
             </div>
           );
 
+        if (child.props.hidden) return;
         const i = inputIdx++; // Needed for some reason, can't use inputIdx directly
         return (
           <div key={idx} className={`w-full ${spacing}`}>

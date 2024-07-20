@@ -19,6 +19,10 @@ export default function EmptyListDisplay({
         height={171}
         src="/empty-list-img.svg"
         alt="Image of a girl and flowers"
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+        }}
       />
       <p className="body">
         You do not have any {type === "poster" ? "orders" : "tasks"} yet

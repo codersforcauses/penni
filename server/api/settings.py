@@ -14,6 +14,9 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+import django
+from django.utils.translation import gettext
+django.utils.translation.ugettext = gettext
 
 load_dotenv()
 
@@ -50,6 +53,8 @@ ALLOWED_HOSTS = (
     else []
 )
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -63,6 +68,7 @@ INSTALLED_APPS = [
     "api.healthcheck",
     "corsheaders",
     "rest_framework",
+    "rest_framework_jwt",
     "app",
     'drf_yasg',
 ]
