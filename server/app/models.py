@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password, check_password
 from django.utils.timezone import now
@@ -29,6 +30,83 @@ class Users(models.Model):
         super().clean()
         if not self.mobile.isdigit():
             raise ValidationError({'mobile': 'Mobile must contain only digits.'})
+        if not self.status:
+            raise ValidationError({'status': 'This field cannot be blank.'})
+
+    def set_password(self, raw_password):
+        self.password_hash = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password_hash)
+
+
+class AuthUserManager(BaseUserManager):
+    use_in_migrations = True
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def create_user(self, email, password, username=None, **extra_fields):
+        if not email:
+            raise ValueError("Users must have an email address")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True")
+
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True")
+
+        if extra_fields.get("is_active") is not True:
+            raise ValueError("Superuser must have is_active=True")
+
+        return self.create_user(email, password, **extra_fields)
+
+
+class AuthUsers(AbstractUser):
+    user_id = models.AutoField(primary_key=True)
+    email = models.CharField(max_length=255)
+    mobile = models.CharField(max_length=20)
+    password = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    last_login = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=50)
+    user_role = models.CharField(max_length=50, default='')
+
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+
+    groups = models.ManyToManyField('auth.Group',
+                                    related_name='custom_user_set', blank=True)
+    user_permissions = models.ManyToManyField(
+        'auth.Permission', related_name='custom_user_set', blank=True)
+
+    objects = AuthUserManager()
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["grade", "first_name", "last_name", "password"]
+
+    def __str__(self):
+        return (f"User {self.user_id}: email={self.email}, "
+                f"mobile={self.mobile}, "
+                f"created_at={self.created_at}, "
+                f"updated_at={self.updated_at}, last_login={self.last_login}, "
+                f"status={self.status}")
+
+    def clean(self):
+        super().clean()
+        if not self.mobile.isdigit():
+            raise ValidationError(
+                {'mobile': 'Mobile must contain only digits.'})
         if not self.status:
             raise ValidationError({'status': 'This field cannot be blank.'})
 

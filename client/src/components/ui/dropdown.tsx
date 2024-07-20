@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 
 import { DropdownIcon } from "./icons";
 
@@ -15,9 +15,6 @@ const labelStyle =
 // Style for value that user type in
 const valueStyle =
   "body h-full w-full resize-none bg-transparent text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
-
-// Generate unique ID for each component, used for label htmlFor attribute
-const uniqueId = () => `${Date.now()}-${Math.random()}`;
 
 interface MarketDropdownProps {
   value: string;
@@ -163,7 +160,7 @@ export function MarketDropdown({
   if (!options.includes(value))
     throw new Error("Default value must be in options list");
 
-  const [menuId] = useState(uniqueId());
+  const menuId = useId();
   const buttonStyle = "h-9 px-3 ";
 
   return (

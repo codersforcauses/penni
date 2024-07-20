@@ -5,8 +5,7 @@ import React from "react";
 
 // the props
 export interface TaskCardProps {
-  id: string;
-  state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED";
+  state?: "BIDDING" | "EXPIRED" | "ONGOING" | "COMPLETED" | "UNTAKEN";
   category: string;
   title: string;
   date: string;
@@ -15,6 +14,8 @@ export interface TaskCardProps {
   estimatePrice: string;
   myOfferPrice: string;
   priceType: "Estimated Price" | "My Offer";
+  key?: number; //to use map to iterate
+  onClick?: React.MouseEventHandler;
 }
 
 // the task card
@@ -28,10 +29,12 @@ const TaskCard = ({
   myOfferPrice,
   state,
   priceType,
+  onClick,
 }: TaskCardProps) => {
   return (
     <div
-      className={`m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
+      className={`cursor-pointer rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
+      onClick={onClick}
     >
       {/* the state (expried or bidding) */}
       {state && (
@@ -57,8 +60,11 @@ const TaskCard = ({
               <Image
                 src="/icons/calendar.svg"
                 alt="Date"
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "contain",
+                }}
               />
             </div>
             <p className="subheadline text-gray-500">{date}</p>
@@ -68,8 +74,11 @@ const TaskCard = ({
               <Image
                 src="/icons/marker.svg"
                 alt="Location"
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "contain",
+                }}
               />
             </div>
             <p className="subheadline text-gray-500">{location}</p>
@@ -79,11 +88,14 @@ const TaskCard = ({
               <Image
                 src="/icons/clock.svg"
                 alt="Duration"
-                layout="fill"
-                objectFit="contain"
+                fill
+                sizes="100vw"
+                style={{
+                  objectFit: "contain",
+                }}
               />
             </div>
-            <p className="subheadline text-gray-500">{duration} hours</p>
+            <p className="subheadline text-gray-500">{duration}</p>
           </div>
         </div>
 

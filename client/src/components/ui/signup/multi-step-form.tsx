@@ -52,6 +52,10 @@ export function InputEmailPhone({
         width={100}
         height={100}
         priority
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+        }}
       />
       <div className="flex h-[192px] w-[375px] flex-col items-center justify-center gap-3 px-4">
         <p className="body text-primary">
@@ -166,6 +170,10 @@ export function InputImage({ avatarSrc, updateFields }: ImageProps) {
             width={100}
             height={100}
             className="h-60 w-60 rounded-full border-4 object-cover"
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
           />
         </button>
         {showCamera && (

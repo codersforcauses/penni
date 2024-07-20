@@ -13,12 +13,16 @@ export default function EmptyListDisplay({
   onClick,
 }: EmptyListDisplayProp) {
   return (
-    <div className="relative flex flex-col items-center gap-5 px-4">
+    <div className="relative flex w-full flex-col items-center gap-5 px-4">
       <Image
         width={178}
         height={171}
         src="/empty-list-img.svg"
         alt="Image of a girl and flowers"
+        style={{
+          maxWidth: "100%",
+          height: "auto",
+        }}
       />
       <p className="body">
         You do not have any {type === "poster" ? "orders" : "tasks"} yet

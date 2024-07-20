@@ -78,3 +78,32 @@ body {
 .navigationlabel {
   @apply text-nl font-normal leading-nl;
 }
+
+/* Card Container */
+.card-container {
+  @apply fixed bottom-0 left-1/2 h-96 w-full -translate-x-1/2 transform rounded-t-lg bg-white shadow-lg;
+  animation: slide-up 0.3s ease-out;
+}
+
+/* Card */
+.card {
+  @apply relative p-4;
+}
+
+/* Close Button */
+.close-button {
+  @apply absolute right-2 top-2 cursor-pointer border-none bg-transparent text-lg;
+}
+
+.overlay {
+  @apply fixed inset-0 z-40 bg-black bg-opacity-50;
+}
+
+@keyframes slide-up {
+  from {
+    bottom: -200px;
+  }
+  to {
+    bottom: 0;
+  }
+}

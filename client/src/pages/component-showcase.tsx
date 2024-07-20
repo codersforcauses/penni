@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-import BottomNav from "@/components/ui/bottom-nav";
+import BottomNav from "@/components/ui/bidder/bottom-nav";
+import TaskCard from "@/components/ui/bidder/task-card";
+import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import { Button } from "@/components/ui/button";
 import {
   ErrorCallout,
@@ -12,12 +14,16 @@ import { MarketDropdown } from "@/components/ui/dropdown";
 import EmptyListDisplay from "@/components/ui/empty-list-display";
 import { Form } from "@/components/ui/form";
 import {
+  ChevronRightIcon,
   DropdownIcon,
   EditIcon,
+  InboxIcon,
   InfoIcon,
+  LogoutIcon,
   MarketIcon,
   MeIcon,
   MyTasksIcon,
+  SettingsIcon,
 } from "@/components/ui/icons";
 import {
   DropdownInput,
@@ -25,7 +31,8 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
-import TaskCard from "@/components/ui/task-card";
+import PosterTaskCard from "@/components/ui/poster/task-card";
+import ProfileTag from "@/components/ui/profile-tags";
 import TopNavtab from "@/components/ui/top-navtab";
 
 function ComponentSection({
@@ -46,6 +53,7 @@ function ComponentSection({
 export default function ComponentShowcase() {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedDropdown, setSelectedDropdown] = useState("HTML");
+  const bidder_exmaple_profile = "/bidder-exmaple-profile.svg";
   return (
     <div className="flex h-full w-screen items-center justify-center bg-penni-background-dark-mode">
       <div className="m-0 h-auto w-[375px] bg-penni-background-light-mode">
@@ -130,6 +138,10 @@ export default function ComponentShowcase() {
           <EditIcon strokeColour="penni-alert-error" />
           <InfoIcon />
           <DropdownIcon />
+          <InboxIcon />
+          <LogoutIcon />
+          <SettingsIcon />
+          <ChevronRightIcon />
         </ComponentSection>
 
         <ComponentSection title="Inputs">
@@ -176,8 +188,12 @@ export default function ComponentShowcase() {
               value={selectedValue}
               onChange={(e) => setSelectedValue(e.target.value)}
             />,
-          ].map((input) => {
-            return <div className="w-full px-4 pb-4">{input}</div>;
+          ].map((input, index) => {
+            return (
+              <div className="w-full px-4 pb-4" key={index}>
+                {input}
+              </div>
+            );
           })}
         </ComponentSection>
 
@@ -242,7 +258,7 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Bottom Nav">
           <div className="w-full">
-            <BottomNav isFixed={false} navIndex={0} />
+            <BottomNav isFixed={false} />
           </div>
         </ComponentSection>
 
@@ -263,7 +279,6 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Task Card">
           <TaskCard
-            id="abc124"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -275,7 +290,6 @@ export default function ComponentShowcase() {
             priceType="Estimated Price"
           />
           <TaskCard
-            id="abc125"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -287,7 +301,6 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
-            id="abc126"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -299,7 +312,6 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
-            id="abc127"
             title="Walking my dog"
             category="WALKING DOGS"
             date="21 Aug, 2022"
@@ -311,7 +323,6 @@ export default function ComponentShowcase() {
             priceType="My Offer"
           />
           <TaskCard
-            id="abc128"
             title="Clean up my house"
             category="CLEANING"
             date="21 Aug, 2022"
@@ -329,6 +340,54 @@ export default function ComponentShowcase() {
             onChange={(e) => setSelectedDropdown(e.target.value)}
           />
           <EmptyListDisplay type="poster" />
+        </ComponentSection>
+        <ComponentSection title="Profile Tags">
+          <ProfileTag
+            icon={InfoIcon}
+            title="About"
+            description="Lorem ipsum dolor sit amet."
+            link="/profile/about"
+          />
+          <ProfileTag
+            icon={LogoutIcon} // Pass the component directly
+            title="Logout"
+            description=""
+            nestedContent={<div>Logout content goes here</div>} // Use nested content for Logout
+          />
+        </ComponentSection>
+        <ComponentSection title="Poster Task Card">
+          <PosterTaskCard
+            state="BIDDING"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={8}
+          />
+          <PosterTaskCard
+            state="ONGOING"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={10}
+          />
+          <PosterTaskCard
+            state="COMPLETED"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={20}
+          />
+          <PosterTaskCard
+            state="EXPIRED"
+            title="Cleaning up my hosue"
+            date="10 Dec, 2022"
+            numberOfBidders={8}
+          />
+        </ComponentSection>
+        <ComponentSection title="Bidder Offer Card">
+          <BidderOfferCard
+            profile={bidder_exmaple_profile}
+            name="Jackson Anderson"
+            price={400}
+            bio="I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this."
+          />
         </ComponentSection>
       </div>
     </div>
