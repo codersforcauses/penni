@@ -302,4 +302,4 @@ tasks_test.tsx
 pyproject.toml
 .vscode/*
 .vscode/settings.json
-
+media/
