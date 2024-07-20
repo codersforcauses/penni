@@ -42,7 +42,7 @@ export default function NewTask() {
             options={["VIC", "NSW", "QLD", "NT", "WA", "SA", "TAS", "ACT"]}
           />
           <h1 className={headingStyle}>Task Details</h1>
-          <ParagraphInput label="" />
+          <ParagraphInput placeholder="What is your task about?" />
           <Button
             variant="default"
             size="penni"
