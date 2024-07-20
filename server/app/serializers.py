@@ -1,7 +1,18 @@
+from .models import Users, Profiles, Tasks, Bids
+from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
-from .models import Users, Profiles, Tasks
+
+
+class BidsSerializer(serializers.ModelSerializer):
+    task_id = serializers.PrimaryKeyRelatedField(queryset=Tasks.objects.all())
+    bidder_id = serializers.PrimaryKeyRelatedField(
+        queryset=Users.objects.all())
+
+    class Meta:
+        model = Bids
+        fields = '__all__'
+        read_only_fields = ('bid_id', 'created_at', 'updated_at', 'bidder_id')
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
