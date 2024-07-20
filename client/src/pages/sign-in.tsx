@@ -35,6 +35,11 @@ export default function SignIn({ account }: { account: string }) {
               label="Password"
               required={true}
             />
+            <div className="flex w-full flex-col items-end justify-center pb-4 pt-2">
+              <a className="caption text-penni-main" href="#">
+                Forgot your password?
+              </a>
+            </div>
             <Button type="submit" size="penni">
               <span className="headline">Login</span>
             </Button>
