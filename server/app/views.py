@@ -1,9 +1,12 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from .models import Bids, Tasks
 from .serializers import BidsSerializer
 from rest_framework import status
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from .serializers import RegistrationSerializer
 
 
 class BidsViewSet(viewsets.ModelViewSet):
@@ -27,7 +30,8 @@ class BidsViewSet(viewsets.ModelViewSet):
         serializer.save()
         headers = self.get_success_headers(serializer.data)
         return Response(
-            {'bid_id': serializer.data['bid_id'], 'status': 'success', 'message': 'Bid submitted successfully.'},
+            {'bid_id': serializer.data['bid_id'], 'status': 'success',
+                'message': 'Bid submitted successfully.'},
             status=status.HTTP_201_CREATED, headers=headers
         )
 
@@ -57,3 +61,15 @@ class BidsViewSet(viewsets.ModelViewSet):
 
         return Response({'status': 'success',
                          'message': action_messages[action_type]})
+
+
+class RegistrationView(CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = RegistrationSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

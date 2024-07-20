@@ -4,16 +4,22 @@ interface CalloutProps {
   text: string;
   // If provided, edit icon will be shown
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
+  className?: string;
 }
 
 interface GenericCalloutProps extends CalloutProps {
   colour: string;
 }
 
-function GenericCallout({ text, colour, onClick }: GenericCalloutProps) {
+function GenericCallout({
+  text,
+  colour,
+  onClick,
+  className,
+}: GenericCalloutProps) {
   return (
     <div
-      className={`px-4 py-3 ${onClick ? "hover:cursor-pointer" : ""}`}
+      className={`${className} ${onClick ? "hover:cursor-pointer" : ""}`}
       onClick={onClick}
     >
       <div
@@ -35,39 +41,47 @@ function GenericCallout({ text, colour, onClick }: GenericCalloutProps) {
   );
 }
 
-function InfoCallout({ text, onClick }: CalloutProps) {
+function InfoCallout({ text, onClick, className }: CalloutProps) {
   return (
     <GenericCallout
       text={text}
       colour="penni-text-regular-light-mode"
       onClick={onClick}
+      className={className}
     />
   );
 }
 
-function SuccessCallout({ text, onClick }: CalloutProps) {
+function SuccessCallout({ text, onClick, className }: CalloutProps) {
   return (
     <GenericCallout
       text={text}
       colour="penni-alert-success"
       onClick={onClick}
+      className={className}
     />
   );
 }
 
-function WarningCallout({ text, onClick }: CalloutProps) {
+function WarningCallout({ text, onClick, className }: CalloutProps) {
   return (
     <GenericCallout
       text={text}
       colour="penni-alert-warning"
       onClick={onClick}
+      className={className}
     />
   );
 }
 
-function ErrorCallout({ text, onClick }: CalloutProps) {
+function ErrorCallout({ text, onClick, className }: CalloutProps) {
   return (
-    <GenericCallout text={text} colour="penni-alert-error" onClick={onClick} />
+    <GenericCallout
+      text={text}
+      colour="penni-alert-error"
+      onClick={onClick}
+      className={className}
+    />
   );
 }
 
