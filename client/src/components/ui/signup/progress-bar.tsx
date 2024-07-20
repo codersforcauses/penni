@@ -19,9 +19,9 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           key={index}
           style={{
             width: `calc(${100 / steps}% - ${(steps - 1) * 5}px / ${steps})`,
-            backgroundColor: index < currentStep ? "blue" : "gray",
+            backgroundColor: index < currentStep ? "penni-main" : "gray",
           }}
-          className="h-full rounded-xl to-blue-600"
+          className="h-full rounded-xl to-penni-main"
         ></div>
       ))}
     </div>

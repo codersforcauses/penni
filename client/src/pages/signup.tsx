@@ -85,12 +85,12 @@ function SignUp() {
             <Button
               type="button"
               onClick={multistepForm.Back}
-              className="fixed left-5 top-10 rounded-lg bg-blue-700"
+              className="fixed left-5 top-10 rounded-lg bg-penni-main"
             >
               <Image src={BackArrow} alt="Back Arrow" width={20} height={20} />
             </Button>
             <Button
-              className="font-bod fixed right-5 top-10 bg-slate-100 font-mono text-2xl text-blue-700"
+              className="font-bod fixed right-5 top-10 bg-slate-100 font-mono text-2xl text-penni-main"
               onClick={multistepForm.Continue}
             >
               Skip
@@ -101,18 +101,13 @@ function SignUp() {
           <Button
             type={multistepForm.isLastStep ? "submit" : "button"}
             onClick={multistepForm.Continue}
-            className="mt-10 flex w-10/12 self-center rounded-lg bg-blue-700 text-center font-mono text-2xl font-bold"
           >
             {multistepForm.isLastStep ? "Finish" : "Continue"}
           </Button>
         </div>
         {multistepForm.isFirstStep && (
           <div className="flex justify-center">
-            <Button
-              type="submit"
-              className="mt-5 flex w-10/12 self-center rounded-lg bg-slate-200 text-center font-mono text-2xl font-bold text-blue-600"
-              onClick={SwitchUser}
-            >
+            <Button type="submit" onClick={SwitchUser}>
               Switch to {DisplaySwitchText()}
             </Button>
           </div>

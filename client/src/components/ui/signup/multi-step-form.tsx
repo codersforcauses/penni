@@ -5,6 +5,9 @@ import React, { useRef, useState } from "react";
 import ReactCrop from "react-image-crop";
 import Webcam from "react-webcam";
 
+import { Form } from "@/components/ui/form";
+import { SingleLineInput } from "@/components/ui/inputs";
+
 import { Button } from "../button";
 
 interface EmailPhoneData {
@@ -39,9 +42,9 @@ export function InputEmailPhone({
   contactMethod,
   updateFields,
 }: EmailPhonepProps) {
-  const LogoImage = "/logo.svg";
+  const LogoImage = "/penni-logo.svg";
   return (
-    <div className="relative flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Image
         className="relative mt-24"
         src={LogoImage}
@@ -50,20 +53,19 @@ export function InputEmailPhone({
         height={100}
         priority
       />
-      <h2 className="mt-2 font-mono text-3xl font-bold">Penni</h2>
-      <p className="mx-4 mt-3 text-center font-mono text-xl">
-        Enter your email or mobile number. If you don’t have an account we’ll
-        create one.
-      </p>
+      <div className="flex h-[192px] w-[375px] flex-col items-center justify-center gap-3 px-4">
+        <p className="body text-primary">
+          Enter your email or mobile number. If you don’t have an account we’ll
+          create one.
+        </p>
+      </div>
       <br />
       {/* TODO email phone number check or message validation */}
-      <input
-        className="mt-4 h-12 w-11/12 rounded-lg border-2 border-gray-300 p-2 text-center font-mono text-xl"
-        type="text"
-        autoFocus
-        placeholder="Email or mobile"
-        value={contactMethod}
+      <SingleLineInput
+        label="Email or mobile"
         onChange={(e) => updateFields({ contactMethod: e.target.value })}
+        value={contactMethod}
+        type="text"
       />
     </div>
   );
