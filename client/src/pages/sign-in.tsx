@@ -48,12 +48,11 @@ export default function SignIn({ account }: { account: string }) {
           <div className="flex w-full flex-col items-center justify-center">
             <PenniLogoIcon />
             <span className="body mb-7 mt-4 text-penni-text-regular-light-mode">
-              Enter your email or mobile number. If you don’t have an account
-              we’ll create one.
+              Enter your email address or mobile number and the password to
+              login.
             </span>
           </div>
           <Form className="w-full" onSubmit={onSubmit}>
-            {/* TODO: validation for email or phone */}
             <SingleLineInput
               type="text"
               name="account"
