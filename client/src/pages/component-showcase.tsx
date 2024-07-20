@@ -233,10 +233,7 @@ export default function ComponentShowcase() {
               (...pls?)
             </h2>
             <DropdownInput // `name` not supplied so this input is ignored on submission
-              value="Yes"
-              onChange={() => {
-                console.log("yes");
-              }}
+              value=""
               options={["Yes", "Yes", "Yes"]}
               label="Thy answer"
             />
