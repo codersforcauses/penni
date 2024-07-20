@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from .models import Tasks
-from .serialiser import TasksSerializer, UsersSerializer, RegistrationSerializer
+from .serializers import TasksSerializer, UsersSerializer, RegistrationSerializer
 
 
 class TasksViewSet(viewsets.ModelViewSet):
