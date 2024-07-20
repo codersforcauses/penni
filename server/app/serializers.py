@@ -28,6 +28,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+class ProfleSerializer(serializers.ModelSerializer):
+    image_url = serializers.ImageField(required=False)
+
+    class Meta:
+        model = Profiles
+        fields = '__all__'
+        extra_kwargs = {
+            'profile_id': {"read_only": True},
+            'user_id': {"read_only": True},
+        }
+
+
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Users

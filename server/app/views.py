@@ -1,10 +1,11 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
-from .models import Tasks
-from .serializers import TasksSerializer, UsersSerializer, RegistrationSerializer
+from .models import Tasks, Profiles
+from .serializers import TasksSerializer, UsersSerializer, RegistrationSerializer, ProfleSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class TasksViewSet(viewsets.ModelViewSet):
@@ -42,3 +43,14 @@ class RegistrationView(CreateAPIView):
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profiles.objects.all()
+    serializer_class = ProfleSerializer
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
