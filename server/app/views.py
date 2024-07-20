@@ -55,4 +55,5 @@ class BidsViewSet(viewsets.ModelViewSet):
             'pending': 'Bid pending.'
         }
 
-        return Response({'status': 'success', 'message': action_messages[action_type]})
+        return Response({'status': 'success',
+                         'message': action_messages[action_type]})
