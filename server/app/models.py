@@ -30,7 +30,8 @@ class Users(models.Model):
     def clean(self):
         super().clean()
         if not self.mobile.isdigit():
-            raise ValidationError({'mobile': 'Mobile must contain only digits.'})
+            raise ValidationError(
+                {'mobile': 'Mobile must contain only digits.'})
         if not self.status:
             raise ValidationError({'status': 'This field cannot be blank.'})
 
@@ -117,7 +118,7 @@ class AuthUsers(AbstractUser):
     def check_password(self, raw_password):
         return check_password(raw_password, self.password_hash)
 
-      
+
 # Function that hash the avatar image name, so image name will keep consistant
 def get_avatar_upload_path(instance, filename):
     ext = filename.split('.')[-1]
@@ -129,7 +130,8 @@ class Profiles(models.Model):
     profile_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
-    avatar_url = models.ImageField(upload_to=get_avatar_upload_path, blank=True, null=True)
+    avatar_url = models.ImageField(
+        upload_to=get_avatar_upload_path, blank=True, null=True)
     bio = models.TextField(blank=True)
 
     def __str__(self):
@@ -140,7 +142,8 @@ class Profiles(models.Model):
     def clean(self):
         super().clean()
         if any(char.isdigit() for char in self.full_name):
-            raise ValidationError({'full_name': 'Full name must not contain numbers.'})
+            raise ValidationError(
+                {'full_name': 'Full name must not contain numbers.'})
 
     # Override save function, so now it will delete old avatar, if a user who
     # has existing profile pic upload a new profile pic
@@ -197,7 +200,8 @@ class Tasks(models.Model):
             raise ValidationError('Price must be a valid number.')
         # Example validation: Ensure deadline is in the future
         if self.deadline <= now():
-            raise ValidationError({'deadline': 'Deadline must be in the future.'})
+            raise ValidationError(
+                {'deadline': 'Deadline must be in the future.'})
 
     class Meta:
         verbose_name_plural = "Tasks"

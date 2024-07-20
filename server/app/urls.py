@@ -1,4 +1,3 @@
-
 from django.urls import path, include
 from rest_framework_jwt.views import (
     obtain_jwt_token,
@@ -8,7 +7,7 @@ from rest_framework_jwt.views import (
 from rest_framework.routers import DefaultRouter
 from .views import RegistrationView, ProfileViewSet
 
-  
+
 router = DefaultRouter()
 router.register(r"profiles", ProfileViewSet, basename="profiles")
 
