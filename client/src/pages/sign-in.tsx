@@ -1,13 +1,35 @@
-import Image from "next/image";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ErrorCallout } from "@/components/ui/callout";
 import { Form, FormData } from "@/components/ui/form";
 import { PenniLogoIcon } from "@/components/ui/icons";
 import { SingleLineInput } from "@/components/ui/inputs";
-
+// TODO: REMOVE
+function fakeApiCall(
+  username: string,
+  password: string,
+): Promise<{ status: number; message: string }> {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (username === "user" && password === "password") {
+        resolve({ status: 200, message: "Login successful" });
+      } else {
+        resolve({ status: 404, message: "User and password not found" });
+      }
+    }, 1000);
+  });
+}
 export default function SignIn({ account }: { account: string }) {
-  function onSubmit(formData: FormData) {
-    console.log(formData);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  async function onSubmit(formData: FormData) {
+    setErrorMessage(null);
+    try {
+      const response = await fakeApiCall(formData.account, formData.password);
+      if (response.status === 404) setErrorMessage(response.message);
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    }
   }
   return (
     <>
@@ -40,6 +62,9 @@ export default function SignIn({ account }: { account: string }) {
                 Forgot your password?
               </a>
             </div>
+            {errorMessage && (
+              <ErrorCallout className="pb-4" text={errorMessage} />
+            )}
             <Button type="submit" size="penni">
               <span className="headline">Login</span>
             </Button>
