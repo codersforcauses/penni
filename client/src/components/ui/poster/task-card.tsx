@@ -2,11 +2,16 @@ import Link from "next/link";
 
 import { ChevronRightIcon } from "../icons";
 
+type TaskState = "BIDDING" | "ONGOING" | "COMPLETED" | "EXPIRED";
+
 export type PosterTaskCardProps = {
   title: string;
   numberOfBidders: number;
   date: string;
-  state: "BIDDING" | "ONGOING" | "COMPLETED" | "EXPIRED";
+  state: TaskState;
+  className?: string;
+  children?: React.ReactNode;
+  onClick?: () => void;
 };
 
 export default function PosterTaskCard({
@@ -14,16 +19,15 @@ export default function PosterTaskCard({
   numberOfBidders,
   date,
   state,
+  className,
+  onClick,
 }: PosterTaskCardProps) {
-  function ShowTaskDetails() {
-    return <>{/* <Link></Link> Navigate to Task Details*/}</>;
+  const compClassName = `relative m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`;
+  if (className) {
+    compClassName.concat(` ${className}`);
   }
   return (
-    <div
-      onClick={ShowTaskDetails}
-      id="poster-task-card"
-      className={`relative m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`}
-    >
+    <div onClick={onClick} id="poster-task-card" className={compClassName}>
       {state && (
         <div
           className={`footnote inline-block rounded-lg px-3 py-1.5 font-medium ${state === "BIDDING" ? "bg-blue-100 text-blue-800" : state === "ONGOING" ? "bg-orange-100 text-orange-700" : state === "COMPLETED" ? "bg-green-100 text-green-700" : "bg-gray-300 text-gray-700"}`}

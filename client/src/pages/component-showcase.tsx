@@ -1,7 +1,8 @@
 import { useState } from "react";
 
+import BottomNav from "@/components/ui/bidder/bottom-nav";
+import TaskCard from "@/components/ui/bidder/task-card";
 import BidderOfferCard from "@/components/ui/bidder-offer-card";
-import BottomNav from "@/components/ui/bottom-nav";
 import { Button } from "@/components/ui/button";
 import {
   ErrorCallout,
@@ -32,7 +33,6 @@ import {
 import PersonDetail from "@/components/ui/person-detail";
 import PosterTaskCard from "@/components/ui/poster/task-card";
 import ProfileTag from "@/components/ui/profile-tags";
-import TaskCard from "@/components/ui/task-card";
 import TopNavtab from "@/components/ui/top-navtab";
 
 function ComponentSection({
@@ -188,8 +188,12 @@ export default function ComponentShowcase() {
               value={selectedValue}
               onChange={(e) => setSelectedValue(e.target.value)}
             />,
-          ].map((input) => {
-            return <div className="w-full px-4 pb-4">{input}</div>;
+          ].map((input, index) => {
+            return (
+              <div className="w-full px-4 pb-4" key={index}>
+                {input}
+              </div>
+            );
           })}
         </ComponentSection>
 
@@ -254,7 +258,7 @@ export default function ComponentShowcase() {
 
         <ComponentSection title="Bottom Nav">
           <div className="w-full">
-            <BottomNav isFixed={false} navIndex={0} />
+            <BottomNav isFixed={false} />
           </div>
         </ComponentSection>
 

@@ -1,11 +1,12 @@
 import PersonDetail from "./person-detail";
 
-interface BidderOfferProps {
+export interface BidderOfferProps {
   name: string;
   profile: string;
   price: number;
   bio: string;
   className?: string;
+  onClick?: () => void;
 }
 
 const MAX_BIO_LENGTH = 86;
@@ -22,10 +23,11 @@ export default function BidderOfferCard({
   price,
   bio,
   className,
+  onClick,
 }: BidderOfferProps) {
   const defaultClassName = "relative m-4 rounded-lg border border-gray-300 p-4";
   return (
-    <div className={className ? className : defaultClassName}>
+    <div className={className ? className : defaultClassName} onClick={onClick}>
       <PersonDetail personName={name} personImg={profile} />
       <div className="absolute right-4 top-6 inline-block font-bold">{`$${price}`}</div>
       <p className="text-sm font-medium">{truncate(bio)}</p>
