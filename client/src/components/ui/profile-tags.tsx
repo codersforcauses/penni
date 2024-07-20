@@ -64,7 +64,7 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
     <div className="relative flex flex-col bg-white">
       <Link href={link || "#"} onClick={handleClick}>
         <div
-          className="flex cursor-pointer items-center justify-between hover:bg-gray-100"
+          className="flex cursor-pointer items-center hover:bg-gray-100"
           style={{ height: "64px" }}
         >
           <div className="flex items-center">
@@ -84,6 +84,8 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
                 />
               )}
             </div>
+          </div>
+          <div className="grow">
             <div>
               <h3 className="body text-penni-text-regular-light-mode text-primary">
                 {title}
@@ -99,7 +101,6 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
         </div>
       </Link>
       {nestedContent && isOpen && <div className="p-4">{nestedContent}</div>}
-      <div className="w-full border-t border-penni-grey-border-light-mode"></div>
     </div>
   );
 };
