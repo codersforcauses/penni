@@ -1,12 +1,14 @@
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormData } from "@/components/ui/form";
 import { PenniLogoIcon } from "@/components/ui/icons";
 import { SingleLineInput } from "@/components/ui/inputs";
 
-export default function SignIn() {
-  function onSubmit() {}
+export default function SignIn({ account }: { account: string }) {
+  function onSubmit(formData: FormData) {
+    console.log(formData);
+  }
   return (
     <>
       <div className="flex h-screen flex-col items-center justify-center px-4">
@@ -24,17 +26,17 @@ export default function SignIn() {
               type="text"
               name="account"
               label="Email or mobile"
+              value={account}
+              required={true}
+            />
+            <SingleLineInput
+              type="password"
+              name="password"
+              label="Password"
+              required={true}
             />
             <Button type="submit" size="penni">
-              <span className="headline">Continue</span>
-            </Button>
-            <Button
-              type="button"
-              size="penni"
-              className="w-full"
-              variant={"link"}
-            >
-              <span className="headline">Switch to Bidder</span>
+              <span className="headline">Login</span>
             </Button>
           </Form>
         </div>
