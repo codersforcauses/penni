@@ -40,6 +40,7 @@ interface InputProps {
   label?: string;
   name?: string; // Only used by <Form>, omitted in Input elements
   required?: boolean; // Only used by <Form>, omitted in Input elements
+  hidden?: boolean; // Only used by <Form>, input is not displayed if true
 }
 interface InputContextType {
   value: string;

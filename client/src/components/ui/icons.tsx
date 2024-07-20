@@ -287,7 +287,6 @@ const SettingsIcon: React.FC<BottomNavIconProps> = ({
 
 const InboxIcon: React.FC<BottomNavIconProps> = ({
   className = "text-penni-alert-warning",
-  ...props
 }) => {
   return (
     <svg
