@@ -3,7 +3,7 @@ import React from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { DropdownIcon } from "./icons";
+import { ReturnIcon } from "./icons";
 
 interface HeaderProps {
   title: string; // Prop to pass the title of the header
@@ -38,15 +38,15 @@ export default function Header({
   return (
     <div
       id="header"
-      className={`relative flex flex-grow-0 items-center justify-center bg-penni-background-light-mode px-4 pb-3 pt-2 text-penni-text-regular-light-mode ${className}`}
+      className={`relative flex flex-grow-0 items-center justify-center bg-penni-background-light-mode px-4 py-5 text-penni-text-regular-light-mode ${className}`}
     >
       {!hideBackButton && (
         <Button
           onClick={handleBackClick}
           variant="link"
-          className="absolute left-2 rotate-90"
+          className="absolute left-2"
         >
-          <DropdownIcon />
+          <ReturnIcon />
         </Button>
       )}
       <h2 className="body-medium">{title}</h2>
