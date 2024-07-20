@@ -22,13 +22,23 @@ function fakeApiCall(
 }
 export default function SignIn({ account }: { account: string }) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   async function onSubmit(formData: FormData) {
     setErrorMessage(null);
+    const isEmail = /^[a-zA-Z\._'\d-]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(
+      formData.account,
+    );
+    const isPhone = /^[0-9]{10}$/.test(formData.account);
+
+    if (!isEmail && !isPhone) {
+      setErrorMessage("Invalid email or phone number. Please try again.");
+      return;
+    }
     try {
       const response = await fakeApiCall(formData.account, formData.password);
       if (response.status === 404) setErrorMessage(response.message);
     } catch (error) {
-      setErrorMessage("An error occurred. Please try again.");
+      setErrorMessage("Invalid username or password. Please try again.");
     }
   }
   return (
