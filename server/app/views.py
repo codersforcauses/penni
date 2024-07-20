@@ -31,6 +31,7 @@ class TasksViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+
 class RegistrationView(CreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = RegistrationSerializer
