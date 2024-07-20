@@ -52,7 +52,7 @@ export default function SignIn({ account }: { account: string }) {
               width={87}
               height={86}
             />
-            <span className="body mb-7 mt-4 text-penni-text-regular-light-mode">
+            <span className="body mb-7 mt-4 text-center text-penni-text-regular-light-mode">
               Enter your email address or mobile number and the password to
               login.
             </span>
