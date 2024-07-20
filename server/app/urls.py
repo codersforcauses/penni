@@ -1,15 +1,15 @@
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TasksViewSet, RegistrationView, ProfileViewSet
 from rest_framework_jwt.views import (
     obtain_jwt_token,
     refresh_jwt_token,
     verify_jwt_token,
 )
-from rest_framework.routers import DefaultRouter
-from .views import RegistrationView, ProfileViewSet
-
 
 router = DefaultRouter()
 router.register(r"profiles", ProfileViewSet, basename="profiles")
+router.register(r'tasks', TasksViewSet, basename='tasks')
 
 urlpatterns = [
     path("login/", obtain_jwt_token, name="get-jwt-token"),
