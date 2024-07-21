@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import { ChevronRightIcon } from "./icons";
 
 interface HelpTagProps {
-  icon: string | React.ElementType;
   title: string;
   description: string;
   link?: string;
@@ -16,7 +15,6 @@ interface HelpTagProps {
  * HelpTag component displays a Help tag with an icon, title, description, and optional nested content.
  *
  * @param {object} props - Props for the HelpTag component.
- * @param {string | React.ElementType} props.icon - Icon to display. It can be a URL string or a React component.
  * @param {string} props.title - Title of the Help tag.
  * @param {string} props.description - Description of the Help tag.
  * @param {string} [props.link] - Optional link URL. If provided, clicking the tag will navigate to this URL.
@@ -45,14 +43,12 @@ interface HelpTagProps {
  */
 
 const HelpTag: React.FC<HelpTagProps> = ({
-  icon,
   title,
   description,
   link,
   nestedContent,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const IconComponent = typeof icon === "string" ? null : icon;
 
   const handleClick = () => {
     if (nestedContent) {
@@ -65,21 +61,9 @@ const HelpTag: React.FC<HelpTagProps> = ({
       <Link href={link || "#"} onClick={handleClick}>
         <div
           className="flex cursor-pointer items-center justify-between p-4 hover:bg-penni-text-regular-dark-mode"
-          style={{ height: "72px" }}
+          style={{ height: "70px" }}
         >
-          <div className="flex items-center">
-            <div className="ml-2 mr-6 h-6 w-6">
-              {IconComponent ? (
-                <IconComponent className="h-3 w-3" />
-              ) : (
-                <Image
-                  src={icon as string}
-                  alt={title}
-                  width={20}
-                  height={20}
-                />
-              )}
-            </div>
+          <div className="ml-3 flex items-center">
             <div>
               <h3 className="text-hb font-normal leading-hb text-penni-text-regular-light-mode">
                 {title}
@@ -90,7 +74,7 @@ const HelpTag: React.FC<HelpTagProps> = ({
             </div>
           </div>
           <div className="absolute right-5 top-1/2 -translate-y-1/2 transform">
-            <ChevronRightIcon className="h-3 w-3 text-penni-background-input-light-mode" />
+            <ChevronRightIcon className="mr-1 h-5 w-5 text-penni-text-tertiary-light-mode" />
           </div>
         </div>
       </Link>
