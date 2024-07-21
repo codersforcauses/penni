@@ -31,7 +31,7 @@ export default function SignIn({ account }: { account: string }) {
   const router = useRouter();
   useEffect(() => {
     if (isLogin == true) {
-      router.push("/bidder");
+      router.push("/poster");
     }
   }, [router, isLogin]);
   async function onSubmit(formData: FormData) {

@@ -24,6 +24,8 @@
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.1.5",
     "is-inside-container": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.395.0",
     "next": "^14.2.4",
     "next-themes": "^0.3.0",
@@ -37,6 +39,7 @@
   "devDependencies": {
     "@csstools/postcss-oklab-function": "^3.0.16",
     "@tanstack/eslint-plugin-query": "^5.43.1",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.6",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
