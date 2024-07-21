@@ -46,7 +46,7 @@ export default function PosterTasksPage() {
       try {
         const response = await axiosInstance.get("/app/tasks/");
         const jsonResponse = response.data;
-        console.log(jsonResponse);
+        // console.log(jsonResponse);
 
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No token found");
