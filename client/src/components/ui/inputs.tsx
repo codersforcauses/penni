@@ -163,6 +163,8 @@ export function SingleLineInput({
           },
         });
       }
+    } else {
+      onChange?.(e);
     }
   }
 
@@ -186,7 +188,7 @@ export function SingleLineInput({
         type={type === "price" ? "number" : type}
         value={value}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={handleOnChange}
         onBlur={handleOnChange}
         className={valueStyle}
       />
