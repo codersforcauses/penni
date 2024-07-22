@@ -60,6 +60,7 @@ export default function Pay({
 
   const onConfirm = () => {
     // Send info to database via API
+    alert("Payment Successful. You have successfully paid.");
     router.back(); // Send back to task view??
   };
 
