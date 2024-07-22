@@ -20,9 +20,6 @@ const handleLogin = async (username: string, password: string) => {
 
   // Store the token in localStorage
   localStorage.setItem("token", token);
-
-  console.log("Login successful, token stored.");
-  console.log("Token", token);
 };
 
 export default function SignIn({ account }: { account: string }) {
@@ -36,10 +33,10 @@ export default function SignIn({ account }: { account: string }) {
   }, [router, isLogin]);
   async function onSubmit(formData: FormData) {
     setErrorMessage(null);
-    // const isEmail = /^[a-zA-Z\._'\d-]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(
-    //   formData.account,
-    // );
-    // const isPhone = /^[0-9]{10}$/.test(formData.account);
+    const isEmail = /^[a-zA-Z\._'\d-]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(
+      formData.account,
+    );
+    const isPhone = /^[0-9]{10}$/.test(formData.account);
 
     // if (!isEmail && !isPhone) {
     //   setErrorMessage("Invalid email or phone number. Please try again.");
@@ -72,7 +69,7 @@ export default function SignIn({ account }: { account: string }) {
             <SingleLineInput
               type="text"
               name="account"
-              label="Username"
+              label="Email or mobile"
               value={account}
               required={true}
             />

@@ -41,7 +41,7 @@ export default function NewTask() {
     <div>
       <div className="flex flex-col items-center">
         <Header title="New Task" className="sticky top-0 z-10 w-full" />
-        <Form className="mt-4 w-10/12" onSubmit={OnSubmit}>
+        <Form className="w-full p-4" onSubmit={OnSubmit}>
           <p className={titleStyle}>Task Information</p>
           {[
             <DropdownInput
