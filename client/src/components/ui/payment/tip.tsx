@@ -36,6 +36,7 @@ export default function Tip({
 }: TipProps): JSX.Element {
   const [tip, setTip] = useState<number | null>(null);
   const [isCardVisible, setIsCardVisible] = useState(false);
+  const [customTip, setCustomTip] = useState<string>("");
 
   const toggleCardVisibility = () => {
     setIsCardVisible((prev) => !prev);
@@ -43,11 +44,14 @@ export default function Tip({
 
   // Handle custom tip change (different from pre-select tips)
   const handleCustomTipChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTip(Number(e.target.value));
+    const value = e.target.value;
+    setCustomTip(value);
+    setTip(value !== "" ? Number(value) : null);
   };
 
   // Select and unselect tip buttons
   const handleTipClick = (tipAmount: number) => {
+    setCustomTip(""); // Clear custom tip input
     setTip((prev) => (prev === tipAmount ? null : tipAmount));
   };
 
@@ -106,7 +110,7 @@ export default function Tip({
         <div className="flex flex-col items-center">
           <input
             type="number"
-            value={String(tip)}
+            value={customTip}
             onChange={handleCustomTipChange}
             placeholder="Enter custom tip"
             className="mb-4 rounded border px-2 py-1"
@@ -115,6 +119,12 @@ export default function Tip({
             onClick={() => {
               handleSubmit();
             }}
+            className={
+              customTip !== ""
+                ? "bg-blue-500 text-white"
+                : "bg-gray-500 text-white"
+            }
+            disabled={customTip === ""}
           >
             Confirm
           </Button>
