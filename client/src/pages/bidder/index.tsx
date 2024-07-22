@@ -1,11 +1,11 @@
 import BottomNav from "@/components/ui/bidder/bottom-nav";
 import BidderMyTasks from "@/components/ui/bidder/mytasks-page";
 
-export default function Bidder({ userId }: { user_id: string }) {
+export default function Bidder() {
   return (
     <div>
       <BottomNav>
-        <BidderMyTasks userId={userId} />
+        <BidderMyTasks name="Leanne Graham" />
       </BottomNav>
     </div>
   );
