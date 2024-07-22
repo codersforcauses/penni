@@ -15,7 +15,7 @@ interface ParagraphProps {
 
 export const Heading: React.FC<HeadingProps> = ({ text }) => {
   return (
-    <div className="body-medium pb-2.5 pt-7 text-penni-text-regular-light-mode">
+    <div className="body-medium py-2.5 text-penni-text-regular-light-mode">
       {text}
     </div>
   );
