@@ -61,11 +61,11 @@ class BidsViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED, headers=headers
         )
 
-    def list(self, request, *args, **kwargs):
-        task_id = self.kwargs.get('task_id')
-        bids = Bids.objects.filter(task_id=task_id)
-        serializer = self.get_serializer(bids, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        owner_id = self.kwargs['owner_id']
+        if owner_id:
+            return Bids.objects.filter(bidder_id=owner_id)
+        return super().get_queryset()
 
     @action(detail=True, methods=['post'])
     def change_bid_status(self, request, pk=None):
