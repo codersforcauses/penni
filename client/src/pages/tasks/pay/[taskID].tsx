@@ -68,7 +68,7 @@ export default function Pay({
     setTipAmount(amount);
   };
 
-  if (!tipAmount) {
+  if (tipAmount === null) {
     return (
       <Tip
         taskID={taskID}

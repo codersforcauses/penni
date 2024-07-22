@@ -67,8 +67,7 @@ export default function Tip({
         <Button
           variant="link"
           onClick={() => {
-            handleTipClick(Number(0));
-            handleSubmit();
+            onTipSubmit(Number(0));
           }}
         >
           Skip
@@ -116,9 +115,7 @@ export default function Tip({
             className="mb-4 rounded border px-2 py-1"
           />
           <Button
-            onClick={() => {
-              handleSubmit();
-            }}
+            onClick={handleSubmit}
             className={
               customTip !== ""
                 ? "bg-blue-500 text-white"
