@@ -20,11 +20,13 @@ interface PayoutCardProps {
 
 const PayoutCard: React.FC<PayoutCardProps> = ({ title, description }) => {
   return (
-    <div className="w-full border-b-1 border-penni-border-light-mode p-4">
+    <div className="border-penni-border-light-mode w-full border-b-1 p-4">
       <p className="mb-1 text-fn font-normal leading-fn text-penni-text-regular-light-mode text-opacity-60">
         {title}
       </p>
-      <p className="text-hb leading-co text-penni-text-regular-light-mode">{description}</p>
+      <p className="text-hb leading-co text-penni-text-regular-light-mode">
+        {description}
+      </p>
     </div>
   );
 };
