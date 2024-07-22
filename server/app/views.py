@@ -70,9 +70,9 @@ class BidsViewSet(viewsets.ModelViewSet):
         )
 
     @action(detail=True, methods=['get'])
-    def get_task_bids(self, request, task_id=None):
-        if task_id:
-            bids = Bids.objects.filter(task_id=task_id)
+    def get_task_bids(self, request, pk=None):
+        if pk:
+            bids = Bids.objects.filter(task_id=pk)
             serializer = BidsSerializer(bids, many=True)
             return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_200_OK)
         return Response({'status': 'error', 'message': 'Task ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
