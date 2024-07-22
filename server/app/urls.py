@@ -11,22 +11,24 @@ from .views import BidsViewSet
 router = DefaultRouter()
 router.register(r"profiles", ProfileViewSet, basename="profiles")
 router.register(r'tasks', TasksViewSet, basename='tasks')
-
-bids_list = BidsViewSet.as_view({
-    'get': 'list',
-    'post': 'create'
-})
-
+router.register(r'bids', BidsViewSet, basename='bids')
 
 urlpatterns = [
     path("login/", obtain_jwt_token, name="get-jwt-token"),
     path("refresh/", refresh_jwt_token, name="refresh-jwt-token"),
     path("verify/", verify_jwt_token, name="verify-jwt-token"),
     path("register/", RegistrationView.as_view(), name="register"),
-    path('tasks/<int:task_id>', bids_list, name='bids-list'),
-    path('tasks/<int:owner_id>/bids',
-         BidsViewSet.as_view({'get': 'list'}), name='user-tasks'),
-    path('tasks/<int:task_id>/bids/<int:pk>/change_status/',
-         BidsViewSet.as_view({'post': 'change_bid_status'}), name='bids-change-status'),
+    # get all bids by task
+    path("tasks/<int:task_id>/bids/", BidsViewSet.as_view(
+        {'get': 'get_task_bids', 'post': 'create'}), name='bids-list'),
+    # change bid status
+    path("bids/<int:bid_id>/change_status", BidsViewSet.as_view(
+        {'post': 'change_bid_status'}), name='bids-change-status'),
+    # Get tasks/bids by user
+    path("users/", ProfileViewSet.as_view({'get': 'list'}), name='users-list'),
+    path("users/<int:user_id>/tasks",
+         TasksViewSet.as_view({'get': 'get_user_tasks'}), name='user-tasks'),
+    path("users/<int:user_id>/bids",
+         BidsViewSet.as_view({'get': 'get_user_bids'}), name='user-bids'),
     path("", include(router.urls)),
 ]

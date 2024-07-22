@@ -34,6 +34,14 @@ class TasksViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'])
+    def get_user_tasks(self, request, user_id=None):
+        if user_id:
+            tasks = Tasks.objects.filter(owner_id=user_id)
+            serializer = TasksSerializer(tasks, many=True)
+            return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'status': 'error', 'message': 'User ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class BidsViewSet(viewsets.ModelViewSet):
     queryset = Bids.objects.all()
@@ -61,11 +69,13 @@ class BidsViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED, headers=headers
         )
 
-    def get_queryset(self):
-        owner_id = self.kwargs['owner_id']
-        if owner_id:
-            return Bids.objects.filter(bidder_id=owner_id)
-        return super().get_queryset()
+    @action(detail=True, methods=['get'])
+    def get_task_bids(self, request, task_id=None):
+        if task_id:
+            bids = Bids.objects.filter(task_id=task_id)
+            serializer = BidsSerializer(bids, many=True)
+            return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'status': 'error', 'message': 'Task ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'])
     def change_bid_status(self, request, pk=None):
@@ -87,6 +97,14 @@ class BidsViewSet(viewsets.ModelViewSet):
 
         return Response({'status': 'success',
                          'message': action_messages[action_type]})
+
+    @action(detail=True, methods=['get'])
+    def get_user_bids(self, request, user_id=None):
+        if user_id:
+            bids = Bids.objects.filter(bidder_id=user_id)
+            serializer = BidsSerializer(bids, many=True)
+            return Response({'status': 'success', 'data': serializer.data}, status=status.HTTP_200_OK)
+        return Response({'status': 'error', 'message': 'User ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class RegistrationView(CreateAPIView):
