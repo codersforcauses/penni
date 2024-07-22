@@ -61,13 +61,10 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
   };
 
   return (
-    <div className="relative flex flex-col bg-white">
+    <div className="m-0 flex flex-col">
       <Link href={link || "#"} onClick={handleClick}>
-        <div
-          className="flex cursor-pointer items-center hover:bg-gray-100"
-          style={{ height: "64px" }}
-        >
-          <div className="flex items-center">
+        <div className="flex cursor-pointer items-center hover:bg-gray-100">
+          <div className="flex items-center pb-3">
             <div className="ml-4 mr-4 h-6 w-6">
               {IconComponent ? (
                 <IconComponent className="h-full w-full" />
@@ -85,22 +82,18 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
               )}
             </div>
           </div>
-          <div className="grow">
-            <div>
+          <div className="flex w-full content-center items-center justify-between border-b pb-3 pr-3 pt-3 text-penni-text-secondary-light-mode">
+            <div className="flex grow flex-col">
               <h3 className="body text-penni-text-regular-light-mode text-primary">
                 {title}
               </h3>
-              <p className="footnote text-penni-text-secondary-light-mode">
-                {description}
-              </p>
+              <p className="footnote">{description}</p>
             </div>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 transform">
-              <ChevronRightIcon className="h-6 w-6 text-gray-400" />
-            </div>
+            <ChevronRightIcon className="ml-auto mr-5 h-6 w-6 text-gray-400" />
           </div>
         </div>
       </Link>
-      {nestedContent && isOpen && <div className="p-4">{nestedContent}</div>}
+      {nestedContent && isOpen && <div className="m-4">{nestedContent}</div>}
     </div>
   );
 };
