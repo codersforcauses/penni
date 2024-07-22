@@ -1,7 +1,18 @@
+from .models import Users, Profiles, Tasks, Bids
+from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
-from rest_framework import serializers
-from .models import Users, Profiles, Tasks
+
+
+class BidsSerializer(serializers.ModelSerializer):
+    task_id = serializers.PrimaryKeyRelatedField(queryset=Tasks.objects.all())
+    bidder_id = serializers.PrimaryKeyRelatedField(
+        queryset=Users.objects.all())
+
+    class Meta:
+        model = Bids
+        fields = '__all__'
+        read_only_fields = ('bid_id', 'created_at', 'updated_at', 'bidder_id')
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -26,6 +37,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = get_user_model().objects.create_user(**validated_data)
         return user
+
+
+class ProfleSerializer(serializers.ModelSerializer):
+    image_url = serializers.ImageField(required=False)
+
+    class Meta:
+        model = Profiles
+        fields = '__all__'
+        extra_kwargs = {
+            'profile_id': {"read_only": True},
+            'user_id': {"read_only": True},
+        }
 
 
 class UsersSerializer(serializers.ModelSerializer):

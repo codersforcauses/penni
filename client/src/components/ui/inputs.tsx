@@ -61,7 +61,7 @@ interface ParagraphInputProps extends InputProps {
 }
 
 interface DropdownInputProps extends InputProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options: string[];
 }
 
@@ -279,6 +279,9 @@ export function DropdownInput({
 }: DropdownInputProps) {
   const menuId = useId();
   const style = "h-14 px-4";
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   return (
     <div className="relative h-auto w-full">
