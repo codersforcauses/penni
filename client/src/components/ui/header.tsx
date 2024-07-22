@@ -1,8 +1,9 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
+
+import { DropdownIcon } from "./icons";
 
 interface HeaderProps {
   title: string; // Prop to pass the title of the header
@@ -11,7 +12,7 @@ interface HeaderProps {
 }
 
 /**
- * Header component that displays a title and optionally a back button.
+ * Header component that displays a title and optionally a back button. Not used in signup page!!
  *
  * @param {HeaderProps} props - The props for the component.
  * @param {string} props.title - Title of the header.
@@ -37,23 +38,18 @@ export default function Header({
   return (
     <div
       id="header"
-      className={`relative flex flex-grow-0 flex-row items-center justify-center bg-penni-background-light-mode px-4 pb-4 pt-6 ${className}`}
+      className={`relative flex flex-grow-0 items-center justify-center bg-penni-background-light-mode px-4 pb-3 pt-2 text-penni-text-regular-light-mode ${className}`}
     >
       {!hideBackButton && (
         <Button
           onClick={handleBackClick}
           variant="link"
-          className="absolute left-4 top-1/2 -translate-y-1/2 transform"
+          className="absolute left-2 rotate-90"
         >
-          <Image
-            src="/icons/arrow_back.svg"
-            alt="Back"
-            width={24}
-            height={24}
-          />
+          <DropdownIcon />
         </Button>
       )}
-      <h2 className="body-medium flex-grow py-2 text-center">{title}</h2>
+      <h2 className="body-medium">{title}</h2>
     </div>
   );
 }

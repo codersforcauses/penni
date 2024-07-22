@@ -1,4 +1,5 @@
 import { Inter as FontSans } from "next/font/google";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import OnBoarding from "@/components/ui/on-boarding";
@@ -7,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "../components/ui/button";
 import SplashScreen from "../components/ui/splash-screen";
-import TaskDetails from "../components/ui/task-details";
+import SignUp from "./signup";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -46,10 +47,15 @@ const Ping: React.FC<PingProps> = ({ clicked, setClicked }) => {
 const Home: React.FC = () => {
   const [clicked, setClicked] = useState(false);
   const [currentScreen, setCurrentScreen] = useState<
-    "splash" | "onboarding" | "ping"
+    "splash" | "onboarding" | "ping" | "signup"
   >("splash");
   const [opacity, setOpacity] = useState(0);
-
+  const router = useRouter();
+  useEffect(() => {
+    if (currentScreen === "signup") {
+      router.push("/signup");
+    }
+  }, [currentScreen, router]);
   useEffect(() => {
     let fadeOutInterval: NodeJS.Timeout;
     let fadeInNextScreenInterval: NodeJS.Timeout;
@@ -121,7 +127,7 @@ const Home: React.FC = () => {
   ];
 
   const handleOnBoardingComplete = () => {
-    setCurrentScreen("ping");
+    setCurrentScreen("signup");
   };
 
   if (currentScreen === "splash") {
@@ -149,6 +155,13 @@ const Home: React.FC = () => {
       <div>
         <Ping clicked={clicked} setClicked={setClicked} />
       </div>
+    );
+  }
+  if (currentScreen === "signup") {
+    return (
+      <p className="title1 flex h-screen items-center justify-center">
+        Redirecting...
+      </p>
     );
   }
 

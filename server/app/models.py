@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password, check_password
 from django.utils.timezone import now
+import hashlib
 
 
 class Users(models.Model):
@@ -29,7 +30,8 @@ class Users(models.Model):
     def clean(self):
         super().clean()
         if not self.mobile.isdigit():
-            raise ValidationError({'mobile': 'Mobile must contain only digits.'})
+            raise ValidationError(
+                {'mobile': 'Mobile must contain only digits.'})
         if not self.status:
             raise ValidationError({'status': 'This field cannot be blank.'})
 
@@ -117,11 +119,19 @@ class AuthUsers(AbstractUser):
         return check_password(raw_password, self.password_hash)
 
 
+# Function that hash the avatar image name, so image name will keep consistant
+def get_avatar_upload_path(instance, filename):
+    ext = filename.split('.')[-1]
+    hash_name = hashlib.md5(str(instance.user_id).encode('utf-8')).hexdigest()
+    return f"avatars/{hash_name}.{ext}"
+
+
 class Profiles(models.Model):
     profile_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(Users, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255)
-    avatar_url = models.CharField(max_length=255, blank=True)
+    avatar_url = models.ImageField(
+        upload_to=get_avatar_upload_path, blank=True, null=True)
     bio = models.TextField(blank=True)
 
     def __str__(self):
@@ -132,9 +142,19 @@ class Profiles(models.Model):
     def clean(self):
         super().clean()
         if any(char.isdigit() for char in self.full_name):
-            raise ValidationError({'full_name': 'Full name must not contain numbers.'})
-        if not self.avatar_url.startswith('http://') and not self.avatar_url.startswith('https://'):
-            raise ValidationError({'avatar_url': 'Avatar URL must start with http:// or https://'})
+            raise ValidationError(
+                {'full_name': 'Full name must not contain numbers.'})
+
+    # Override save function, so now it will delete old avatar, if a user who
+    # has existing profile pic upload a new profile pic
+    def save(self, *args, **kwargs):
+        try:
+            this = Profiles.objects.get(profile_id=self.profile_id)
+            if this.avatar_url != self.avatar_url:
+                this.avatar_url.delete(save=False)
+        except Profiles.DoesNotExist:
+            pass
+        super(Profiles, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "Profiles"
@@ -180,7 +200,8 @@ class Tasks(models.Model):
             raise ValidationError('Price must be a valid number.')
         # Example validation: Ensure deadline is in the future
         if self.deadline <= now():
-            raise ValidationError({'deadline': 'Deadline must be in the future.'})
+            raise ValidationError(
+                {'deadline': 'Deadline must be in the future.'})
 
     class Meta:
         verbose_name_plural = "Tasks"
