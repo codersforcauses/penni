@@ -37,9 +37,9 @@ const TestPostRequestPage = () => {
   const handleTestRegisterRequest = () => {
     axios
       .post("http://localhost:8000/api/app/register/", {
-        email: "user123@example.com",
+        email: "user1234567il3@example.com",
         password: "user123abc!@#",
-        username: "user123",
+        username: "useerghjr123",
       })
       .then(function (response) {
         console.log(response);
