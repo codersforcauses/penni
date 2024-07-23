@@ -26,7 +26,6 @@ const ProfilePage: React.FC = () => {
     loading: userLoading,
     error: userError,
   } = useFetchData(`/app/profiles/${posterid}/`, queryReady);
-  console.log(user);
   if (userLoading) return <div>Loading...</div>;
   if (userError) return <div>Error: {userError}</div>;
   const token = localStorage.getItem("token");
