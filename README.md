@@ -19,7 +19,6 @@ docker container exec server python manage.py makemigrations # create a new migr
 dxc server python manage.py makemigrations
 ```
 
-
 ## Other
 
 ### Get Intellisense
