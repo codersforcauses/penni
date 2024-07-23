@@ -1,84 +1,73 @@
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
 import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import Header from "@/components/ui/header";
 import TaskDetails from "@/components/ui/task-details";
 import TopNavtab from "@/components/ui/top-navtab";
+import { axiosInstance } from "@/lib/api";
 
-const bidder_exmaple_profile0 = "/bidder-exmaple-profile.svg";
-const bidder_exmaple_profile1 = "/bidder-exmaple-profile1.svg";
-const bidder_exmaple_profile2 = "/bidder-exmaple-profile2.svg";
-const bidder_exmaple_profile3 = "/bidder-exmaple-profile3.svg";
-const bidder_exmaple_profile4 = "/bidder-exmaple-profile4.svg";
-const bios =
-  "I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this.";
-export type Bidder = {
-  id: number;
-  name: string;
-  profile: string;
-  price: number;
-  bio: string;
-  className?: string;
-};
-const BiddersOffer: Bidder[] = [
-  {
-    id: 1,
-    name: "Jackson Anderson",
-    profile: bidder_exmaple_profile0,
-    price: 400,
-    bio: bios,
-  },
-  {
-    id: 2,
-    name: "Kierra Dorwart",
-    profile: bidder_exmaple_profile1,
-    price: 380,
-    bio: bios,
-  },
-  {
-    id: 3,
-    name: "Ahmad Philips",
-    profile: bidder_exmaple_profile2,
-    price: 300,
-    bio: bios,
-  },
-  {
-    id: 4,
-    name: "Alena Gouse",
-    profile: bidder_exmaple_profile3,
-    price: 520,
-    bio: bios,
-  },
-  {
-    id: 5,
-    name: "Alena Press",
-    profile: bidder_exmaple_profile4,
-    price: 1000,
-    bio: bios,
-  },
-];
-
-function BidderOfferCardList(taskid: number) {
-  // TODO fetch / axios.get(api/taskid) bidders.
+function BidderOfferCardList() {
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
   const router = useRouter();
-  const NavigateWithData = (bidder: Bidder) => {
-    router.push({
-      pathname: `/poster/tasks/${taskid}/${bidder.id}/bid-details`,
-      query: { bidder: JSON.stringify(bidder), taskid: taskid },
-    });
+  const task_id = router.query.taskid;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/app/tasks/${task_id}/bids/`); // Fetch bids for the task
+        const jsonResponse = response.data;
+        const bidderIds = jsonResponse.map((bid: any) => bid.bidder_id); // Extract bidder IDs from the bids
+        // Fetch profiles of all users
+        const allProfiles = await axiosInstance.get(`/app/profiles/`);
+        const bidders = allProfiles.data.filter((profile: any) =>
+          bidderIds.includes(profile.user_id),
+        );
+        // Add bidder info
+        const bidderList = jsonResponse.map((bid: any) => {
+          const bidder = bidders.find(
+            (profile: any) => profile.user_id === bid.bidder_id,
+          );
+          return {
+            ...bid,
+            avatar_url: bidder?.avatar_url,
+            full_name: bidder?.full_name,
+            bio: bidder?.bio,
+          };
+        });
+        setTasks(bidderList);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  const handleOnClick = (task: any) => {
+    router.push(`/poster/tasks/${task_id}/${task.bidder_id}/bid-details`);
   };
 
   return (
     <div>
-      {BiddersOffer.map((bidder, id) => (
+      {tasks.map((task: any, id) => (
         <div key={id}>
           <BidderOfferCard
-            profile={bidder.profile}
-            name={bidder.name}
-            price={bidder.price}
-            bio={bidder.bio}
+            profile={task.avatar_url}
+            name={task.full_name}
+            price={task.price}
+            bio={task.bio}
             onClick={() => {
-              NavigateWithData(bidder);
+              handleOnClick(task);
             }}
           />
         </div>
@@ -86,20 +75,45 @@ function BidderOfferCardList(taskid: number) {
     </div>
   );
 }
-// get task detail from API
-function TaskDetail(taskid?: number) {
-  // task data fetch / axios get or get from last page.
-  const task = {
-    category: "Cleaning",
-    title: "Cleaning up my house",
-    created_at: "Date",
-    suburb: "Richmond",
-    state: "VIC",
-    estimated_time: "4 hours",
-    budget: "$ 250",
-    description:
-      "I need someone to help me clean my 2 bedroom apartment. I am moving out and I need to make sure it’s all clean.",
-  };
+
+function TaskDetail() {
+  const [task, setTask] = useState<any>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
+  const router = useRouter();
+  const task_id = router.query.taskid;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/app/tasks/${task_id}/`); // Fetch bids for the task
+        const jsonResponse = response.data;
+        const taskData = {
+          category: jsonResponse?.category,
+          title: jsonResponse?.title,
+          created_at: jsonResponse?.created_at.slice(0, 10),
+          suburb: jsonResponse?.location,
+          state: jsonResponse?.location, // don't have this property in the response
+          estimated_time: jsonResponse?.estimated_time,
+          budget: jsonResponse?.budget,
+          description: jsonResponse?.description,
+        };
+        setTask(taskData);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="m-4 p-4">
       <TaskDetails data={task} />
@@ -108,17 +122,40 @@ function TaskDetail(taskid?: number) {
 }
 
 export default function TaskDetailss() {
+  const [task, setTask] = useState<any>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
   const router = useRouter();
-  const task = router.query;
-  const title = String(task.title);
-  const taskid = Number(task.id);
+  const task_id = router.query.taskid;
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axiosInstance.get(`/app/tasks/${task_id}/`); // Fetch bids for the task
+        const jsonResponse = response.data;
+        setTask(jsonResponse);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   const tabData = [
-    { name: "Bidder Offers", content: BidderOfferCardList(taskid) },
-    { name: "Task details", content: TaskDetail(taskid) },
+    { name: "Bidder Offers", content: BidderOfferCardList() },
+    { name: "Task details", content: TaskDetail() },
   ];
   return (
     <div>
-      <Header title={title} className="sticky top-0 z-10 w-full" />
+      <Header title={task.title} className="sticky top-0 z-10 w-full" />
       <TopNavtab tabs={tabData} />
     </div>
   );

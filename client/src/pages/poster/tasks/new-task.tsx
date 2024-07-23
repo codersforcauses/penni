@@ -43,7 +43,7 @@ export default function NewTask() {
     <>
       <div className="flex flex-col">
         <Header title="New Task" className="sticky h-11 w-full" />
-        <Form className="w-full p-4" onSubmit={handleSubmit}>
+        <Form className="w-full p-4" onSubmit={onSubmit}>
           {/* Not using <Heading> Because of the vertical padding :( */}
           <h1 className={headingStyle}>Task Information</h1>
           <DropdownInput
