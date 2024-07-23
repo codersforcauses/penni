@@ -1,7 +1,7 @@
 import React from "react";
 
+import PayoutCard from "@/components/ui/bidder/payout-card";
 import Header from "@/components/ui/header";
-import PayoutCard from "@/components/ui/payout-card";
 
 export default function Payouts() {
   return (
