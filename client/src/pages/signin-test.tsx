@@ -11,7 +11,7 @@ const TestPostRequestPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = async (email: string, password: string) => {
+  const handleLogin = async (username: string, password: string) => {
     try {
       const response = await axios.post(LOGIN_URL, {
         username,
@@ -37,9 +37,9 @@ const TestPostRequestPage = () => {
   const handleTestRegisterRequest = () => {
     axios
       .post("http://localhost:8000/api/app/register/", {
-        email: "user1234567il3@example.com",
-        password: "user123abc!@#",
-        username: "useerghjr123",
+        email: "user1@example.com",
+        password: "user123abc@#",
+        username: "user1",
       })
       .then(function (response) {
         console.log(response);

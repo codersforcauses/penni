@@ -1,5 +1,6 @@
+import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
-import React from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Form, FormData } from "@/components/ui/form";
@@ -9,40 +10,67 @@ import {
   ParagraphInput,
   SingleLineInput,
 } from "@/components/ui/inputs";
+import { axiosInstance } from "@/lib/api";
 
 export default function NewTask() {
   const router = useRouter();
-  function onSubmit(e: FormData) {
-    console.log(e);
-    router.push(`/poster/tasks/task-list`);
-    // TODO api post formData to backend. awiat navigate to my task list page.
-    // router.push(`/poster/tasks/task-list`);
-  }
+
+  const handleSubmit = async (e: FormData) => {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found");
+
+    const decoded = jwt.decode(token) as { user_id: string };
+    const user_id = decoded.user_id;
+    e["owner_id"] = user_id; // "owner_id" in req had error!
+    e["status"] = "ONGOING";
+    delete e["state"]; // API miss this field
+    try {
+      const response = await axiosInstance.post("/app/tasks/", e);
+      console.log("Registration successful:", response.data);
+    } catch (error) {
+      console.error("Error during registration:", error);
+    }
+  };
+
+  const onSubmit = (e: FormData) => {
+    handleSubmit(e);
+    console.log(e); // test
+    // router.push(`/poster`);   // test
+  };
   const headingStyle = "body-medium w-full text-penni-text-regular-light-mode";
 
   return (
     <>
       <div className="flex flex-col">
         <Header title="New Task" className="sticky h-11 w-full" />
-        <Form className="w-full p-4" onSubmit={onSubmit}>
+        <Form className="w-full p-4" onSubmit={handleSubmit}>
           {/* Not using <Heading> Because of the vertical padding :( */}
           <h1 className={headingStyle}>Task Information</h1>
           <DropdownInput
+            name="category"
             label="Task Category"
             options={["Cleaning", "Delivery", "Handyman", "Moving"]}
           />
-          <SingleLineInput label="Task Title" type="text" />
-          <SingleLineInput label="Estimated Time" type="text" />
-          <SingleLineInput label="Estimated Price" type="price" />
+          <SingleLineInput name="title" label="Task Title" type="text" />
+          <SingleLineInput
+            name="estimated_time"
+            label="Estimated Time"
+            type="text"
+          />
+          <SingleLineInput name="budget" label="Estimated Price" type="price" />
           <h1 className={headingStyle}>Date and Location</h1>
-          <SingleLineInput label="Select a date" type="date" />
-          <SingleLineInput label="Address" type="text" />
+          <SingleLineInput name="deadline" label="Select a date" type="date" />
+          <SingleLineInput name="location" label="Address" type="text" />
           <DropdownInput
+            name="state"
             label="State"
             options={["VIC", "NSW", "QLD", "NT", "WA", "SA", "TAS", "ACT"]}
           />
           <h1 className={headingStyle}>Task Details</h1>
-          <ParagraphInput placeholder="What is your task about?" />
+          <ParagraphInput
+            name="description"
+            placeholder="What is your task about?"
+          />
           <Button
             variant="default"
             size="penni"

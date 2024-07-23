@@ -1,27 +1,39 @@
+import axios from "axios";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
 import { Form, FormData } from "@/components/ui/form";
 import { SingleLineInput } from "@/components/ui/inputs";
-// TODO: REMOVE
-function fakeApiCall(
-  username: string,
-  password: string,
-): Promise<{ status: number; message: string }> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (username === "user" && password === "password") {
-        resolve({ status: 200, message: "Login successful" });
-      } else {
-        resolve({ status: 404, message: "User and password not found" });
-      }
-    }, 1000);
+import { LocalBaseURL } from "@/lib/api";
+
+const LOGIN_URL = LocalBaseURL.concat("/app/login/");
+
+const handleLogin = async (username: string, password: string) => {
+  const response = await axios.post(LOGIN_URL, {
+    username,
+    password,
   });
-}
-export default function SignIn({ account }: { account: string }) {
+  const { token } = response.data;
+
+  // Store the token in localStorage
+  localStorage.setItem("token", token);
+};
+
+export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLogin, setIsLogin] = useState(false);
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+  console.log(account);
+  useEffect(() => {
+    if (isLogin == true) {
+      router.push("/poster");
+    }
+  }, [router, isLogin]);
 
   async function onSubmit(formData: FormData) {
     setErrorMessage(null);
@@ -30,13 +42,14 @@ export default function SignIn({ account }: { account: string }) {
     );
     const isPhone = /^[0-9]{10}$/.test(formData.account);
 
-    if (!isEmail && !isPhone) {
-      setErrorMessage("Invalid email or phone number. Please try again.");
-      return;
-    }
+    // if (!isEmail && !isPhone) {
+    //   setErrorMessage("Invalid email or phone number. Please try again.");
+    //   return;
+    // }
     try {
-      const response = await fakeApiCall(formData.account, formData.password);
-      if (response.status === 404) setErrorMessage(response.message);
+      handleLogin(formData.account, formData.password);
+      console.log(formData);
+      setIsLogin(true);
     } catch (error) {
       setErrorMessage("Invalid username or password. Please try again.");
     }
@@ -62,7 +75,6 @@ export default function SignIn({ account }: { account: string }) {
               type="text"
               name="account"
               label="Email or mobile"
-              value={account}
               required={true}
             />
             <SingleLineInput
