@@ -63,7 +63,7 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
   return (
     <div className="m-0 flex flex-col">
       <Link href={link || "#"} onClick={handleClick}>
-        <div className="flex cursor-pointer items-center hover:bg-gray-100">
+        <div className="flex cursor-pointer items-center hover:bg-gray-100" style={{ height: '64px' }}>  
           <div className="flex items-center pb-3">
             <div className="ml-4 mr-4 h-6 w-6">
               {IconComponent ? (
@@ -82,12 +82,12 @@ const ProfileTag: React.FC<ProfileTagProps> = ({
               )}
             </div>
           </div>
-          <div className="flex w-full content-center items-center justify-between border-b pb-3 pr-3 pt-3 text-penni-text-secondary-light-mode">
+          <div className="flex w-full content-center items-center justify-between border-b pb-3 pr-3 pt-3 text-penni-text-secondary-light-mode" style={{ minHeight: '64px' }}>
             <div className="flex grow flex-col">
               <h3 className="body text-penni-text-regular-light-mode text-primary">
                 {title}
               </h3>
-              <p className="footnote">{description}</p>
+              <p className="footnote">{description || " "}</p>  {/* Ensures space is occupied even if description is missing */}
             </div>
             <ChevronRightIcon className="ml-auto mr-5 h-6 w-6 text-gray-400" />
           </div>

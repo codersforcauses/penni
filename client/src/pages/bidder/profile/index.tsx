@@ -3,9 +3,9 @@ import React from "react";
 import BottomNav from "@/components/ui/bidder/bottom-nav";
 
 import {
+  AboutInfoIcon,
   EditIcon,
   InboxIcon,
-  InfoIcon,
   LogoutIcon,
   SettingsIcon,
 } from "../../../components/ui/icons";
@@ -35,7 +35,7 @@ const ProfilePage: React.FC = () => {
           icon={InboxIcon}
           title="Payouts"
           description="To receive your funds"
-          link="/profile/payouts"
+          link="/bidder/profile/payouts"
         />
         <ProfileTag
           icon={SettingsIcon}
@@ -44,7 +44,7 @@ const ProfilePage: React.FC = () => {
           link=""
         />
         <ProfileTag
-          icon={InfoIcon}
+          icon={AboutInfoIcon}
           title="About"
           description="Lorem ipsum dolor sit amet."
           link=""
