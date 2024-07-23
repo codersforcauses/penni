@@ -53,9 +53,9 @@ class BidsViewSet(viewsets.ModelViewSet):
             task = Tasks.objects.get(task_id=task_id)
         except Tasks.DoesNotExist:
             return Response({'status': 'error', 'message': 'Task not found.'}, status=status.HTTP_404_NOT_FOUND)
-        data = request.data
+        data = request.data.copy()
         data['task_id'] = task_id
-        data['bidder_id'] = request.user.id
+        data['bidder_id'] = request.data['bidder_id']
         # check task status
         if task.status != 'open':
             return Response({'status': 'error', 'message': 'Cannot place bid on a closed task.'}, status=status.HTTP_400_BAD_REQUEST)
