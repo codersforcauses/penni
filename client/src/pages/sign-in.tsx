@@ -22,15 +22,19 @@ const handleLogin = async (username: string, password: string) => {
   localStorage.setItem("token", token);
 };
 
-export default function SignIn({ account }: { account: string }) {
+export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLogin, setIsLogin] = useState(false);
+  const [account, setAccount] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
+  console.log(account);
   useEffect(() => {
     if (isLogin == true) {
       router.push("/poster");
     }
   }, [router, isLogin]);
+
   async function onSubmit(formData: FormData) {
     setErrorMessage(null);
     const isEmail = /^[a-zA-Z\._'\d-]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(
@@ -44,6 +48,7 @@ export default function SignIn({ account }: { account: string }) {
     // }
     try {
       handleLogin(formData.account, formData.password);
+      console.log(formData);
       setIsLogin(true);
     } catch (error) {
       setErrorMessage("Invalid username or password. Please try again.");
@@ -70,7 +75,6 @@ export default function SignIn({ account }: { account: string }) {
               type="text"
               name="account"
               label="Email or mobile"
-              value={account}
               required={true}
             />
             <SingleLineInput

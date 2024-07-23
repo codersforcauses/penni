@@ -30,15 +30,12 @@ export default function NewTask() {
     } catch (error) {
       console.error("Error during registration:", error);
     }
-    for (const key in e) {
-      console.log(key);
-    }
-    console.log(e);
   };
 
   const onSubmit = (e: FormData) => {
     handleSubmit(e);
-    router.push(`/poster/tasks/task-list`);
+    console.log(e); // test
+    // router.push(`/poster`);   // test
   };
   const headingStyle = "body-medium w-full text-penni-text-regular-light-mode";
 
