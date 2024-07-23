@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useId, useState } from "react";
 
 import { DropdownButton } from "./dropdown";
 
@@ -21,9 +21,6 @@ const labelStyleSmall = "caption text-penni-text-secondary-light-mode";
 const valueStyle =
   "callout placeholder-penni-tertiary-light-mode h-full w-full resize-none bg-transparent text-penni-text-regular-light-mode caret-penni-main focus:outline-none";
 
-// Generate unique ID for each component, used for label htmlFor attribute
-const uniqueId = () => `${Date.now()}-${Math.random()}`;
-
 export type HTMLTextTargetElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface TextInputContainerProps {
@@ -43,6 +40,7 @@ interface InputProps {
   label?: string;
   name?: string; // Only used by <Form>, omitted in Input elements
   required?: boolean; // Only used by <Form>, omitted in Input elements
+  hidden?: boolean; // Only used by <Form>, input is not displayed if true
 }
 interface InputContextType {
   value: string;
@@ -63,7 +61,7 @@ interface ParagraphInputProps extends InputProps {
 }
 
 interface DropdownInputProps extends InputProps {
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   options: string[];
 }
 
@@ -141,7 +139,7 @@ export function SingleLineInput({
   type,
 }: SingleLineInputProps) {
   const [isSelected, setIsSelected] = useState(false);
-  const [id] = useState(uniqueId());
+  const id = useId();
   const context = useContext(InputContext);
   value = context?.value ?? value ?? "";
   onChange = context?.onChange ?? onChange ?? ((e) => {});
@@ -224,7 +222,7 @@ export function ParagraphInput({
   placeholder,
 }: ParagraphInputProps) {
   const [isSelected, setIsSelected] = useState(false);
-  const [id] = useState(uniqueId());
+  const id = useId();
   const context = useContext(InputContext);
   value = context?.value ?? value ?? "";
   onChange = context?.onChange ?? onChange ?? ((e) => {});
@@ -279,8 +277,11 @@ export function DropdownInput({
   onChange,
   label,
 }: DropdownInputProps) {
-  const [menuId] = useState(uniqueId());
+  const menuId = useId();
   const style = "h-14 px-4";
+  const context = useContext(InputContext);
+  value = context?.value ?? value ?? "";
+  onChange = context?.onChange ?? onChange ?? ((e) => {});
 
   return (
     <div className="relative h-auto w-full">
