@@ -2,7 +2,6 @@ import { useState } from "react";
 
 import BottomNav from "@/components/ui/bidder/bottom-nav";
 import TaskCard from "@/components/ui/bidder/task-card";
-import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import { Button } from "@/components/ui/button";
 import {
   ErrorCallout,
@@ -31,6 +30,7 @@ import {
   SingleLineInput,
 } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
+import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import PosterTaskCard from "@/components/ui/poster/task-card";
 import ProfileTag from "@/components/ui/profile-tags";
 import TopNavtab from "@/components/ui/top-navtab";

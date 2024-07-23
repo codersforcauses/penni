@@ -1,65 +1,60 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import Header from "@/components/ui/header";
+import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import TaskDetails from "@/components/ui/task-details";
 import TopNavtab from "@/components/ui/top-navtab";
-import { axiosInstance } from "@/lib/api";
+import useFetchData from "@/hooks/use-fetch-data";
 
-function BidderOfferCardList() {
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("");
+export default function TaskDetailsPage() {
   const router = useRouter();
-  const task_id = router.query.taskid;
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get(`/app/tasks/${task_id}/bids/`); // Fetch bids for the task
-        const jsonResponse = response.data;
-        const bidderIds = jsonResponse.map((bid: any) => bid.bidder_id); // Extract bidder IDs from the bids
-        // Fetch profiles of all users
-        const allProfiles = await axiosInstance.get(`/app/profiles/`);
-        const bidders = allProfiles.data.filter((profile: any) =>
-          bidderIds.includes(profile.user_id),
-        );
-        // Add bidder info
-        const bidderList = jsonResponse.map((bid: any) => {
-          const bidder = bidders.find(
-            (profile: any) => profile.user_id === bid.bidder_id,
-          );
-          return {
-            ...bid,
-            avatar_url: bidder?.avatar_url,
-            full_name: bidder?.full_name,
-            bio: bidder?.bio,
-          };
-        });
-        setTasks(bidderList);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserData();
-  }, []);
+  const { taskid } = router.query;
+  const queryReady = typeof taskid === "string";
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const {
+    data: task,
+    loading: taskLoading,
+    error: taskError,
+  } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
+
+  const {
+    data: bids,
+    loading: bidsLoading,
+    error: bidsError,
+  } = useFetchData(`/app/tasks/${taskid}/bids/`, queryReady);
+
+  const {
+    data: profiles,
+    loading: profilesLoading,
+    error: profilesError,
+  } = useFetchData(`/app/profiles/`, true);
+
+  if (bidsLoading || profilesLoading || taskLoading)
+    return <div>Loading...</div>;
+
+  if (bidsError) return <div>Error: {bidsError}</div>;
+  if (profilesError) return <div>Error: {profilesError}</div>;
+  if (taskError) return <div>Error: {taskError}</div>;
+
+  const tasks = bids.data.map((bid: any) => {
+    const bidder = profiles.find(
+      (profile: any) => profile.user_id === bid.bidder_id,
+    );
+    return {
+      ...bid,
+      avatar_url: "", // src has issue, need to change to bidder?.avatar_url later
+      full_name: bidder?.full_name,
+      bio: bidder?.bio,
+    };
+  });
 
   const handleOnClick = (task: any) => {
-    router.push(`/poster/tasks/${task_id}/${task.bidder_id}/bid-details`);
+    router.push(`/poster/tasks/${task.task_id}/${task.bidder_id}/bid-details`);
   };
-
-  return (
+  const bidderCards = (
     <div>
-      {tasks.map((task: any, id) => (
+      {tasks.map((task: any, id: number) => (
         <div key={id}>
           <BidderOfferCard
             profile={task.avatar_url}
@@ -74,84 +69,26 @@ function BidderOfferCardList() {
       ))}
     </div>
   );
-}
-
-function TaskDetail() {
-  const [task, setTask] = useState<any>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("");
-  const router = useRouter();
-  const task_id = router.query.taskid;
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get(`/app/tasks/${task_id}/`); // Fetch bids for the task
-        const jsonResponse = response.data;
-        const taskData = {
-          category: jsonResponse?.category,
-          title: jsonResponse?.title,
-          created_at: jsonResponse?.created_at.slice(0, 10),
-          suburb: jsonResponse?.location,
-          state: jsonResponse?.location, // don't have this property in the response
-          estimated_time: jsonResponse?.estimated_time,
-          budget: jsonResponse?.budget,
-          description: jsonResponse?.description,
-        };
-        setTask(taskData);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserData();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  return (
-    <div className="m-4 p-4">
-      <TaskDetails data={task} />
+  // task detail
+  const taskData = {
+    category: task?.category,
+    title: task?.title,
+    created_at: task?.created_at.slice(0, 10),
+    suburb: task?.location,
+    state: task?.location, // Adjust as needed
+    estimated_time: task?.estimated_time,
+    budget: task?.budget,
+    description: task?.description,
+  };
+  const taskDetail = (
+    <div className="p-4">
+      <TaskDetails data={taskData} />
     </div>
   );
-}
-
-export default function TaskDetailss() {
-  const [task, setTask] = useState<any>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("");
-  const router = useRouter();
-  const task_id = router.query.taskid;
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get(`/app/tasks/${task_id}/`); // Fetch bids for the task
-        const jsonResponse = response.data;
-        setTask(jsonResponse);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserData();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   const tabData = [
-    { name: "Bidder Offers", content: BidderOfferCardList() },
-    { name: "Task details", content: TaskDetail() },
+    { name: "Bidder Offers", content: bidderCards },
+    { name: "Task details", content: taskDetail },
   ];
   return (
     <div>

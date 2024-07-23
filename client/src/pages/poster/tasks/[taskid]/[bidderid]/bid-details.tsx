@@ -11,34 +11,38 @@ export default function BidDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
   const router = useRouter();
+  const [queryReady, setQueryReady] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const task_id = router.query.taskid;
-      const bidder_id = router.query.bidderid;
-      console.log(router.query);
-      // Ensure task_id and bidder_id is a string and not undefined
-      if (typeof task_id !== "string" || typeof bidder_id !== "string") {
-        console.error("waiting"); // the router id soooo slow!
-        return;
-      }
+    // Check if query parameters are available
+    if (router.query.taskid && router.query.bidderid) {
+      setQueryReady(true);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
+    if (!queryReady) return;
+
+    const fetchBidData = async () => {
+      const task_id = router.query.taskid as string;
+      const bidder_id = router.query.bidderid as string;
+
       try {
-        const response = await axiosInstance.get(`/app/tasks/5/bids/`); // Fetch bids for the task_id:5. needs to replace to variable
+        const response = await axiosInstance.get(`/app/tasks/${task_id}/bids/`); // Fetch bids for the task_id:5. needs to replace to variable
         const jsonResponse = response.data;
         const bidInfo = jsonResponse.data.filter(
-          (bid: any) => bid.bidder_id === 6, // Fetch bid of the bidder_id:6. needs to replace to variable
+          (bid: any) => bid.bidder_id === parseInt(bidder_id), // Fetch bid of the bidder_id:6. needs to replace to variable
         )[0];
+
         // Fetch profiles of all users
         const allProfiles = await axiosInstance.get(`/app/profiles/`);
-
         const bidderProfile = allProfiles.data.filter(
-          (profile: any) => profile.user_id === 6,
+          (profile: any) => profile.user_id === parseInt(bidder_id),
         )[0];
-        console.log(bidderProfile);
-        // bidInfo["avatar_url"] = bidderProfile.avatar_url; // source of img may need change
+        bidInfo["avatar_url"] = ""; // source of img has error. needs to change to bidderProfile.avatar_url later
         bidInfo["full_name"] = bidderProfile.full_name;
         bidInfo["bio"] = bidderProfile.bio;
-        console.log(bidInfo);
+
         setBid(bidInfo);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -50,8 +54,8 @@ export default function BidDetail() {
         setLoading(false);
       }
     };
-    fetchUserData();
-  }, []);
+    fetchBidData();
+  }, [queryReady, router.query]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
