@@ -8,7 +8,7 @@ import { ErrorCallout } from "@/components/ui/callout";
 import PosterTaskCard, {
   PosterTaskCardProps,
 } from "@/components/ui/poster/task-card";
-import TaskTopBar from "@/components/ui/task-top-bar";
+import TaskTopBar from "@/components/ui/poster/task-top-bar";
 import { axiosInstance } from "@/lib/api";
 
 export function Create() {
