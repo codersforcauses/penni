@@ -71,6 +71,7 @@ const config = {
           grey: {
             inactive: "#B6BABC",
             finished: "#F4F4F4",
+            progressbar: "#D9DBDD",
             "border-light-mode": "#E7E8E9",
             "border-dark-mode": "#B6BABC",
           },

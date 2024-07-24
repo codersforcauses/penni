@@ -19,7 +19,8 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
           key={index}
           style={{
             width: `calc(${100 / steps}% - ${(steps - 1) * 5}px / ${steps})`,
-            backgroundColor: index < currentStep ? "penni-main" : "gray",
+            backgroundColor:
+              index < currentStep ? "penni-main" : "penni-grey-progressbar",
           }}
           className="h-full rounded-xl to-penni-main"
         ></div>
