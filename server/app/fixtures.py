@@ -20,18 +20,18 @@ def delete_mock_data():
 def create_users():
     if not Users.objects.exists():
         user1 = Users.objects.create(
-            email='user1@example.com',
-            mobile='1234567890',
-            password_hash=make_password('password1'),
-            status='active',
-            user_role='poster'
+            email="user1@example.com",
+            mobile="1234567890",
+            password_hash=make_password("password1"),
+            status="active",
+            user_role="poster",
         )
         user2 = Users.objects.create(
-            email='user2@example.com',
-            mobile='0987654321',
-            password_hash=make_password('password2'),
-            status='active',
-            user_role='bidder'
+            email="user2@example.com",
+            mobile="0987654321",
+            password_hash=make_password("password2"),
+            status="active",
+            user_role="bidder",
         )
         print("Users created.")
         return [user1, user2]
@@ -46,9 +46,9 @@ def create_profiles(users):
         for user in users:
             Profiles.objects.create(
                 user_id=user,
-                full_name=f'Full Name {user.email}',
-                avatar_url='http://example.com/avatar.jpg',
-                bio='This is a bio.'
+                full_name=f"Full Name {user.email}",
+                avatar_url="http://example.com/avatar.jpg",
+                bio="This is a bio.",
             )
         print("Profiles created.")
     else:
@@ -60,25 +60,25 @@ def create_tasks(users):
     if not Tasks.objects.exists():
         task1 = Tasks.objects.create(
             owner_id=users[0],
-            title='Task 1',
-            category='Category 1',
-            description='Description for task 1',
-            location='Location 1',
-            budget='100.00',
-            estimated_time='2 hours',
+            title="Task 1",
+            category="Category 1",
+            description="Description for task 1",
+            location="Location 1",
+            budget="100.00",
+            estimated_time="2 hours",
             deadline=now() + timedelta(days=10),
-            status='open'
+            status="open",
         )
         task2 = Tasks.objects.create(
             owner_id=users[0],
-            title='Task 2',
-            category='Category 2',
-            description='Description for task 2',
-            location='Location 2',
-            budget='200.00',
-            estimated_time='4 hours',
+            title="Task 2",
+            category="Category 2",
+            description="Description for task 2",
+            location="Location 2",
+            budget="200.00",
+            estimated_time="4 hours",
             deadline=now() + timedelta(days=5),
-            status='open'
+            status="open",
         )
         print("Tasks created.")
         return [task1, task2]
@@ -93,16 +93,16 @@ def create_bids(tasks, users):
         Bids.objects.create(
             task_id=tasks[0],
             bidder_id=users[1],
-            price='150.00',
-            message='I can do this task.',
-            status='pending'
+            price="150.00",
+            message="I can do this task.",
+            status="pending",
         )
         Bids.objects.create(
             task_id=tasks[1],
             bidder_id=users[1],
-            price='180.00',
-            message='I have experience with this.',
-            status='pending'
+            price="180.00",
+            message="I have experience with this.",
+            status="pending",
         )
         print("Bids created.")
     else:
@@ -116,15 +116,15 @@ def create_payments(tasks, users):
             task_id=tasks[0],
             payer_id=users[0],
             amount=100.00,
-            payment_method='Credit Card',
-            status='completed'
+            payment_method="Credit Card",
+            status="completed",
         )
         Payments.objects.create(
             task_id=tasks[1],
             payer_id=users[0],
             amount=200.00,
-            payment_method='PayPal',
-            status='pending'
+            payment_method="PayPal",
+            status="pending",
         )
         print("Payments created.")
     else:
