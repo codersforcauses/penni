@@ -86,7 +86,7 @@ function BidderOfferCardList(taskid: number) {
     </div>
   );
 }
-
+// get task detail from API
 function TaskDetail(taskid?: number) {
   // task data fetch / axios get or get from last page.
   const task = {

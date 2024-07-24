@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from .models import Users, Profiles
 from django.contrib.auth.hashers import make_password
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class UsersModelTest(TestCase):
@@ -33,7 +34,8 @@ class UsersModelTest(TestCase):
         )
         with self.assertRaises(ValidationError) as cm:
             alpha_mobile.full_clean()
-        self.assertEqual(cm.exception.message_dict['mobile'][0], 'Mobile must contain only digits.')
+        self.assertEqual(
+            cm.exception.message_dict['mobile'][0], 'Mobile must contain only digits.')
 
         empty_status = Users(
             email='testuser3@example.com',
@@ -44,7 +46,8 @@ class UsersModelTest(TestCase):
         )
         with self.assertRaises(ValidationError) as cm:
             empty_status.full_clean()
-        self.assertEqual(cm.exception.message_dict['status'][0], 'This field cannot be blank.')
+        self.assertEqual(
+            cm.exception.message_dict['status'][0], 'This field cannot be blank.')
 
     def test_user_retrieval(self):
         user = Users.objects.get(mobile='0450000000')
@@ -79,6 +82,8 @@ class ProfilesModelTest(TestCase):
             status='pending',
             user_role='cleaner'
         )
+        self.avatar = SimpleUploadedFile(
+            name='avatar.jpg', content=b'', content_type='image/jpeg')
 
     def tearDown(self):
         try:
@@ -90,13 +95,12 @@ class ProfilesModelTest(TestCase):
         profile = Profiles.objects.create(
             user_id=self.user,
             full_name='Test User',
-            avatar_url='http://example.com/avatar.jpg',
+            avatar_url=self.avatar,
             bio='This is a test bio.'
         )
         saved_profile = Profiles.objects.get(profile_id=profile.profile_id)
         self.assertEqual(saved_profile.user_id, self.user)
         self.assertEqual(saved_profile.full_name, 'Test User')
-        self.assertEqual(saved_profile.avatar_url, 'http://example.com/avatar.jpg')
         self.assertEqual(saved_profile.bio, 'This is a test bio.')
 
         profile.delete()
@@ -104,30 +108,29 @@ class ProfilesModelTest(TestCase):
         profile = Profiles.objects.create(
             user_id=self.user,
             full_name='Tim 123',
-            avatar_url='http://example.com/avatar.jpg',
+            avatar_url=self.avatar,
             bio='This is a test bio.'
         )
         saved_profile = Profiles.objects.get(profile_id=profile.profile_id)
         with self.assertRaises(ValidationError) as cm:
             saved_profile.full_clean()
-        self.assertEqual(cm.exception.message_dict['full_name'][0], 'Full name must not contain numbers.')
+        self.assertEqual(
+            cm.exception.message_dict['full_name'][0], 'Full name must not contain numbers.')
 
         profile = Profiles.objects.create(
             user_id=self.user,
             full_name='Test User',
-            avatar_url='example.com/avatar.jpg',
+            avatar_url=SimpleUploadedFile(
+                name='avatar.jpg', content=b'', content_type='image/jpeg'),
             bio='This is a test bio.'
         )
         saved_profile = Profiles.objects.get(profile_id=profile.profile_id)
-        with self.assertRaises(ValidationError) as cm:
-            saved_profile.full_clean()
-        self.assertEqual(cm.exception.message_dict['avatar_url'][0], 'Avatar URL must start with http:// or https://')
 
     def test_profiles_str_method(self):
         profile = Profiles.objects.create(
             user_id=self.user,
             full_name='Test User',
-            avatar_url='http://example.com/avatar.jpg',
+            avatar_url=self.avatar,
             bio='This is a test bio.'
         )
         self.assertEqual(str(profile), f"Profile {profile.profile_id}: user_id={profile.user_id}, "
@@ -138,7 +141,7 @@ class ProfilesModelTest(TestCase):
         profile = Profiles.objects.create(
             user_id=self.user,
             full_name='Test User',
-            avatar_url='http://example.com/avatar.jpg',
+            avatar_url=self.avatar,
             bio='This is a test bio.'
         )
         self.user.delete()

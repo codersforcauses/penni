@@ -22,7 +22,7 @@ export default function PosterTaskCard({
   className,
   onClick,
 }: PosterTaskCardProps) {
-  const compClassName = `relative m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`;
+  const compClassName = `cursor-pointer relative m-4 rounded-lg border p-4 ${state === "EXPIRED" ? "bg-gray-100 opacity-60" : "bg-white"} transition duration-300 ease-in-out`;
   if (className) {
     compClassName.concat(` ${className}`);
   }
