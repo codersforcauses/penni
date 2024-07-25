@@ -16,6 +16,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import django
 from django.utils.translation import gettext
+
 django.utils.translation.ugettext = gettext
 
 load_dotenv()
@@ -26,16 +27,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_URL = os.environ.get("FRONTEND_URL")
 
 # LOGGING
-LOG_DIR = os.path.join(BASE_DIR, 'log')
-LOG_FILE = '/api.log'
+LOG_DIR = os.path.join(BASE_DIR, "log")
+LOG_FILE = "/api.log"
 LOG_PATH = LOG_DIR + LOG_FILE
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
 
 if not os.path.exists(LOG_PATH):
-    f = open(LOG_PATH, 'a').close()  # create empty log file
+    f = open(LOG_PATH, "a").close()  # create empty log file
 else:
-    f = open(LOG_PATH, 'w').close()  # clear log file
+    f = open(LOG_PATH, "w").close()  # clear log file
 
 
 # Quick-start development settings - unsuitable for production
@@ -70,7 +71,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_jwt",
     "app",
-    'drf_yasg',
+    "drf_yasg",
 ]
 
 MIDDLEWARE = [
@@ -224,5 +225,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # This is where user uploaded file saved to
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

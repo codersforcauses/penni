@@ -16,7 +16,7 @@ class BidsPaymentsTestCase(TestCase):
             email="testuser@example.com",
             mobile="1234567890",
             password_hash=make_password("secure_password"),
-            status="active"
+            status="active",
         )
 
         # Create a test task
@@ -26,7 +26,7 @@ class BidsPaymentsTestCase(TestCase):
             description="Task Description",
             location="Test Location",
             deadline=datetime.now() + timedelta(days=5),
-            status="open"
+            status="open",
         )
 
     def test_create_bid(self):
@@ -36,14 +36,14 @@ class BidsPaymentsTestCase(TestCase):
             bidder_id=self.user,
             price="100",
             message="This is a bid message",
-            status="pending"
+            status="pending",
         )
 
         try:
             bid.clean()
             bid.save()
         except ValidationError as e:
-            self.fail(f'ValidationError raised: {e}')
+            self.fail(f"ValidationError raised: {e}")
         self.assertEqual(bid.price, "100")
         self.assertEqual(bid.message, "This is a bid message")
         self.assertEqual(bid.status, "pending")
@@ -55,7 +55,7 @@ class BidsPaymentsTestCase(TestCase):
             bidder_id=self.user,
             price="100",
             message="This is a bid message",
-            status="pending"
+            status="pending",
         )
 
         fetched_bid = Bids.objects.get(pk=bid.bid_id)
@@ -70,7 +70,7 @@ class BidsPaymentsTestCase(TestCase):
             bidder_id=self.user,
             price="100",
             message="This is a bid message",
-            status="pending"
+            status="pending",
         )
 
         bid.price = "150"
@@ -80,7 +80,7 @@ class BidsPaymentsTestCase(TestCase):
             bid.clean()
             bid.save()
         except ValidationError as e:
-            self.fail(f'ValidationError raised: {e}')
+            self.fail(f"ValidationError raised: {e}")
 
         updated_bid = Bids.objects.get(pk=bid.bid_id)
         self.assertEqual(updated_bid.price, "150")
@@ -93,7 +93,7 @@ class BidsPaymentsTestCase(TestCase):
             bidder_id=self.user,
             price="100",
             message="This is a bid message",
-            status="pending"
+            status="pending",
         )
 
         bid_id = bid.bid_id
@@ -109,14 +109,14 @@ class BidsPaymentsTestCase(TestCase):
             payer_id=self.user,
             amount=150.00,
             payment_method="Credit Card",
-            status="completed"
+            status="completed",
         )
 
         try:
             payment.clean()
             payment.save()
         except ValidationError as e:
-            self.fail(f'ValidationError raised: {e}')
+            self.fail(f"ValidationError raised: {e}")
 
         self.assertEqual(payment.amount, 150.00)
         self.assertEqual(payment.payment_method, "Credit Card")
@@ -129,7 +129,7 @@ class BidsPaymentsTestCase(TestCase):
             payer_id=self.user,
             amount=150.00,
             payment_method="Credit Card",
-            status="completed"
+            status="completed",
         )
 
         fetched_payment = Payments.objects.get(pk=payment.payment_id)
@@ -144,7 +144,7 @@ class BidsPaymentsTestCase(TestCase):
             payer_id=self.user,
             amount=150.00,
             payment_method="Credit Card",
-            status="completed"
+            status="completed",
         )
 
         payment.amount = 200.00
@@ -154,7 +154,7 @@ class BidsPaymentsTestCase(TestCase):
             payment.clean()
             payment.save()
         except ValidationError as e:
-            self.fail(f'ValidationError raised: {e}')
+            self.fail(f"ValidationError raised: {e}")
 
         updated_payment = Payments.objects.get(pk=payment.payment_id)
         self.assertEqual(updated_payment.amount, 200.00)
@@ -167,7 +167,7 @@ class BidsPaymentsTestCase(TestCase):
             payer_id=self.user,
             amount=150.00,
             payment_method="Credit Card",
-            status="completed"
+            status="completed",
         )
 
         payment_id = payment.payment_id

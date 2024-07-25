@@ -14,7 +14,7 @@ class TaskModelTests(TestCase):
             email="testuser@example.com",
             mobile="1234567890",
             password_hash="password123",
-            status="active"
+            status="active",
         )
         self.task = Tasks.objects.create(
             owner_id=self.user,
@@ -25,7 +25,7 @@ class TaskModelTests(TestCase):
             budget="100",
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
-            status="open"
+            status="open",
         )
 
     def test_task_creation(self):
@@ -40,11 +40,14 @@ class TaskModelTests(TestCase):
         self.assertEqual(self.task.status, "open")
 
     def test_task_str_method(self):
-        self.assertEqual(str(self.task), f"Task {self.task.task_id}: owner_id={self.task.owner_id}, "
-                         f"title={self.task.title}, description={self.task.description}, "
-                         f"location={self.task.location}, budget={self.task.budget}, "
-                         f"deadline={self.task.deadline}, status={self.task.status}, "
-                         f"created_at={self.task.created_at}, updated_at={self.task.updated_at}")
+        self.assertEqual(
+            str(self.task),
+            f"Task {self.task.task_id}: owner_id={self.task.owner_id}, "
+            f"title={self.task.title}, description={self.task.description}, "
+            f"location={self.task.location}, budget={self.task.budget}, "
+            f"deadline={self.task.deadline}, status={self.task.status}, "
+            f"created_at={self.task.created_at}, updated_at={self.task.updated_at}",
+        )
 
     def test_task_default_values(self):
         task = Tasks.objects.create(
@@ -53,7 +56,7 @@ class TaskModelTests(TestCase):
             description="Task description",
             location="Default Location",
             deadline=timezone.now() + timezone.timedelta(days=1),
-            status="open"
+            status="open",
         )
         self.assertEqual(task.category, "")
         self.assertEqual(task.budget, "")
@@ -80,12 +83,14 @@ class TaskModelTests(TestCase):
             budget="100",
             estimated_time="2 hours",
             deadline=timezone.now() - timezone.timedelta(days=1),
-            status="open"
+            status="open",
         )
 
         with self.assertRaises(ValidationError) as cm:
             invalid_deadline.full_clean()
-        self.assertEqual(cm.exception.message_dict['deadline'][0], 'Deadline must be in the future.')
+        self.assertEqual(
+            cm.exception.message_dict["deadline"][0], "Deadline must be in the future."
+        )
 
     def test_task_deadline_future(self):
         task = Tasks.objects.create(
@@ -96,7 +101,7 @@ class TaskModelTests(TestCase):
             budget="100",
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=2),
-            status="open"
+            status="open",
         )
         self.assertGreater(task.deadline, timezone.now())
 
@@ -111,7 +116,7 @@ class TaskModelTests(TestCase):
                 budget="100",
                 estimated_time="2 hours",
                 deadline=timezone.now() + timezone.timedelta(days=1),
-                status=status
+                status=status,
             )
             self.assertEqual(task.status, status)
 
@@ -124,7 +129,7 @@ class TaskModelTests(TestCase):
                 budget="100",
                 estimated_time="2 hours",
                 deadline=timezone.now() + timezone.timedelta(days=1),
-                status="invalid_status"
+                status="invalid_status",
             )
             task.full_clean()
 
@@ -138,7 +143,7 @@ class TaskModelTests(TestCase):
                 budget="100",
                 estimated_time="2 hours",
                 deadline=timezone.now() + timezone.timedelta(days=1),
-                status="open"
+                status="open",
             ).full_clean()
 
     def test_task_without_estimated_fields(self):
@@ -148,7 +153,7 @@ class TaskModelTests(TestCase):
             description="This task has no estimated price or time",
             location="Location",
             deadline=timezone.now() + timezone.timedelta(days=1),
-            status="open"
+            status="open",
         )
         self.assertEqual(task.budget, "")
         self.assertEqual(task.estimated_time, "")
@@ -169,7 +174,7 @@ class TaskModelTests(TestCase):
             email="testuser2@example.com",
             mobile="0987654321",
             password_hash="password123",
-            status="active"
+            status="active",
         )
         task = Tasks.objects.create(
             owner_id=user,
@@ -177,7 +182,7 @@ class TaskModelTests(TestCase):
             description="Description",
             location="Location",
             deadline=timezone.now() + timezone.timedelta(days=1),
-            status="open"
+            status="open",
         )
         user.delete()
         with self.assertRaises(Tasks.DoesNotExist):
@@ -191,7 +196,7 @@ class TaskModelTests(TestCase):
                 description=f"Description {i}",
                 location="Location",
                 deadline=timezone.now() + timezone.timedelta(days=1),
-                status="open"
+                status="open",
             )
             for i in range(5)
         ]
@@ -207,7 +212,7 @@ class TaskModelTests(TestCase):
             budget="200",
             estimated_time="3 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
-            status="open"
+            status="open",
         )
         open_tasks = Tasks.objects.filter(status="open")
         self.assertEqual(open_tasks.count(), Tasks.objects.count())
@@ -224,7 +229,7 @@ class TaskModelTests(TestCase):
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open",
-            created_at=timezone.now() - timezone.timedelta(days=2)
+            created_at=timezone.now() - timezone.timedelta(days=2),
         )
 
         time.sleep(1)
@@ -238,8 +243,8 @@ class TaskModelTests(TestCase):
             estimated_time="2 hours",
             deadline=timezone.now() + timezone.timedelta(days=1),
             status="open",
-            created_at=timezone.now() - timezone.timedelta(days=1)
+            created_at=timezone.now() - timezone.timedelta(days=1),
         )
-        tasks = Tasks.objects.all().order_by('created_at')
+        tasks = Tasks.objects.all().order_by("created_at")
         self.assertEqual(tasks[0], task1)
         self.assertEqual(tasks[1], task2)

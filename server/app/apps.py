@@ -8,4 +8,5 @@ class AppConfig(AppConfig):
 
     def ready(self):
         from .fixtures import create_mock_data
+
         post_migrate.connect(create_mock_data, sender=self)

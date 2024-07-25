@@ -14,9 +14,9 @@ class AuthRegistrationTestCase(TestCase):
         valid_data = {
             "username": "test_user",
             "password": "test_password",
-            "email": "test@example.com"
+            "email": "test@example.com",
         }
-        url = reverse('register')
+        url = reverse("register")
         response = self.client.post(url, data=valid_data)
         self.assertEqual(response.status_code, 201)  # create user successfully
 
@@ -24,10 +24,10 @@ class AuthRegistrationTestCase(TestCase):
         invalid_data = {
             "username": "",
             "password": "test_password",
-            "email": "test@example.com"
+            "email": "test@example.com",
         }
         try:
-            url = reverse('register')
+            url = reverse("register")
             response = self.client.post(url, data=invalid_data)
             self.assertEqual(response.status_code, 400)
         except Exception as e:
@@ -37,16 +37,16 @@ class AuthRegistrationTestCase(TestCase):
         valid_data = {
             "username": "test_user",
             "password": "test_password",
-            "email": "test@example.com"
+            "email": "test@example.com",
         }
-        response = self.client.post(reverse('register'), data=valid_data)
+        response = self.client.post(reverse("register"), data=valid_data)
 
         # valid password
         data = {
             "username": "test_user",
             "password": "test_password",
         }
-        response = self.client.post(reverse('get-jwt-token'), data)
+        response = self.client.post(reverse("get-jwt-token"), data)
         self.assertEqual(response.status_code, 200)
 
     def test_login_failure(self):
@@ -55,5 +55,5 @@ class AuthRegistrationTestCase(TestCase):
             "username": "test_user",
             "password": "test_password_wrong",
         }
-        response = self.client.post(reverse('get-jwt-token'), data)
+        response = self.client.post(reverse("get-jwt-token"), data)
         self.assertEqual(response.status_code, 400)
