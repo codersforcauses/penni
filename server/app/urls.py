@@ -20,7 +20,7 @@ urlpatterns = [
     path("register/", RegistrationView.as_view(), name="register"),
     # get all bids by task
     path(
-        "tasks/<int:task_id>/bids/",
+        "tasks/<int:task_id>/bids",
         BidsViewSet.as_view({"get": "get_task_bids", "post": "create"}),
         name="bids-list",
     ),
