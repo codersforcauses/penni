@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
+import EmptyListDisplay from "@/components/ui/empty-list-display";
 import PosterTaskCard, {
   PosterTaskCardProps,
 } from "@/components/ui/poster/task-card";
@@ -14,21 +15,14 @@ import { axiosInstance } from "@/lib/api";
 export function Create() {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center">
+    <div className="m-4">
       <TaskTopBar />
-      <Image
-        className="mt-52"
-        src="/task-blank-page.svg"
-        alt="No task"
-        width={200}
-        height={200}
-      />
-      <p className="mt-10 font-bold">You do not have any orders yet</p>
-      <Button
-        className="mt-10 w-11/12"
-        label="Create a Task"
-        onClick={() => router.push("/poster/tasks/new-task")}
-      ></Button>
+      <div className="relative top-36 flex w-full justify-center">
+        <EmptyListDisplay
+          type="poster"
+          onClick={() => router.push(`/poster/tasks/new-task`)}
+        />
+      </div>
     </div>
   );
 }
@@ -44,13 +38,11 @@ function TaskList({ className, tasks }: TaskListProp) {
   // pass taskid and title to next page.
 
   return (
-    <div
-      className={`m-4 flex flex-col items-center justify-between ${className}`}
-    >
+    <div className={`m-4 ${className}`}>
       <TaskTopBar />
-      <div className="w-full">
-        {tasks.map((task, index) => (
-          <div className={`mt-1`} key={index}>
+      <div className="flex w-full flex-col gap-4">
+        {tasks.map((task: any, index) => (
+          <div key={index}>
             <PosterTaskCard
               title={task.title}
               numberOfBidders={5} //need to get bidder data
@@ -69,7 +61,7 @@ function TaskList({ className, tasks }: TaskListProp) {
         size="floating"
         variant="floating"
         onClick={() => router.push("/poster/tasks/new-task")}
-        className={`fixed bottom-10 right-10`}
+        className={`fixed bottom-10 right-6`}
       >
         + New Task
       </Button>

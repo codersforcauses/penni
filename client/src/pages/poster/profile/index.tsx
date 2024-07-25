@@ -1,9 +1,7 @@
 import jwt from "jsonwebtoken";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import useFetchData from "@/hooks/use-fetch-data";
-import { axiosInstance } from "@/lib/api";
 
 import {
   AboutInfoIcon,
@@ -16,22 +14,27 @@ import {
 import { PersonImg } from "../../../components/ui/person-detail";
 import ProfileTag from "../../../components/ui/profile-tags";
 
-const ProfilePage: React.FC = () => {
-  const router = useRouter();
-  const { posterid } = router.query;
-  const queryReady = typeof posterid === "string";
+const PosterProfilePage: React.FC = () => {
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwt.decode(token) as { email: string; user_id: string };
+      setEmail(decoded.email);
+      setUserId(decoded.user_id);
+    } else {
+      console.error("No token found");
+    }
+  }, []);
   const {
     data: user,
     loading: userLoading,
     error: userError,
-  } = useFetchData(`/app/profiles/${posterid}/`, queryReady);
+  } = useFetchData(`/app/profiles/${userId}/`, true);
   if (userLoading) return <div>Loading...</div>;
   if (userError) return <div>Error: {userError}</div>;
-  const token = localStorage.getItem("token");
-  if (!token) throw new Error("No token found");
-  const decoded = jwt.decode(token) as { email: string };
-  const email = decoded.email;
   // img src needs to change to user.avatar_url later
   return (
     <div className="m-0">
@@ -87,4 +90,4 @@ const ProfilePage: React.FC = () => {
   );
 };
 
-export default ProfilePage;
+export default PosterProfilePage;

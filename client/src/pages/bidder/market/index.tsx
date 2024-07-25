@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import BottomNav from "@/components/ui/bidder/bottom-nav";
-import { Task } from "@/components/ui/bidder/mytasks-page";
+import { Task } from "@/components/ui/bidder/mytasks-list";
 import TaskCard, { TaskCardProps } from "@/components/ui/bidder/task-card";
 import { MarketDropdown } from "@/components/ui/dropdown";
 import type { NextPageWithLayout } from "@/pages/_app";

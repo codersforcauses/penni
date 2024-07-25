@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import MyOffer from "@/components/ui/bidder/my-offer";
-import { Task } from "@/components/ui/bidder/mytasks-page";
+import { Task } from "@/components/ui/bidder/mytasks-list";
 import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
 import Card from "@/components/ui/card";
