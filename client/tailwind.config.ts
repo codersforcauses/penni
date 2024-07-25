@@ -79,6 +79,7 @@ const config = {
             "input-light-mode": "#f2f2f2",
             "light-mode": "#FFFFFF",
             "dark-mode": "#040B17",
+            "file-card": "#F5F5F5",
           },
           sheet: {
             "light-mode": "#FFFFFF",
@@ -116,6 +117,7 @@ const config = {
         "penni-border": "8px",
         "penni-card": "8px",
         "penni-sheet": "8px",
+        "penni-select": "13px",
         "penni-special": "100px", // for small button
       },
       keyframes: {
