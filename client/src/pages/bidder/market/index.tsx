@@ -2,54 +2,41 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import BottomNav from "@/components/ui/bidder/bottom-nav";
-import { Task } from "@/components/ui/bidder/mytasks-list";
 import TaskCard, { TaskCardProps } from "@/components/ui/bidder/task-card";
 import { MarketDropdown } from "@/components/ui/dropdown";
+import useFetchData from "@/hooks/use-fetch-data";
 import type { NextPageWithLayout } from "@/pages/_app";
 
 const MarketPage: NextPageWithLayout = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState("All Category");
   const [selectedLocation, setSelectedLocation] = useState("All Location");
-  const today = new Date().toISOString().slice(0, 10); //get today's date "2024-7-17" to check if the task is expired
-  // client-side data fetching, using mock data in "/api/tasks-test" to test it
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await fetch("/api/tasks-test");
-        if (!res.ok) {
-          throw new Error("Failed to fetch");
-        }
-        const data = await res.json();
-        setTasks(data.tasks);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchTasks();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const {
+    data: tasks,
+    loading: taskLoading,
+    error: taskError,
+  } = useFetchData(`/app/tasks/`, true);
+  if (taskLoading)
+    return (
+      <BottomNav>
+        <div>Loading...</div>
+      </BottomNav>
+    );
+  if (taskError)
+    return (
+      <BottomNav>
+        <div>Error: {taskError}</div>
+      </BottomNav>
+    );
   const taskList = tasks.filter(
-    (task) => task.deadline > today && task.state === "UNTAKEN",
+    (task: any) => task.status === "open", // now the task api doesn't have correct status "BIDDING", need to change later
   );
-
   const categories = ["All Category"].concat(
-    Array.from(new Set(taskList.map((task) => task.category))),
+    Array.from(new Set(taskList.map((task: any) => task.category))),
   );
   const locations = ["All Location"].concat(
-    Array.from(new Set(taskList.map((task) => task.location))),
+    Array.from(new Set(taskList.map((task: any) => task.location))),
   );
 
   return (
@@ -69,22 +56,21 @@ const MarketPage: NextPageWithLayout = () => {
       <div className="m-4 flex flex-col gap-4">
         {taskList
           .filter(
-            (task) =>
+            (task: any) =>
               (selectedCategory === "All Category" ||
                 task.category === selectedCategory) &&
               (selectedLocation === "All Location" ||
                 task.location === selectedLocation),
           )
-          .map((task, index) => (
+          .map((task: any, index: number) => (
             <TaskCard
               key={index}
               title={task.title}
               category={task.category}
-              date={task.date}
+              date={task.deadline.slice(0, 10)}
               location={task.location}
-              duration={task.duration}
-              estimatePrice={task.estimatePrice}
-              myOfferPrice={task.myOfferPrice}
+              duration={task.estimated_time}
+              estimatePrice={task.budget}
               priceType="Estimated Price"
               onClick={() => router.push(`/bidder/market/${task.task_id}`)}
             />

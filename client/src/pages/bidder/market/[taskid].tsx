@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -10,72 +11,80 @@ import Header from "@/components/ui/header";
 import { SingleLineInput } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
 import TaskDetails from "@/components/ui/task-details";
+import useFetchData from "@/hooks/use-fetch-data";
 
 export default function TaskDetailPage() {
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [isCardVisible, setIsCardVisible] = useState(false);
   const [isExtraCardVisible, setIsExtraCardVisible] = useState(false);
 
   const [offerValue, setOfferValue] = useState("");
   const [extraOffer, setExtraOffer] = useState("");
+  const [userId, setUserId] = useState<string | null>(null);
+
   const toggleCardVisibility = () => {
     setIsCardVisible(!isCardVisible);
   };
   const today = new Date().toISOString().slice(0, 10); //get today's date in string "2024-7-17" to check if the task is expired
-
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await fetch("/api/tasks-test");
-        if (!res.ok) {
-          throw new Error("Failed to fetch");
-        }
-        const data = await res.json();
-        setTasks(data.tasks);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError(String(error));
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTasks();
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwt.decode(token) as { email: string; user_id: string };
+      setUserId(decoded.user_id);
+    } else {
+      console.error("No token found");
+    }
   }, []);
+  const { taskid } = router.query;
+  const queryReady = typeof taskid === "string";
+  const {
+    data: task,
+    loading: taskLoading,
+    error: taskError,
+  } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
+  const {
+    data: bids,
+    loading: bidsLoading,
+    error: bidsError,
+  } = useFetchData(`/app/tasks/${taskid}/bids/`, queryReady);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const {
+    data: profile,
+    loading: profileLoading,
+    error: profileError,
+  } = useFetchData(`/app/profiles/5/`, true);
+  if (bidsLoading || profileLoading || taskLoading)
+    return <div>Loading...</div>;
 
-  const taskInDetail = tasks.filter(
-    (task) => task.task_id.toString() === router.query.taskid,
-  )[0];
+  if (bidsError) return <div>Error: {bidsError}</div>;
+  if (profileError) return <div>Error: {profileError}</div>;
+  if (taskError) return <div>Error: {taskError}</div>;
+  console.log(bids.data.find((bid: any) => bid.bidder_id === 6)); // hard code for bidder_id
+  const myBid = bids.data.find((bid: any) => bid.bidder_id === userId);
 
-  const sampleTaskData = {
-    category: taskInDetail.category,
-    title: taskInDetail.title,
-    created_at: taskInDetail.date,
-    suburb: taskInDetail.suburb,
-    state: taskInDetail.state,
-    estimated_time: taskInDetail.duration,
-    budget: taskInDetail.estimatePrice,
-    description: taskInDetail.description,
+  if (myBid == undefined)
+    return <div>Error: Cannot find bid detail for current user</div>;
+  const myOfferValue = myBid.price;
+  const taskData = {
+    category: task.category,
+    title: task.title,
+    deadline: task.deadline.slice(0, 10),
+    suburb: "task.suburb", // no task.suburb in api now
+    state: "task.state", // no task.state in api now
+    estimated_time: task.estimated_time,
+    budget: task.budget,
+    description: task.description,
   };
-
+  console.log(taskData);
   return (
     <div className="mb-8">
       <Header title="Task Details" />
-      {taskInDetail.state != "ONGOING" &&
-        taskInDetail.state != "COMPLETED" &&
-        today > taskInDetail.deadline && (
+      {task.state != "ONGOING" &&
+        task.state != "COMPLETED" &&
+        today > task.deadline && (
           <ErrorCallout text="Bid is no longer available" />
         )}
-      {taskInDetail.state === "ONGOING" || taskInDetail.state === "COMPLETED"
+      {task.state === "ONGOING" || task.state === "COMPLETED"
         ? extraOffer != "" && (
             <MyOffer
               text="Request for extra charge"
@@ -92,22 +101,20 @@ export default function TaskDetailPage() {
           )}
       <div className="mx-4 flex flex-col gap-4">
         <div className="flex flex-col gap-8">
-          <TaskDetails data={sampleTaskData} />
+          <TaskDetails data={taskData} />
           <div className="flex flex-col gap-4">
             <p className="body-medium">Poster Details</p>
-            <PersonDetail personImg="/penni-logo.svg" personName="user123" />
+            <PersonDetail personImg="" personName={profile.full_name} />
           </div>
-          {(taskInDetail.state === "ONGOING" ||
-            taskInDetail.state === "COMPLETED") && (
+          {(task.state === "ONGOING" || task.state === "COMPLETED") && (
             <div className="flex justify-between">
               <p className="body-medium">My Price</p>
-              <p className="title2">${taskInDetail.myOfferPrice}</p>
+              <p className="title2">${myOfferValue}</p>
             </div>
           )}
         </div>
 
-        {taskInDetail.state === "ONGOING" ||
-        taskInDetail.state === "COMPLETED" ? (
+        {task.state === "ONGOING" || task.state === "COMPLETED" ? (
           <>
             <Button
               className="headline h-14 w-full"
@@ -128,15 +135,14 @@ export default function TaskDetailPage() {
         )}
       </div>
 
-      {taskInDetail.state === "ONGOING" ||
-      taskInDetail.state === "COMPLETED" ? (
+      {task.state === "ONGOING" || task.state === "COMPLETED" ? (
         <Card
           isVisible={isExtraCardVisible}
           onClose={() => setIsExtraCardVisible(!isExtraCardVisible)}
         >
           <div className="p-4">
             <p className="headline">How much would the extra charge be?</p>
-            <p className="subheadline mb-4 mt-2">{`Original Price: ${taskInDetail.estimatePrice}`}</p>
+            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.estimatePrice}`}</p>
             <SingleLineInput
               type="price"
               value={extraOffer}
@@ -156,7 +162,7 @@ export default function TaskDetailPage() {
         <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
           <div className="p-4">
             <p className="headline">Make an offer on this task</p>
-            <p className="subheadline mb-4 mt-2">{`Original Price: ${taskInDetail.estimatePrice}`}</p>
+            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.estimatePrice}`}</p>
             <SingleLineInput
               type="price"
               value={offerValue}

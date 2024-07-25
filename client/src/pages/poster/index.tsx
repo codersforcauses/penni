@@ -34,8 +34,6 @@ type TaskListProp = {
 
 function TaskList({ className, tasks }: TaskListProp) {
   const router = useRouter();
-  // TODO api fetch tasklist replace dummy data.in reverse order.
-  // pass taskid and title to next page.
 
   return (
     <div className={`m-4 ${className}`}>

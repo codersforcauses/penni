@@ -33,8 +33,18 @@ const BidderProfilePage: React.FC = () => {
     loading: userLoading,
     error: userError,
   } = useFetchData(`/app/profiles/${userId}/`, true);
-  if (userLoading) return <div>Loading...</div>;
-  if (userError) return <div>Error: {userError}</div>;
+  if (userLoading)
+    return (
+      <BottomNav>
+        <div>Loading...</div>
+      </BottomNav>
+    );
+  if (userError)
+    return (
+      <BottomNav>
+        <div>Error: {userError}</div>
+      </BottomNav>
+    );
   // img src needs to change to user.avatar_url later
   return (
     <BottomNav>

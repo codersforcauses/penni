@@ -24,7 +24,11 @@ export default function Bidder() {
   }, []);
 
   if (!userId) {
-    return <div>Loading...</div>;
+    return (
+      <BottomNav>
+        <div>Loading...</div>
+      </BottomNav>
+    );
   }
   // replace 6 with userId later
   return (
