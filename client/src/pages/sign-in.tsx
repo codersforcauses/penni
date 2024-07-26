@@ -45,7 +45,7 @@ export default function SignIn() {
           console.error("Error response from server:", error.response.data);
           console.error("Status code:", error.response.status);
           // Handle specific error responses from the server
-          if (error.response.status === 401 || 400) {
+          if (error.response.status === 401 || error.response.status === 400) {
             setErrorMessage("Invalid username or password. Please try again.");
             // Show a message to the user or handle the error accordingly
           } else if (error.response.status === 500) {
