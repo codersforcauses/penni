@@ -1,7 +1,8 @@
-from .models import Users, Profiles, Tasks, Bids
+from .models import Users, Tasks, Bids
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class BidsSerializer(serializers.ModelSerializer):
@@ -12,22 +13,29 @@ class BidsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bids
         fields = '__all__'
-        read_only_fields = ('bid_id', 'created_at', 'updated_at', 'bidder_id')
+        read_only_fields = ('bid_id', 'created_at',
+                            'updated_at', 'bidder_id', 'tasks')
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
+
+    username = serializers.CharField(required=True)
+
     class Meta:
         model = get_user_model()
         fields = (
-            "id",
+            "user_id",
             "email",
             "password",
-            "username"
+            "username",
+            "is_bidder",
+            "is_poster",
+            "bio"
         )
         extra_kwargs = {
             "password": {"write_only": True},
-            "id": {"read_only": True},
-            "username": {"required": False, "allow_blank": True},
+            "user_id": {"read_only": True},
+            "username": {"required": True},
         }
 
     def validate_password(self, value):
@@ -39,28 +47,44 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-class ProfleSerializer(serializers.ModelSerializer):
-    image_url = serializers.ImageField(required=False)
+class TasksSerializer(serializers.ModelSerializer):
+    # poster = UsersSerializer(read_only=True, source='user_id')
+    # poster_id = serializers.PrimaryKeyRelatedField(
+    #     queryset=Users.objects.all())
+    bids = BidsSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Profiles
+        model = Tasks
         fields = '__all__'
-        extra_kwargs = {
-            'profile_id': {"read_only": True},
-            'user_id': {"read_only": True},
-        }
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['username'] = user.username
+        token['email'] = user.email
+        token['is_active'] = user.is_active
+        token['is_staff'] = user.is_staff
+
+        return token
 
 
 class UsersSerializer(serializers.ModelSerializer):
+    tasks = TasksSerializer(many=True, read_only=True)
+
     class Meta:
-        model = Users
-        fields = '__all__'
+        model = get_user_model()
+        fields = ('password', 'email', 'username', 'is_active',
+                  'is_staff', 'is_bidder', 'is_poster', 'user_id', 'bio',
+                  'tasks')
         extra_kwargs = {
-            'password_hash': {'write_only': True},
+            'password': {'write_only': True},
         }
 
     def create(self, validated_data):
-        password = validated_data.pop('password_hash', None)
+        password = validated_data.pop('password', None)
         user = super().create(validated_data)
         if password:
             user.set_password(password)
@@ -68,7 +92,7 @@ class UsersSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        password = validated_data.pop('password_hash', None)
+        password = validated_data.pop('password', None)
         user = super().update(instance, validated_data)
         if password:
             user.set_password(password)
@@ -76,18 +100,22 @@ class UsersSerializer(serializers.ModelSerializer):
         return user
 
 
-class ProfilesSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
+# class ProfleSerializer(serializers.ModelSerializer):
+#     image_url = serializers.ImageField(required=False)
 
-    class Meta:
-        model = Profiles
-        fields = '__all__'
+#     class Meta:
+#         model = Profiles
+#         fields = '__all__'
+#         extra_kwargs = {
+#             'profile_id': {"read_only": True},
+#             'user_id': {"read_only": True},
+#         }
 
 
-class TasksSerializer(serializers.ModelSerializer):
-    owner = UsersSerializer(read_only=True, source='owner_id')
-    owner_id = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
+# class ProfilesSerializer(serializers.ModelSerializer):
+#     user_id = serializers.
+# PrimaryKeyRelatedField(queryset=Users.objects.all())
 
-    class Meta:
-        model = Tasks
-        fields = '__all__'
+#     class Meta:
+#         model = Profiles
+#         fields = '__all__'

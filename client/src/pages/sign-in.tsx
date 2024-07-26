@@ -11,9 +11,9 @@ import { LocalBaseURL } from "@/lib/api";
 
 const LOGIN_URL = LocalBaseURL.concat("/app/login/");
 
-const handleLogin = async (username: string, password: string) => {
+const handleLogin = async (email: string, password: string) => {
   const response = await axios.post(LOGIN_URL, {
-    username,
+    email,
     password,
   });
   const { token } = response.data;

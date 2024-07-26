@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -17,6 +18,7 @@ from dotenv import load_dotenv
 import django
 from django.utils.translation import gettext
 django.utils.translation.ugettext = gettext
+
 
 load_dotenv()
 
@@ -53,6 +55,8 @@ ALLOWED_HOSTS = (
     else []
 )
 
+AUTH_USER_MODEL = "app.Users"
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -68,10 +72,47 @@ INSTALLED_APPS = [
     "api.healthcheck",
     "corsheaders",
     "rest_framework",
-    "rest_framework_jwt",
+    'rest_framework_simplejwt',
     "app",
     'drf_yasg',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
+    # Short-term access token lifetime
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    # Long-term refresh token lifetime
+    'ROTATE_REFRESH_TOKENS': True,
+    # Rotate refresh tokens
+    'BLACKLIST_AFTER_ROTATION': True,
+    # Blacklist old tokens after rotation
+
+    'ALGORITHM': 'HS256',
+    # Signing algorithm
+    'SIGNING_KEY': SECRET_KEY,
+    # Secret key for signing tokens
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    # Authentication header type
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    # Authentication header name
+
+    'USER_ID_FIELD': 'user_id',
+    # User ID field
+    'USER_ID_CLAIM': 'user_id',
+    # User ID claim in the token
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
