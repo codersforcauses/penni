@@ -7,14 +7,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class BidsSerializer(serializers.ModelSerializer):
     task_id = serializers.PrimaryKeyRelatedField(queryset=Tasks.objects.all())
-    bidder_id = serializers.PrimaryKeyRelatedField(
-        queryset=Users.objects.all())
+    bidder_id = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
 
     class Meta:
         model = Bids
-        fields = '__all__'
-        read_only_fields = ('bid_id', 'created_at',
-                            'updated_at', 'bidder_id', 'tasks')
+        fields = "__all__"
+        read_only_fields = ("bid_id", "created_at", "updated_at", "bidder_id", "tasks")
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -30,7 +28,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             "username",
             "is_bidder",
             "is_poster",
-            "bio"
+            "bio",
         )
         extra_kwargs = {
             "password": {"write_only": True},
@@ -55,7 +53,7 @@ class TasksSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tasks
-        fields = '__all__'
+        fields = "__all__"
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -63,10 +61,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        token['username'] = user.username
-        token['email'] = user.email
-        token['is_active'] = user.is_active
-        token['is_staff'] = user.is_staff
+        token["username"] = user.username
+        token["email"] = user.email
+        token["is_active"] = user.is_active
+        token["is_staff"] = user.is_staff
 
         return token
 
@@ -76,15 +74,24 @@ class UsersSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('password', 'email', 'username', 'is_active',
-                  'is_staff', 'is_bidder', 'is_poster', 'user_id', 'bio',
-                  'tasks')
+        fields = (
+            "password",
+            "email",
+            "username",
+            "is_active",
+            "is_staff",
+            "is_bidder",
+            "is_poster",
+            "user_id",
+            "bio",
+            "tasks",
+        )
         extra_kwargs = {
-            'password': {'write_only': True},
+            "password": {"write_only": True},
         }
 
     def create(self, validated_data):
-        password = validated_data.pop('password', None)
+        password = validated_data.pop("password", None)
         user = super().create(validated_data)
         if password:
             user.set_password(password)
@@ -92,7 +99,7 @@ class UsersSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        password = validated_data.pop('password', None)
+        password = validated_data.pop("password", None)
         user = super().update(instance, validated_data)
         if password:
             user.set_password(password)

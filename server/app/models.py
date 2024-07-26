@@ -7,8 +7,8 @@ import hashlib
 
 
 def get_avatar_upload_path(instance, filename):
-    ext = filename.split('.')[-1]
-    hash_name = hashlib.md5(str(instance.user_id).encode('utf-8')).hexdigest()
+    ext = filename.split(".")[-1]
+    hash_name = hashlib.md5(str(instance.user_id).encode("utf-8")).hexdigest()
     return f"avatars/{hash_name}.{ext}"
 
 
@@ -25,13 +25,13 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, username, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
 
         return self.create_user(email, username, password, **extra_fields)
 
@@ -41,7 +41,7 @@ class Users(AbstractUser):
     is_superuser = models.BooleanField(default=False)
     username = models.CharField(max_length=150)
     email = models.CharField(max_length=255, unique=True)
-    mobile = models.CharField(max_length=20, default='000', blank=True)
+    mobile = models.CharField(max_length=20, default="000", blank=True)
     # password_hash = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -50,26 +50,27 @@ class Users(AbstractUser):
     is_bidder = models.BooleanField(default=False)
     is_poster = models.BooleanField(default=False)
     avatar_url = models.ImageField(
-        upload_to=get_avatar_upload_path, blank=True, null=True)
+        upload_to=get_avatar_upload_path, blank=True, null=True
+    )
     bio = models.TextField(blank=True)
 
     objects = CustomUserManager()
 
-    REQUIRED_FIELDS = ['username']
-    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ["username"]
+    USERNAME_FIELD = "email"
 
     def __str__(self):
-        return (f"User {self.user_id}: email={self.email}, "
-                f"mobile={self.mobile}, "
-                f"created_at={self.created_at}, "
-                f"updated_at={self.updated_at}, last_login={self.last_login}, "
-                )
+        return (
+            f"User {self.user_id}: email={self.email}, "
+            f"mobile={self.mobile}, "
+            f"created_at={self.created_at}, "
+            f"updated_at={self.updated_at}, last_login={self.last_login}, "
+        )
 
     def clean(self):
         super().clean()
         if not self.mobile.isdigit():
-            raise ValidationError(
-                {'mobile': 'Mobile must contain only digits.'})
+            raise ValidationError({"mobile": "Mobile must contain only digits."})
         # if not self.status:
         #     raise ValidationError({'status': 'This field cannot be blank.'})
 
@@ -94,27 +95,29 @@ class Tasks(models.Model):
     Model class: Tasks
     Represents tasks in the system.
     """
+
     task_id = models.AutoField(primary_key=True)
-    poster_id = models.ForeignKey(
-        Users, related_name='tasks', on_delete=models.CASCADE)
+    poster_id = models.ForeignKey(Users, related_name="tasks", on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    category = models.CharField(max_length=255, default='')
+    category = models.CharField(max_length=255, default="")
 
     description = models.TextField()
     location = models.CharField(max_length=255)
-    budget = models.CharField(max_length=255, default='')
-    estimated_time = models.CharField(max_length=255, default='')
+    budget = models.CharField(max_length=255, default="")
+    estimated_time = models.CharField(max_length=255, default="")
     deadline = models.DateTimeField()
-    status = models.CharField(max_length=50, default='open')
+    status = models.CharField(max_length=50, default="open")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (f"Task {self.task_id}: poster_id={self.poster_id}, "
-                f"title={self.title}, description={self.description}, "
-                f"location={self.location}, budget={self.budget}, "
-                f"deadline={self.deadline}, status={self.status}, "
-                f"created_at={self.created_at}, updated_at={self.updated_at}")
+        return (
+            f"Task {self.task_id}: poster_id={self.poster_id}, "
+            f"title={self.title}, description={self.description}, "
+            f"location={self.location}, budget={self.budget}, "
+            f"deadline={self.deadline}, status={self.status}, "
+            f"created_at={self.created_at}, updated_at={self.updated_at}"
+        )
 
     def clean(self):
         """
@@ -125,13 +128,12 @@ class Tasks(models.Model):
         try:
             budget_value = float(self.budget)
             if budget_value <= 0:
-                raise ValidationError('Budget must be a positive value.')
+                raise ValidationError("Budget must be a positive value.")
         except ValueError:
-            raise ValidationError('Price must be a valid number.')
+            raise ValidationError("Price must be a valid number.")
         # Example validation: Ensure deadline is in the future
         if self.deadline <= now():
-            raise ValidationError(
-                {'deadline': 'Deadline must be in the future.'})
+            raise ValidationError({"deadline": "Deadline must be in the future."})
 
     class Meta:
         verbose_name_plural = "Tasks"
@@ -142,26 +144,27 @@ class Bids(models.Model):
     Model class: Bids
     Represents bids on tasks.
     """
+
     bid_id = models.AutoField(primary_key=True)
-    task_id = models.ForeignKey(
-        Tasks, related_name='bids', on_delete=models.CASCADE)
-    bidder_id = models.ForeignKey(
-        Users, related_name='bids', on_delete=models.CASCADE)
-    price = models.CharField(max_length=50, default='')
+    task_id = models.ForeignKey(Tasks, related_name="bids", on_delete=models.CASCADE)
+    bidder_id = models.ForeignKey(Users, related_name="bids", on_delete=models.CASCADE)
+    price = models.CharField(max_length=50, default="")
     message = models.TextField(blank=True)
     status = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return (f"Bid {self.bid_id}: task_id={self.task_id},"
-                f"bidder_id={self.bidder_id}, price={self.price}, "
-                f"message={self.message}, status={self.status}, "
-                f"created_at={self.created_at}, updated_at={self.updated_at}")
+        return (
+            f"Bid {self.bid_id}: task_id={self.task_id},"
+            f"bidder_id={self.bidder_id}, price={self.price}, "
+            f"message={self.message}, status={self.status}, "
+            f"created_at={self.created_at}, updated_at={self.updated_at}"
+        )
 
     @classmethod
     def acceptedBids(cls):
-        return cls.objects.filter(status='accepted')
+        return cls.objects.filter(status="accepted")
 
     def clean(self):
         """
@@ -172,13 +175,13 @@ class Bids(models.Model):
         try:
             price_value = float(self.price)
             if price_value <= 0:
-                raise ValidationError('Price must be a positive value.')
+                raise ValidationError("Price must be a positive value.")
         except ValueError:
-            raise ValidationError('Price must be a valid number.')
+            raise ValidationError("Price must be a valid number.")
 
         # Example validation: Ensure status is not empty
         if not self.status:
-            raise ValidationError('Status must not be empty.')
+            raise ValidationError("Status must not be empty.")
 
     class Meta:
         verbose_name_plural = "Bids"
@@ -189,6 +192,7 @@ class Payments(models.Model):
     Model class: Payments
     Represents payments for tasks.
     """
+
     payment_id = models.AutoField(primary_key=True)
     task_id = models.ForeignKey(Tasks, on_delete=models.CASCADE)
     payer_id = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -198,10 +202,12 @@ class Payments(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (f"Payment {self.payment_id}: task_id={self.task_id}, "
-                f"payer_id={self.payer_id}, amount={self.amount}, "
-                f"payment_method={self.payment_method}, status={self.status}, "
-                f"created_at={self.created_at}")
+        return (
+            f"Payment {self.payment_id}: task_id={self.task_id}, "
+            f"payer_id={self.payer_id}, amount={self.amount}, "
+            f"payment_method={self.payment_method}, status={self.status}, "
+            f"created_at={self.created_at}"
+        )
 
     def clean(self):
         """
@@ -210,10 +216,10 @@ class Payments(models.Model):
         super().clean()
         # Example validation: Ensure amount is a positive value
         if self.amount <= 0:
-            raise ValidationError('Amount must be a positive value.')
+            raise ValidationError("Amount must be a positive value.")
         # Example validation: Ensure payment_method is not empty
         if not self.payment_method:
-            raise ValidationError('Payment method must not be empty.')
+            raise ValidationError("Payment method must not be empty.")
 
     class Meta:
         verbose_name_plural = "Payments"

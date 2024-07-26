@@ -17,6 +17,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import django
 from django.utils.translation import gettext
+
 django.utils.translation.ugettext = gettext
 
 
@@ -28,16 +29,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_URL = os.environ.get("FRONTEND_URL")
 
 # LOGGING
-LOG_DIR = os.path.join(BASE_DIR, 'log')
-LOG_FILE = '/api.log'
+LOG_DIR = os.path.join(BASE_DIR, "log")
+LOG_FILE = "/api.log"
 LOG_PATH = LOG_DIR + LOG_FILE
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
 
 if not os.path.exists(LOG_PATH):
-    f = open(LOG_PATH, 'a').close()  # create empty log file
+    f = open(LOG_PATH, "a").close()  # create empty log file
 else:
-    f = open(LOG_PATH, 'w').close()  # clear log file
+    f = open(LOG_PATH, "w").close()  # clear log file
 
 
 # Quick-start development settings - unsuitable for production
@@ -72,45 +73,42 @@ INSTALLED_APPS = [
     "api.healthcheck",
     "corsheaders",
     "rest_framework",
-    'rest_framework_simplejwt',
+    "rest_framework_simplejwt",
     "app",
-    'drf_yasg',
+    "drf_yasg",
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
     ),
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
     # Short-term access token lifetime
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     # Long-term refresh token lifetime
-    'ROTATE_REFRESH_TOKENS': True,
+    "ROTATE_REFRESH_TOKENS": True,
     # Rotate refresh tokens
-    'BLACKLIST_AFTER_ROTATION': True,
+    "BLACKLIST_AFTER_ROTATION": True,
     # Blacklist old tokens after rotation
-
-    'ALGORITHM': 'HS256',
+    "ALGORITHM": "HS256",
     # Signing algorithm
-    'SIGNING_KEY': SECRET_KEY,
+    "SIGNING_KEY": SECRET_KEY,
     # Secret key for signing tokens
-
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    "AUTH_HEADER_TYPES": ("Bearer",),
     # Authentication header type
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     # Authentication header name
-
-    'USER_ID_FIELD': 'user_id',
+    "USER_ID_FIELD": "user_id",
     # User ID field
-    'USER_ID_CLAIM': 'user_id',
+    "USER_ID_CLAIM": "user_id",
     # User ID claim in the token
 }
 
@@ -265,5 +263,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # This is where user uploaded file saved to
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")

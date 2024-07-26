@@ -12,92 +12,185 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Users',
+            name="Users",
             fields=[
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('user_id', models.AutoField(primary_key=True, serialize=False)),
-                ('is_superuser', models.BooleanField(default=False)),
-                ('username', models.CharField(max_length=150)),
-                ('email', models.CharField(max_length=255, unique=True)),
-                ('mobile', models.CharField(blank=True, default='000', max_length=20)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('is_bidder', models.BooleanField(default=False)),
-                ('is_poster', models.BooleanField(default=False)),
-                ('avatar_url', models.ImageField(blank=True, null=True, upload_to=app.models.get_avatar_upload_path)),
-                ('bio', models.TextField(blank=True)),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.permission', verbose_name='user permissions')),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                ("user_id", models.AutoField(primary_key=True, serialize=False)),
+                ("is_superuser", models.BooleanField(default=False)),
+                ("username", models.CharField(max_length=150)),
+                ("email", models.CharField(max_length=255, unique=True)),
+                ("mobile", models.CharField(blank=True, default="000", max_length=20)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("is_bidder", models.BooleanField(default=False)),
+                ("is_poster", models.BooleanField(default=False)),
+                (
+                    "avatar_url",
+                    models.ImageField(
+                        blank=True,
+                        null=True,
+                        upload_to=app.models.get_avatar_upload_path,
+                    ),
+                ),
+                ("bio", models.TextField(blank=True)),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
-                'abstract': False,
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "abstract": False,
             },
             managers=[
-                ('objects', app.models.CustomUserManager()),
+                ("objects", app.models.CustomUserManager()),
             ],
         ),
         migrations.CreateModel(
-            name='Tasks',
+            name="Tasks",
             fields=[
-                ('task_id', models.AutoField(primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('category', models.CharField(default='', max_length=255)),
-                ('description', models.TextField()),
-                ('location', models.CharField(max_length=255)),
-                ('budget', models.CharField(default='', max_length=255)),
-                ('estimated_time', models.CharField(default='', max_length=255)),
-                ('deadline', models.DateTimeField()),
-                ('status', models.CharField(default='open', max_length=50)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('poster_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tasks', to=settings.AUTH_USER_MODEL)),
+                ("task_id", models.AutoField(primary_key=True, serialize=False)),
+                ("title", models.CharField(max_length=255)),
+                ("category", models.CharField(default="", max_length=255)),
+                ("description", models.TextField()),
+                ("location", models.CharField(max_length=255)),
+                ("budget", models.CharField(default="", max_length=255)),
+                ("estimated_time", models.CharField(default="", max_length=255)),
+                ("deadline", models.DateTimeField()),
+                ("status", models.CharField(default="open", max_length=50)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "poster_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tasks",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Tasks',
+                "verbose_name_plural": "Tasks",
             },
         ),
         migrations.CreateModel(
-            name='Payments',
+            name="Payments",
             fields=[
-                ('payment_id', models.AutoField(primary_key=True, serialize=False)),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('payment_method', models.CharField(max_length=50)),
-                ('status', models.CharField(max_length=50)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('payer_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('task_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.tasks')),
+                ("payment_id", models.AutoField(primary_key=True, serialize=False)),
+                ("amount", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("payment_method", models.CharField(max_length=50)),
+                ("status", models.CharField(max_length=50)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "payer_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "task_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="app.tasks"
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Payments',
+                "verbose_name_plural": "Payments",
             },
         ),
         migrations.CreateModel(
-            name='Bids',
+            name="Bids",
             fields=[
-                ('bid_id', models.AutoField(primary_key=True, serialize=False)),
-                ('price', models.CharField(default='', max_length=50)),
-                ('message', models.TextField(blank=True)),
-                ('status', models.CharField(max_length=50)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('bidder_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bids', to=settings.AUTH_USER_MODEL)),
-                ('task_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bids', to='app.tasks')),
+                ("bid_id", models.AutoField(primary_key=True, serialize=False)),
+                ("price", models.CharField(default="", max_length=50)),
+                ("message", models.TextField(blank=True)),
+                ("status", models.CharField(max_length=50)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "bidder_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bids",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "task_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="bids",
+                        to="app.tasks",
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Bids',
+                "verbose_name_plural": "Bids",
             },
         ),
     ]

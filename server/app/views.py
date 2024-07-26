@@ -1,16 +1,19 @@
 from rest_framework.decorators import action
 from .serializers import BidsSerializer
 from rest_framework import viewsets, status
+
 # from rest_framework import permissions
 
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from .models import Tasks, Bids, Users
+
 # from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import TasksSerializer, UsersSerializer
 from .serializers import RegistrationSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+
 # from .permissions import IsBidder
 # from .permissions import IsCurrentUser
 
@@ -70,94 +73,109 @@ class BidsViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        task_id = self.kwargs.get('task_id')
+        task_id = self.kwargs.get("task_id")
         try:
             task = Tasks.objects.get(task_id=task_id)
         except Tasks.DoesNotExist:
-            return Response({'status': 'error', 'message': 'Task not found.'},
-                            status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"status": "error", "message": "Task not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         data = request.data.copy()
-        data['task_id'] = task_id
-        data['bidder_id'] = request.data['bidder_id']
+        data["task_id"] = task_id
+        data["bidder_id"] = request.data["bidder_id"]
         # check task status
-        if task.status != 'open':
-            return Response({'status': 'error',
-                             'message': 'Cannot place bid on a closed task.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        if task.status != "open":
+            return Response(
+                {"status": "error", "message": "Cannot place bid on a closed task."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         headers = self.get_success_headers(serializer.data)
         return Response(
-            {'bid_id': serializer.data['bid_id'], 'status': 'success',
-                'message': 'Bid submitted successfully.'},
-            status=status.HTTP_201_CREATED, headers=headers
+            {
+                "bid_id": serializer.data["bid_id"],
+                "status": "success",
+                "message": "Bid submitted successfully.",
+            },
+            status=status.HTTP_201_CREATED,
+            headers=headers,
         )
 
     def update(self, request, *args, **kwargs):
 
-        valid_statuses = ['accepted', 'rejected', 'pending']
-        status_code = request.data.get('status')
+        valid_statuses = ["accepted", "rejected", "pending"]
+        status_code = request.data.get("status")
 
         if status_code not in valid_statuses:
-            return Response({'status': 'error',
-                             'message': 'Invalid action type.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "error", "message": "Invalid action type."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         bid = self.get_object()
         bid.status = status_code
         bid.save()
         status_messages = {
-            'accepted': 'Bid accepted.',
-            'rejected': 'Bid rejected.',
-            'pending': 'Bid pending.'
+            "accepted": "Bid accepted.",
+            "rejected": "Bid rejected.",
+            "pending": "Bid pending.",
         }
         super().update(request, *args, **kwargs)
-        return Response({'status': 'success',
-                         'message': status_messages[status_code]})
+        return Response({"status": "success", "message": status_messages[status_code]})
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_task_bids(self, request, task_id=None):
         if task_id:
             bids = Bids.objects.filter(task_id=task_id)
             serializer = BidsSerializer(bids, many=True)
-            return Response({'status': 'success', 'data': serializer.data},
-                            status=status.HTTP_200_OK)
-        return Response({'status': 'error', 'message': 'Task ID is required.'},
-                        status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK,
+            )
+        return Response(
+            {"status": "error", "message": "Task ID is required."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=["post"])
     def change_bid_status(self, request, pk=None):
-        valid_statuses = ['accepted', 'rejected', 'pending']
-        status = request.data.get('status')
+        valid_statuses = ["accepted", "rejected", "pending"]
+        status = request.data.get("status")
 
         if status not in valid_statuses:
-            return Response({'status': 'error',
-                             'message': 'Invalid action type.'},
-                            status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "error", "message": "Invalid action type."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         bid = self.get_object()
         bid.status = status
         bid.save()
 
         action_messages = {
-            'accepted': 'Bid accepted.',
-            'rejected': 'Bid rejected.',
-            'pending': 'Bid pending.'
+            "accepted": "Bid accepted.",
+            "rejected": "Bid rejected.",
+            "pending": "Bid pending.",
         }
 
-        return Response({'status': 'success',
-                         'message': action_messages[status]})
+        return Response({"status": "success", "message": action_messages[status]})
 
-    @action(detail=True, methods=['get'])
+    @action(detail=True, methods=["get"])
     def get_user_bids(self, request, user_id=None):
         if user_id:
             bids = Bids.objects.filter(bidder_id=user_id)
             serializer = BidsSerializer(bids, many=True)
-            return Response({'status': 'success', 'data': serializer.data},
-                            status=status.HTTP_200_OK)
-        return Response({'status': 'error', 'message': 'User ID is required.'},
-                        status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "success", "data": serializer.data},
+                status=status.HTTP_200_OK,
+            )
+        return Response(
+            {"status": "error", "message": "User ID is required."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 class RegistrationView(CreateAPIView):
@@ -172,9 +190,9 @@ class RegistrationView(CreateAPIView):
         access_token = str(refresh.access_token)
         refresh_token = str(refresh)
         response_data = {
-            'user': serializer.data,
-            'access_token': access_token,
-            'refresh_token': refresh_token
+            "user": serializer.data,
+            "access_token": access_token,
+            "refresh_token": refresh_token,
         }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
