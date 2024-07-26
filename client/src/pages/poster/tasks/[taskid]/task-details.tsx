@@ -1,124 +1,98 @@
 import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-import BidderOfferCard from "@/components/ui/bidder-offer-card";
 import Header from "@/components/ui/header";
+import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import TaskDetails from "@/components/ui/task-details";
 import TopNavtab from "@/components/ui/top-navtab";
+import useFetchData from "@/hooks/use-fetch-data";
 
-const bidder_exmaple_profile0 = "/bidder-exmaple-profile.svg";
-const bidder_exmaple_profile1 = "/bidder-exmaple-profile1.svg";
-const bidder_exmaple_profile2 = "/bidder-exmaple-profile2.svg";
-const bidder_exmaple_profile3 = "/bidder-exmaple-profile3.svg";
-const bidder_exmaple_profile4 = "/bidder-exmaple-profile4.svg";
-const bios =
-  "I am a pensioner with extensive experience in cleaning. I am very patient and professional I can definitely handle your task perfectly well. You can trust me in this.";
-export type Bidder = {
-  id: number;
-  name: string;
-  profile: string;
-  price: number;
-  bio: string;
-  className?: string;
-};
-const BiddersOffer: Bidder[] = [
-  {
-    id: 1,
-    name: "Jackson Anderson",
-    profile: bidder_exmaple_profile0,
-    price: 400,
-    bio: bios,
-  },
-  {
-    id: 2,
-    name: "Kierra Dorwart",
-    profile: bidder_exmaple_profile1,
-    price: 380,
-    bio: bios,
-  },
-  {
-    id: 3,
-    name: "Ahmad Philips",
-    profile: bidder_exmaple_profile2,
-    price: 300,
-    bio: bios,
-  },
-  {
-    id: 4,
-    name: "Alena Gouse",
-    profile: bidder_exmaple_profile3,
-    price: 520,
-    bio: bios,
-  },
-  {
-    id: 5,
-    name: "Alena Press",
-    profile: bidder_exmaple_profile4,
-    price: 1000,
-    bio: bios,
-  },
-];
-
-function BidderOfferCardList(taskid: number) {
-  // TODO fetch / axios.get(api/taskid) bidders.
+export default function TaskDetailsPage() {
   const router = useRouter();
-  const NavigateWithData = (bidder: Bidder) => {
-    router.push({
-      pathname: `/poster/tasks/${taskid}/${bidder.id}/bid-details`,
-      query: { bidder: JSON.stringify(bidder), taskid: taskid },
-    });
-  };
+  const { taskid } = router.query;
+  const queryReady = typeof taskid === "string";
 
-  return (
+  const {
+    data: task,
+    loading: taskLoading,
+    error: taskError,
+  } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
+
+  const {
+    data: bids,
+    loading: bidsLoading,
+    error: bidsError,
+  } = useFetchData(`/app/tasks/${taskid}/bids/`, queryReady);
+
+  const {
+    data: profiles,
+    loading: profilesLoading,
+    error: profilesError,
+  } = useFetchData(`/app/profiles/`, true);
+
+  if (bidsLoading || profilesLoading || taskLoading)
+    return <div>Loading...</div>;
+
+  if (bidsError) return <div>Error: {bidsError}</div>;
+  if (profilesError) return <div>Error: {profilesError}</div>;
+  if (taskError) return <div>Error: {taskError}</div>;
+
+  const tasks = bids.data.map((bid: any) => {
+    const bidder = profiles.find(
+      (profile: any) => profile.user_id === bid.bidder_id,
+    );
+    return {
+      ...bid,
+      avatar_url: "", // src has issue, need to change to bidder?.avatar_url later
+      full_name: bidder?.full_name,
+      bio: bidder?.bio,
+    };
+  });
+
+  const handleOnClick = (task: any) => {
+    router.push(`/poster/tasks/${task.task_id}/${task.bidder_id}/bid-details`);
+  };
+  const bidderCards = (
     <div>
-      {BiddersOffer.map((bidder, id) => (
+      {tasks.map((task: any, id: number) => (
         <div key={id}>
           <BidderOfferCard
-            profile={bidder.profile}
-            name={bidder.name}
-            price={bidder.price}
-            bio={bidder.bio}
+            profile={task.avatar_url}
+            name={task.full_name}
+            price={task.price}
+            bio={task.bio}
             onClick={() => {
-              NavigateWithData(bidder);
+              handleOnClick(task);
             }}
           />
         </div>
       ))}
     </div>
   );
-}
-// get task detail from API
-function TaskDetail(taskid?: number) {
-  // task data fetch / axios get or get from last page.
-  const task = {
-    category: "Cleaning",
-    title: "Cleaning up my house",
-    created_at: "Date",
-    suburb: "Richmond",
-    state: "VIC",
-    estimated_time: "4 hours",
-    budget: "$ 250",
-    description:
-      "I need someone to help me clean my 2 bedroom apartment. I am moving out and I need to make sure it’s all clean.",
+  // task detail
+  const taskData = {
+    category: task?.category,
+    title: task?.title,
+    created_at: task?.created_at.slice(0, 10),
+    suburb: task?.location,
+    state: task?.location, // Adjust as needed
+    estimated_time: task?.estimated_time,
+    budget: task?.budget,
+    description: task?.description,
   };
-  return (
-    <div className="m-4 p-4">
-      <TaskDetails data={task} />
+  const taskDetail = (
+    <div className="p-4">
+      <TaskDetails data={taskData} />
     </div>
   );
-}
 
-export default function TaskDetailss() {
-  const router = useRouter();
-  const task = router.query;
-  const title = String(task.title);
-  const taskid = Number(task.id);
   const tabData = [
-    { name: "Bidder Offers", content: BidderOfferCardList(taskid) },
-    { name: "Task details", content: TaskDetail(taskid) },
+    { name: "Bidder Offers", content: bidderCards },
+    { name: "Task details", content: taskDetail },
   ];
   return (
     <div>
-      <Header title={title} className="sticky top-0 z-10 w-full" />
+      <Header title={task.title} className="sticky top-0 z-10 w-full" />
       <TopNavtab tabs={tabData} />
     </div>
   );

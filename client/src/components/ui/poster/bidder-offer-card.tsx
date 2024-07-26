@@ -1,4 +1,4 @@
-import PersonDetail from "./person-detail";
+import PersonDetail from "../person-detail";
 
 export interface BidderOfferProps {
   name: string;
@@ -25,7 +25,8 @@ export default function BidderOfferCard({
   className,
   onClick,
 }: BidderOfferProps) {
-  const defaultClassName = "relative m-4 rounded-lg border border-gray-300 p-4";
+  const defaultClassName =
+    "cursor-pointer relative m-4 rounded-lg border border-gray-300 p-4";
   return (
     <div className={className ? className : defaultClassName} onClick={onClick}>
       <PersonDetail personName={name} personImg={profile} />

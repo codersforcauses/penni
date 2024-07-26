@@ -9,51 +9,67 @@ import { Form, FormData } from "@/components/ui/form";
 import { SingleLineInput } from "@/components/ui/inputs";
 import { LocalBaseURL } from "@/lib/api";
 
-const LOGIN_URL = LocalBaseURL.concat("/app/login/");
-
-const handleLogin = async (email: string, password: string) => {
-  const response = await axios.post(LOGIN_URL, {
-    email,
-    password,
-  });
-  const { token } = response.data;
-
-  // Store the token in localStorage
-  localStorage.setItem("token", token);
-};
-
 export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isLogin, setIsLogin] = useState(false);
-  const [account, setAccount] = useState("");
-  const [password, setPassword] = useState("");
+  const LOGIN_URL = LocalBaseURL.concat("/app/login/");
   const router = useRouter();
-  console.log(account);
-  useEffect(() => {
-    if (isLogin == true) {
-      router.push("/poster");
-    }
-  }, [router, isLogin]);
 
-  async function onSubmit(formData: FormData) {
+  const handleLogin = async (formData: FormData) => {
+    const email = formData.account;
+    const password = formData.password;
+
     setErrorMessage(null);
-    const isEmail = /^[a-zA-Z\._'\d-]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(
-      formData.account,
-    );
-    const isPhone = /^[0-9]{10}$/.test(formData.account);
-
+    // const isEmail = /^[a-zA-Z\._'\d-]+@[a-zA-Z]+(\.[a-zA-Z]+)+$/.test(
+    //   account,
+    // );
+    // const isPhone = /^[0-9]{10}$/.test(account);
     // if (!isEmail && !isPhone) {
     //   setErrorMessage("Invalid email or phone number. Please try again.");
     //   return;
     // }
     try {
-      handleLogin(formData.account, formData.password);
-      console.log(formData);
-      setIsLogin(true);
-    } catch (error) {
-      setErrorMessage("Invalid username or password. Please try again.");
+      const response = await axios.post(LOGIN_URL, {
+        email,
+        password,
+      });
+      const { token } = response.data;
+
+      // Store the token in localStorage
+      localStorage.setItem("token", token);
+
+      console.log("Login successful");
+      router.push("/poster");
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          console.error("Error response from server:", error.response.data);
+          console.error("Status code:", error.response.status);
+          // Handle specific error responses from the server
+          if (error.response.status === 401 || 400) {
+            setErrorMessage("Invalid username or password. Please try again.");
+            // Show a message to the user or handle the error accordingly
+          } else if (error.response.status === 500) {
+            setErrorMessage("Server error, please try again later");
+            // Handle server errors
+          }
+          // Handle other status codes as needed
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received from server", error.request);
+          setErrorMessage("No response received from server");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error in setting up request", error.message);
+          setErrorMessage("Error in setting up request");
+        }
+      } else {
+        // Non-Axios errors
+        console.error("Unexpected error:", error);
+        setErrorMessage("Unexpected error");
+      }
     }
-  }
+  };
+
   return (
     <>
       <div className="flex h-screen flex-col items-center justify-center px-4">
@@ -70,7 +86,7 @@ export default function SignIn() {
               login.
             </span>
           </div>
-          <Form className="w-full" onSubmit={onSubmit}>
+          <Form className="w-full" onSubmit={handleLogin}>
             <SingleLineInput
               type="text"
               name="account"
