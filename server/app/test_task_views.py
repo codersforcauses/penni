@@ -11,7 +11,7 @@ class TaskViewSetTestCase(APITestCase):
         self.user = Users.objects.create(
             email="user@example.com",
             mobile="1234567890",
-            password_hash="password123",
+            password="password123",
             status="active",
         )
         self.user.set_password("password123")

@@ -15,7 +15,7 @@ class BidsPaymentsTestCase(TestCase):
         self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="1234567890",
-            password_hash=make_password("secure_password"),
+            password=make_password("secure_password"),
             status="active",
         )
 

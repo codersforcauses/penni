@@ -10,7 +10,7 @@ class UsersModelTest(TestCase):
         self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="0450000000",
-            password_hash=make_password("secure_password"),
+            password=make_password("secure_password"),
             status="pending",
             user_role="cleaner",
         )
@@ -28,7 +28,7 @@ class UsersModelTest(TestCase):
         alpha_mobile = Users(
             email="testuser2@example.com",
             mobile="0450oooooo",
-            password_hash=make_password("secure_password"),
+            password=make_password("secure_password"),
             status="pending",
             user_role="cleaner",
         )
@@ -41,7 +41,7 @@ class UsersModelTest(TestCase):
         empty_status = Users(
             email="testuser3@example.com",
             mobile="0450000000",
-            password_hash=make_password("secure_password"),
+            password=make_password("secure_password"),
             status="",
             user_role="cleaner",
         )
@@ -80,7 +80,7 @@ class ProfilesModelTest(TestCase):
         self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="0450000000",
-            password_hash="cnjcweinwoicwnwiwciowec",
+            password="cnjcweinwoicwnwiwciowec",
             status="pending",
             user_role="cleaner",
         )

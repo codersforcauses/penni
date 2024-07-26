@@ -13,7 +13,7 @@ class TaskModelTests(TestCase):
         self.user = Users.objects.create(
             email="testuser@example.com",
             mobile="1234567890",
-            password_hash="password123",
+            password="password123",
             status="active",
         )
         self.task = Tasks.objects.create(
@@ -173,7 +173,7 @@ class TaskModelTests(TestCase):
         user = Users.objects.create(
             email="testuser2@example.com",
             mobile="0987654321",
-            password_hash="password123",
+            password="password123",
             status="active",
         )
         task = Tasks.objects.create(
