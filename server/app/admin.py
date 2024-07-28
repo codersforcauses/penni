@@ -73,7 +73,6 @@ class TasksAdmin(admin.ModelAdmin):
         "title",
         "category",
         "description",
-        "location",
         "budget",
         "estimated_time",
         "deadline",

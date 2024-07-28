@@ -1,7 +1,12 @@
-from .views import TasksViewSet, RegistrationView, UserViewSet
+from .views import (
+    TasksViewSet,
+    RegistrationView,
+    UserViewSet,
+    BidsViewSet,
+    TaskLocationViewSet,
+)
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from .views import BidsViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
@@ -10,6 +15,7 @@ router = DefaultRouter()
 router.register(r"tasks", TasksViewSet, basename="tasks")
 router.register(r"bids", BidsViewSet, basename="bids")
 router.register(r"users", UserViewSet, basename="users")
+router.register(r"locations", TaskLocationViewSet, basename="locations")
 
 
 urlpatterns = [

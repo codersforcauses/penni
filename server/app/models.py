@@ -39,7 +39,7 @@ class CustomUserManager(BaseUserManager):
 class Users(AbstractUser):
     user_id = models.AutoField(primary_key=True)
     is_superuser = models.BooleanField(default=False)
-    username = models.CharField(max_length=150)
+    username = models.CharField(max_length=150, blank=True)
     email = models.CharField(max_length=255, unique=True)
     mobile = models.CharField(max_length=20, default="000", blank=True)
     # password_hash = models.CharField(max_length=255)
@@ -102,11 +102,10 @@ class Tasks(models.Model):
     category = models.CharField(max_length=255, default="")
 
     description = models.TextField()
-    location = models.CharField(max_length=255)
     budget = models.CharField(max_length=255, default="")
     estimated_time = models.CharField(max_length=255, default="")
     deadline = models.DateTimeField()
-    status = models.CharField(max_length=50, default="open")
+    status = models.CharField(max_length=50, default="BIDDING")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -114,7 +113,7 @@ class Tasks(models.Model):
         return (
             f"Task {self.task_id}: poster_id={self.poster_id}, "
             f"title={self.title}, description={self.description}, "
-            f"location={self.location}, budget={self.budget}, "
+            f"budget={self.budget}, "
             f"deadline={self.deadline}, status={self.status}, "
             f"created_at={self.created_at}, updated_at={self.updated_at}"
         )
@@ -139,6 +138,19 @@ class Tasks(models.Model):
         verbose_name_plural = "Tasks"
 
 
+class TaskLocation(models.Model):
+    """
+    Model class: TaskLocation
+    Represents the location of a task.
+    """
+
+    task = models.OneToOneField(
+        Tasks, related_name="location", on_delete=models.CASCADE
+    )
+    suburb = models.CharField(max_length=255, default="")
+    state = models.CharField(max_length=255, default="")
+
+
 class Bids(models.Model):
     """
     Model class: Bids
@@ -150,7 +162,7 @@ class Bids(models.Model):
     bidder_id = models.ForeignKey(Users, related_name="bids", on_delete=models.CASCADE)
     price = models.CharField(max_length=50, default="")
     message = models.TextField(blank=True)
-    status = models.CharField(max_length=50)
+    status = models.CharField(max_length=50, default="BIDDING")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

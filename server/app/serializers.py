@@ -1,4 +1,4 @@
-from .models import Users, Tasks, Bids
+from .models import Users, Tasks, Bids, TaskLocation
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
@@ -7,18 +7,17 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class BidsSerializer(serializers.ModelSerializer):
     task_id = serializers.PrimaryKeyRelatedField(queryset=Tasks.objects.all())
-    bidder_id = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
+    bidder_id = serializers.PrimaryKeyRelatedField(
+        queryset=Users.objects.all())
 
     class Meta:
         model = Bids
         fields = "__all__"
-        read_only_fields = ("bid_id", "created_at", "updated_at", "bidder_id", "tasks")
+        read_only_fields = ("bid_id", "created_at",
+                            "updated_at", "bidder_id", "tasks")
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
-
-    username = serializers.CharField(required=True)
-
     class Meta:
         model = get_user_model()
         fields = (
@@ -33,7 +32,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "password": {"write_only": True},
             "user_id": {"read_only": True},
-            "username": {"required": True},
         }
 
     def validate_password(self, value):
@@ -45,11 +43,15 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+class TaskLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskLocation
+        fields = "__all__"
+
+
 class TasksSerializer(serializers.ModelSerializer):
-    # poster = UsersSerializer(read_only=True, source='user_id')
-    # poster_id = serializers.PrimaryKeyRelatedField(
-    #     queryset=Users.objects.all())
-    bids = BidsSerializer(many=True, read_only=True)
+    # bids = BidsSerializer(many=True, read_only=True)
+    location = TaskLocationSerializer(read_only=False)
 
     class Meta:
         model = Tasks

@@ -1,4 +1,4 @@
-from .models import Users, Tasks, Bids, Payments
+from .models import Users, Tasks, Bids, Payments, TaskLocation
 from django.utils.timezone import now, timedelta
 
 
@@ -36,7 +36,6 @@ def create_tasks(users):
             title="Task 1",
             category="Category 1",
             description="Description for task 1",
-            location="Location 1",
             budget="100.00",
             estimated_time="2 hours",
             deadline=now() + timedelta(days=10),
@@ -47,11 +46,20 @@ def create_tasks(users):
             title="Task 2",
             category="Category 2",
             description="Description for task 2",
-            location="Location 2",
             budget="200.00",
             estimated_time="4 hours",
             deadline=now() + timedelta(days=5),
             status="open",
+        )
+        TaskLocation.objects.create(
+            task=task1,
+            suburb="Suburb 1",
+            state="NSW",
+        )
+        TaskLocation.objects.create(
+            task=task2,
+            suburb="Suburb 2",
+            state="NSW",
         )
         print("Tasks created.")
         return [task1, task2]
@@ -104,22 +112,9 @@ def create_payments(tasks, users):
         print("Payments already exist.")
 
 
-# Populating Mock data
+# Populate Mock data
 def create_mock_data(sender, **kwargs):
-    # delete_mock_data()
     users = create_users()
     tasks = create_tasks(users)
     create_bids(tasks, users)
     create_payments(tasks, users)
-
-
-# Empty database before populating mock data
-# def delete_mock_data():
-#     if Users.objects.exists():
-#         Users.objects.all().delete()
-#         Tasks.objects.all().delete()
-#         Bids.objects.all().delete()
-#         Payments.objects.all().delete()
-#         print("Mock data deleted.")
-#     else:
-#         print("No mock data to delete.")

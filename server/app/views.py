@@ -7,11 +7,15 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
-from .models import Tasks, Bids, Users
+from .models import Tasks, Bids, Users, TaskLocation
 
 # from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import TasksSerializer, UsersSerializer
-from .serializers import RegistrationSerializer
+from .serializers import (
+    RegistrationSerializer,
+    TasksSerializer,
+    UsersSerializer,
+    TaskLocationSerializer,
+)
 from rest_framework_simplejwt.tokens import RefreshToken
 
 # from .permissions import IsBidder
@@ -67,6 +71,12 @@ class TasksViewSet(viewsets.ModelViewSet):
     # ge': 'User ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class TaskLocationViewSet(viewsets.ModelViewSet):
+    queryset = TaskLocation.objects.all()
+    serializer_class = TaskLocationSerializer
+    permission_classes = [AllowAny]
+
+
 class BidsViewSet(viewsets.ModelViewSet):
     queryset = Bids.objects.all()
     serializer_class = BidsSerializer
@@ -85,7 +95,7 @@ class BidsViewSet(viewsets.ModelViewSet):
         data["task_id"] = task_id
         data["bidder_id"] = request.data["bidder_id"]
         # check task status
-        if task.status != "open":
+        if task.status != "BIDDING":
             return Response(
                 {"status": "error", "message": "Cannot place bid on a closed task."},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -105,8 +115,12 @@ class BidsViewSet(viewsets.ModelViewSet):
         )
 
     def update(self, request, *args, **kwargs):
-
-        valid_statuses = ["accepted", "rejected", "pending"]
+        valid_statuses = [
+            "COMPLETED",
+            "ONGOING",
+            "BIDDING",
+            "EXPIRED"
+        ]
         status_code = request.data.get("status")
 
         if status_code not in valid_statuses:
@@ -118,13 +132,10 @@ class BidsViewSet(viewsets.ModelViewSet):
         bid = self.get_object()
         bid.status = status_code
         bid.save()
-        status_messages = {
-            "accepted": "Bid accepted.",
-            "rejected": "Bid rejected.",
-            "pending": "Bid pending.",
-        }
         super().update(request, *args, **kwargs)
-        return Response({"status": "success", "message": status_messages[status_code]})
+        return Response({"status": "success",
+                         "message":
+                         f"bid_id:{bid.bid_id} bid status: {status_code}"})
 
     @action(detail=True, methods=["get"])
     def get_task_bids(self, request, task_id=None):
