@@ -1,12 +1,51 @@
+import jwt from "jsonwebtoken";
+import { useEffect, useState } from "react";
+
 import BottomNav from "@/components/ui/bidder/bottom-nav";
-import BidderMyTasks from "@/components/ui/bidder/mytasks-page";
+import TaskList from "@/components/ui/bidder/mytasks-list";
+import TopNavtab from "@/components/ui/top-navtab";
 
 export default function Bidder() {
-  return (
-    <div>
+  const myTasksStates = ["COMPLETED", "ONGOING"];
+  const myBidsStates = ["BIDDING", "EXPIRED"];
+
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+      const decoded = jwt.decode(token) as { user_id: string };
+      setUserId(decoded.user_id);
+    }
+  }, []);
+
+  if (!userId) {
+    return (
       <BottomNav>
-        <BidderMyTasks name="Leanne Graham" />
+        <div>Loading...</div>
       </BottomNav>
-    </div>
+    );
+  }
+  // replace 6 with userId later
+  return (
+    <BottomNav>
+      <TopNavtab
+        isFixed={true}
+        tabs={[
+          {
+            name: "My Tasks",
+            content: <TaskList userid={6} states={myTasksStates} />,
+          },
+          {
+            name: "My Bids",
+            content: <TaskList userid={6} states={myBidsStates} />,
+          },
+        ]}
+      />
+    </BottomNav>
   );
 }

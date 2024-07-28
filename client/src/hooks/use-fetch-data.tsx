@@ -1,8 +1,8 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { axiosInstance } from "@/lib/api";
 
+// useFetchData hook should only be called at the top level of your functional component, not inside any function or conditional block.
 function useFetchData(apiEndpoint: string, trigger: boolean) {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
