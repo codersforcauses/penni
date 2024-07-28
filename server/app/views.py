@@ -115,12 +115,7 @@ class BidsViewSet(viewsets.ModelViewSet):
         )
 
     def update(self, request, *args, **kwargs):
-        valid_statuses = [
-            "COMPLETED",
-            "ONGOING",
-            "BIDDING",
-            "EXPIRED"
-        ]
+        valid_statuses = ["COMPLETED", "ONGOING", "BIDDING", "EXPIRED"]
         status_code = request.data.get("status")
 
         if status_code not in valid_statuses:
@@ -133,9 +128,12 @@ class BidsViewSet(viewsets.ModelViewSet):
         bid.status = status_code
         bid.save()
         super().update(request, *args, **kwargs)
-        return Response({"status": "success",
-                         "message":
-                         f"bid_id:{bid.bid_id} bid status: {status_code}"})
+        return Response(
+            {
+                "status": "success",
+                "message": f"bid_id:{bid.bid_id} bid status: {status_code}",
+            }
+        )
 
     @action(detail=True, methods=["get"])
     def get_task_bids(self, request, task_id=None):

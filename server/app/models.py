@@ -150,6 +150,12 @@ class TaskLocation(models.Model):
     suburb = models.CharField(max_length=255, default="")
     state = models.CharField(max_length=255, default="")
 
+    def __str__(self):
+        return (
+            f"TaskLocation {self.task.task_id}: suburb={self.suburb}, "
+            f"state={self.state}"
+        )
+
 
 class Bids(models.Model):
     """

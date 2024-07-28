@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from .models import Users
 from django.contrib.auth.hashers import make_password
+
 # from django.core.files.uploadedfile import SimpleUploadedFile
 
 
@@ -29,13 +30,11 @@ class UsersModelTest(TestCase):
             mobile="0450oooooo",
             password="secure_password",
             is_bidder=True,
-
         )
         with self.assertRaises(ValidationError) as cm:
             alpha_mobile.full_clean()
         self.assertEqual(
-            cm.exception.message_dict["mobile"][0],
-            "Mobile must contain only digits."
+            cm.exception.message_dict["mobile"][0], "Mobile must contain only digits."
         )
 
         empty_status = Users(
@@ -65,5 +64,5 @@ class UsersModelTest(TestCase):
             f"mobile=0450000000, "
             f"created_at={self.user.created_at}, "
             f"updated_at={self.user.updated_at}, "
-            f"last_login={self.user.last_login}, "
+            f"last_login={self.user.last_login}, ",
         )
