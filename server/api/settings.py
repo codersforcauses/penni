@@ -90,26 +90,26 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
     # Short-term access token lifetime
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
     # Long-term refresh token lifetime
-    "ROTATE_REFRESH_TOKENS": True,
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     # Rotate refresh tokens
-    "BLACKLIST_AFTER_ROTATION": True,
+    "ROTATE_REFRESH_TOKENS": True,
     # Blacklist old tokens after rotation
-    "ALGORITHM": "HS256",
+    "BLACKLIST_AFTER_ROTATION": True,
     # Signing algorithm
-    "SIGNING_KEY": SECRET_KEY,
+    "ALGORITHM": "HS256",
     # Secret key for signing tokens
-    "AUTH_HEADER_TYPES": ("Bearer",),
+    "SIGNING_KEY": SECRET_KEY,
     # Authentication header type
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "AUTH_HEADER_TYPES": ("Bearer",),
     # Authentication header name
-    "USER_ID_FIELD": "user_id",
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     # User ID field
-    "USER_ID_CLAIM": "user_id",
+    "USER_ID_FIELD": "user_id",
     # User ID claim in the token
+    "USER_ID_CLAIM": "user_id",
 }
 
 MIDDLEWARE = [
