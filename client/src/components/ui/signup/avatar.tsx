@@ -1,12 +1,11 @@
-import { profile } from "console";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
+import Webcam from "react-webcam";
 
 import { Button } from "@/components/ui/button";
-import { HTMLTextTargetElement, SingleLineInput } from "@/components/ui/inputs";
 
 interface AvaProps {
-  profilePhoto: File | null;
+  profilePhoto: string | undefined;
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   setProfilePhoto: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -26,7 +25,8 @@ export const Ava: React.FC<AvaProps> = ({
 }) => {
   const [buttonVariant, setButtonVariant] = useState("inactive");
   const [showOptions, setShowOptions] = useState(false);
-  const [inputType, setInputType] = useState<"file" | "camera">("file");
+  const [showCamera, setShowCamera] = useState(false);
+  const webcamRef = useRef<Webcam>(null);
 
   const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,51 +37,25 @@ export const Ava: React.FC<AvaProps> = ({
       };
       reader.readAsDataURL(file);
       setButtonVariant("default");
+      setShowOptions(false);
     }
   };
 
-  const handleCameraCapture = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      const video = document.createElement("video");
-      video.srcObject = stream;
-      video.play();
-
-      return new Promise<string>((resolve, reject) => {
-        video.onloadedmetadata = () => {
-          video.width = video.videoWidth;
-          video.height = video.videoHeight;
-
-          const canvas = document.createElement("canvas");
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
-
-          const context = canvas.getContext("2d");
-          context?.drawImage(video, 0, 0);
-
-          canvas.toDataURL(
-            "image/*",
-            (dataUrl: string | PromiseLike<string>) => {
-              resolve(dataUrl);
-              stream.getTracks().forEach((track) => track.stop());
-            },
-          );
-        };
-      });
-    } catch (error) {
-      console.error("Error accessing camera", error);
+  const handleCameraCapture = () => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) {
+      setProfilePhoto(imageSrc);
+      setButtonVariant("default");
+      setShowCamera(false);
     }
   };
 
   const handleChooseOption = (type: "file" | "camera") => {
-    setInputType(type);
     if (type === "file") {
       document.getElementById("fileInput")?.click();
     } else if (type === "camera") {
-      handleCameraCapture().then((dataUrl) => {
-        setProfilePhoto(dataUrl);
-        setShowOptions(false);
-      });
+      setShowCamera(true);
+      setShowOptions(false);
     }
   };
 
@@ -97,16 +71,79 @@ export const Ava: React.FC<AvaProps> = ({
     }
   };
 
+  const handleBack = () => {
+    setCurrentStep(currentStep - 1);
+    setTitle("Welcome");
+    setProfilePhoto("");
+    setShowCamera(false);
+    setShowOptions(false);
+  };
+
+  const handleSkip = () => {
+    buttonEffect();
+  };
+
   return (
-    <div>
-      <div className="absolute left-0 right-0 top-[150px] flex h-[120px] flex-col gap-3 p-[1px_0] px-4">
-        <span className="body text-primary">
+    <div className="relative flex h-screen flex-col items-center p-4">
+      {/* back and skip buttons */}
+      <div className="absolute left-4 top-4">
+        <Button variant="link" onClick={handleBack}>
+          <Image
+            src="/back-arrow.svg"
+            alt="Back"
+            width={24}
+            height={24}
+            style={{
+              filter:
+                "invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%)",
+            }} // color to black
+          />
+        </Button>
+      </div>
+      <div className="absolute right-4 top-4">
+        <Button variant="link" onClick={handleSkip}>
+          Skip
+        </Button>
+      </div>
+      {/* title and avatar uploader */}
+      <div className="mt-36 flex w-full flex-col items-center gap-4">
+        <span className="body text-left text-primary">
           Upload a profile photo so others can recognise you!
         </span>
-        {/*Avatar Uploader*/}
-        <div className="flex items-center justify-center">
+        <div className="mt-2 flex">
           <div className="relative h-[136px] w-[136px]">
-            {profilePhoto ? (
+            {showCamera ? (
+              <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-70 transition-transform">
+                <div className="mt-56 flex flex-col items-center justify-center">
+                  <Webcam
+                    className="h-[136px] w-[136px] rounded-full border-2 object-cover"
+                    audio={false}
+                    ref={webcamRef}
+                    screenshotFormat="image/jpeg"
+                    screenshotQuality={1}
+                    forceScreenshotSourceSize={true}
+                  />
+                </div>
+                <div className="mt-auto w-full p-4">
+                  <div className="space-y-1">
+                    <Button
+                      className="flex h-14 w-full px-4"
+                      variant="filecard"
+                      onClick={handleCameraCapture}
+                    >
+                      Capture
+                    </Button>
+                    <Button
+                      className="flex h-14 w-full px-4"
+                      variant="filecard"
+                      onClick={() => setShowCamera(false)}
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
               <Image
                 src={profilePhoto || "/default-profile.svg"}
                 alt="Avatar"
@@ -114,10 +151,6 @@ export const Ava: React.FC<AvaProps> = ({
                 objectFit="cover"
                 className="rounded-full border-2 border-penni-grey-inactive"
               />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-penni-grey-inactive bg-penni-grey-inactive">
-                <span className="bold text-penni-grey-inactive">No image</span>
-              </div>
             )}
             <input
               type="file"
@@ -133,39 +166,12 @@ export const Ava: React.FC<AvaProps> = ({
               Upload
             </button>
           </div>
-
-          {showOptions && (
-            <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50 transition-transform">
-              <div className="duration-800 animate-slide-up w-full space-y-1 rounded-t-lg p-4 ease-in-out">
-                <Button
-                  className="flex h-[56px] w-full px-4"
-                  variant="filecard"
-                  onClick={() => handleChooseOption("file")}
-                >
-                  Choose from Gallery
-                </Button>
-                <Button
-                  className="flex h-[56px] w-full px-4"
-                  variant="filecard"
-                  onClick={() => handleChooseOption("camera")}
-                >
-                  Take a Photo
-                </Button>
-                <Button
-                  className="mt-1 flex h-[56px] w-full px-4"
-                  variant="filecard"
-                  onClick={() => setShowOptions(false)}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
-      <div className="absolute left-0 right-0 top-[574px] flex flex-col gap-3 p-[1px_0] px-4">
+      {/* button */}
+      <div className="mb-8 mt-auto flex w-full flex-col items-center justify-end">
         <Button
-          className="flex h-[56px] w-full px-4 pb-4"
+          className="h-14 w-full px-4"
           variant={buttonInputVariant}
           onClick={buttonEffect}
           disabled={buttonInputVariant === "inactive"}
@@ -173,6 +179,33 @@ export const Ava: React.FC<AvaProps> = ({
           Continue
         </Button>
       </div>
+      {showOptions && (
+        <div className="animation-slide-up fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-70 transition-transform duration-1000">
+          <div className="animation-slide-up w-full space-y-1 rounded-t-lg p-4 duration-1000">
+            <Button
+              className="flex h-14 w-full px-4"
+              variant="filecard"
+              onClick={() => handleChooseOption("file")}
+            >
+              Choose from Gallery
+            </Button>
+            <Button
+              className="flex h-14 w-full px-4"
+              variant="filecard"
+              onClick={() => handleChooseOption("camera")}
+            >
+              Take a Photo
+            </Button>
+            <Button
+              className="mt-1 flex h-14 w-full px-4"
+              variant="filecard"
+              onClick={() => setShowOptions(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

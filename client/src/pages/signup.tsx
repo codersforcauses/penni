@@ -1,3 +1,4 @@
+import router from "next/router";
 import { useEffect, useState } from "react";
 
 import { Ava } from "@/components/ui/signup/avatar";
@@ -10,9 +11,11 @@ import api from "@/lib/api";
 
 const BIDDER = "Bidder";
 const POSTER = "Poster";
+const BIDDER_URL = "/bidder";
+const POSTER_URL = "/poster";
 
 const SignUp: React.FC = () => {
-  const [client, setClient] = useState("Poster");
+  const [client, setClient] = useState(POSTER);
   const [currentStep, setCurrentStep] = useState(1);
   const [emailMobile, setEmailMobile] = useState("");
   const [fullName, setFullName] = useState("");
@@ -20,19 +23,29 @@ const SignUp: React.FC = () => {
   const [profilePhoto, setProfilePhoto] = useState<string | undefined>(
     undefined,
   );
+  const [isPoster, setIsPoster] = useState<boolean>(true);
+  const [isBidder, setIsBidder] = useState<boolean>(false);
   const [bio, setBio] = useState("");
   const [submit, setSubmit] = useState(false);
   const [title, setTitle] = useState("Welcome!");
 
   useEffect(() => {
     const onFinish = async () => {
+      if (client === POSTER) {
+        setIsPoster(true);
+      } else {
+        setIsBidder(false);
+      }
       const data = {
         email: emailMobile,
         username: fullName,
         password: password,
         //avatar: profilePhoto,
-        //client: Poster or Bidder
-        //Bio: if it's Bidder, record Bio
+        //is_active: true,
+        //is_staff: false,
+        is_poster: isPoster,
+        is_bidder: isBidder,
+        bio: bio,
       };
 
       try {
@@ -41,18 +54,30 @@ const SignUp: React.FC = () => {
         if (response.status === 200) {
           console.log("Successfully sent the message");
         } else if (response.status === 201) {
+          //refresh datas
           setEmailMobile("");
           setFullName("");
           setPassword("");
           setProfilePhoto("");
+          setIsBidder(false);
+          setIsPoster(true);
           setTitle("Welcome!");
           setClient("Poster");
+          const token = response.data.access_token;
+          localStorage.setItem("token", token);
+
           console.log("Successfully created a new user");
-          window.location.href = "/index";
+
+          if (client === POSTER) {
+            router.push(POSTER_URL);
+          } else {
+            router.push(BIDDER_URL);
+          }
         } else {
           console.log("There is an issue when sending a message");
         }
       } catch (error) {
+        console.log(data);
         console.error("Error occurs when ", error);
       }
     };
@@ -80,6 +105,7 @@ const SignUp: React.FC = () => {
         className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 2 ? "translate-x-0" : "pointer-events-none translate-x-full opacity-0"}`}
       >
         <PW
+          emailMobile={emailMobile}
           currentStep={currentStep}
           password={password}
           setPassword={setPassword}
@@ -126,7 +152,14 @@ const SignUp: React.FC = () => {
       <div
         className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 5 && client == BIDDER ? "translate-x-0" : "pointer-events-none translate-x-full opacity-0"}`}
       >
-        <Bio setSubmit={setSubmit} bio={bio} setBio={setBio} />
+        <Bio
+          setCurrentStep={setCurrentStep}
+          setTitle={setTitle}
+          currentStep={currentStep}
+          setSubmit={setSubmit}
+          bio={bio}
+          setBio={setBio}
+        />
       </div>
     </div>
   );

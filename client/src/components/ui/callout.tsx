@@ -1,7 +1,9 @@
+import React from "react";
+
 import { EditIcon, InfoIcon } from "./icons";
 
 interface CalloutProps {
-  text: string;
+  text: React.ReactNode;
   // If provided, edit icon will be shown
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   className?: string;

@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HTMLTextTargetElement, SingleLineInput } from "@/components/ui/inputs";
 
+import { ErrorCallout } from "../callout";
 import { userNameRegex } from "./regex";
 
 interface WelcomeProps {
@@ -14,8 +15,8 @@ interface WelcomeProps {
 }
 
 function isValidUserName(mobile: string): boolean {
-  //return userNameRegex.test(mobile);
-  return true;
+  return userNameRegex.test(mobile);
+  //return true;
 }
 
 export const Welcome: React.FC<WelcomeProps> = ({
@@ -54,9 +55,16 @@ export const Welcome: React.FC<WelcomeProps> = ({
   };
 
   return (
-    <div>
-      <div className="absolute left-0 right-0 top-[150px] flex h-[120px] flex-col gap-3 p-[1px_0] px-4">
-        <span className="body text-primary">What should we call you?</span>
+    <div className="relative flex h-screen flex-col items-center p-4">
+      {/* title and input */}
+      <ErrorCallout
+        className={`duration-2000 fixed left-0 right-0 top-0 transform p-4 transition-transform ${errorMessage ? "translate-y-0" : "-translate-y-full"}`}
+        text={errorMessage}
+      />
+      <div className="mt-36 flex w-full flex-col items-start gap-4">
+        <span className="body text-left text-primary">
+          What should we call you?
+        </span>
         <div className="w-full">
           <SingleLineInput
             name="emailMobile"
@@ -67,13 +75,11 @@ export const Welcome: React.FC<WelcomeProps> = ({
             type="text"
           />
         </div>
-        {errorMessage && (
-          <div className="callout text-red-600">{errorMessage}</div>
-        )}
       </div>
-      <div className="absolute left-0 right-0 top-[574px] flex flex-col gap-3 p-[1px_0] px-4">
+      {/* button */}
+      <div className="mb-8 mt-auto flex w-full flex-col items-center justify-end">
         <Button
-          className="flex h-[56px] w-full px-4 pb-4"
+          className="h-14 w-full px-4"
           variant={buttonInputVariant}
           onClick={buttonChange}
           disabled={buttonInputVariant === "inactive"}

@@ -4,4 +4,6 @@ export const emailRegex = new RegExp(
 );
 export const mobileRegex = new RegExp("^[0-9]{10}$");
 
-export const userNameRegex = new RegExp("^[w.@+-]+$");
+export const pwRegex = new RegExp("^[0-9]+$");
+
+export const userNameRegex = new RegExp("^[a-zA-Z.@+-]+$");

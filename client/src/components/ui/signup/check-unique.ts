@@ -6,18 +6,19 @@ type AxiosCustomError = AxiosError<{
   message: string;
 }>;
 
-export const checkUnique = async (input: string): Promise<boolean> => {
+export const checkUnique = async (email: string): Promise<string> => {
   try {
-    // this check logic should be revised, it will be a mess as data amount grows.
-    const response = await api.get("app/users/");
+    const response = await api.get(
+      `/app/validate/?email=${encodeURIComponent(email)}`, //avoid url injection
+    );
     // axios automatically parses the response as JSON if the content type is application/json
     const data = response.data;
-    for (const profile of data) {
-      if (profile.full_name === input) {
-        return true;
-      }
+    // console.log(data);
+
+    if (data[`email_taken`]) {
+      return data[`email_error_message`];
     }
-    return false;
+    return "";
   } catch (error) {
     const axiosError = error as AxiosCustomError;
     if (axiosError.response) {
