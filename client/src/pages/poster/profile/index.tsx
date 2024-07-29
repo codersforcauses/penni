@@ -1,20 +1,20 @@
 import jwt from "jsonwebtoken";
 import { useEffect, useState } from "react";
 
-import BottomNav from "@/components/ui/bidder/bottom-nav";
 import useFetchData from "@/hooks/use-fetch-data";
 
 import {
   AboutInfoIcon,
   EditIcon,
-  InboxIcon,
+  HelpCircleIcon,
   LogoutIcon,
+  PaymentIcon,
   SettingsIcon,
 } from "../../../components/ui/icons";
 import { PersonImg } from "../../../components/ui/person-detail";
 import ProfileTag from "../../../components/ui/profile-tags";
 
-const BidderProfilePage: React.FC = () => {
+const PosterProfilePage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
 
@@ -33,23 +33,13 @@ const BidderProfilePage: React.FC = () => {
     loading: userLoading,
     error: userError,
   } = useFetchData(`/app/profiles/${userId}/`, true);
-  if (userLoading)
-    return (
-      <BottomNav>
-        <div>Loading...</div>
-      </BottomNav>
-    );
-  if (userError)
-    return (
-      <BottomNav>
-        <div>Error: {userError}</div>
-      </BottomNav>
-    );
+  if (userLoading) return <div>Loading...</div>;
+  if (userError) return <div>Error: {userError}</div>;
   // img src needs to change to user.avatar_url later
   return (
-    <BottomNav>
+    <div className="m-0">
       <div className="mt-20 flex flex-col items-center">
-        <PersonImg personImg="/penni-logo.svg" size={120} />
+        <PersonImg personImg="" size={120} />
         <p className="mt-4 text-t3 font-semibold text-penni-text-regular-light-mode">
           {user.full_name}
         </p>
@@ -62,32 +52,42 @@ const BidderProfilePage: React.FC = () => {
           icon={EditIcon}
           title="Edit Profile"
           description="Update your personal information"
+          link=""
         />
         <ProfileTag
-          icon={InboxIcon}
-          title="Payouts"
-          description="To receive your funds"
-          link="/bidder/profile/payouts"
+          icon={PaymentIcon}
+          title="Payments"
+          description="To make payments"
+          link=""
         />
         <ProfileTag
           icon={SettingsIcon}
           title="Account Settings"
           description="Lorem ipsum dolor sit amet."
+          link=""
         />
         <ProfileTag
           icon={AboutInfoIcon}
           title="About"
           description="Lorem ipsum dolor sit amet."
+          link=""
         />
+        <ProfileTag
+          icon={HelpCircleIcon}
+          title="Help Centre"
+          description="Lorem ipsum dolor sit amet."
+          link=""
+        />
+
         <ProfileTag
           icon={LogoutIcon}
           title="Logout"
           description=""
-          nestedContent={<div>Logout content goes here</div>}
+          nestedContent=""
         />
       </div>
-    </BottomNav>
+    </div>
   );
 };
 
-export default BidderProfilePage;
+export default PosterProfilePage;

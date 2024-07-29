@@ -1,13 +1,16 @@
 import Image from "next/image";
-import * as React from "react";
+import { useRouter } from "next/router";
 
 export default function TaskTopBar() {
+  const router = useRouter();
+  const handleOnClick = async () => {
+    router.push(`/poster/profile`);
+  };
   return (
-    <div className="sticky top-0 z-10 flex w-full items-center justify-between bg-white px-4">
+    <div className="sticky top-0 z-10 flex w-full items-center justify-between bg-white">
       <p className="text-xl font-semibold">Penni</p>
-      <button>
+      <button onClick={handleOnClick}>
         <Image
-          // TO DO replace it with api fetch user profile.
           src="/profile-2.svg"
           alt="Profile"
           width={50}

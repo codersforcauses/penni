@@ -6,7 +6,7 @@ import { Heading, Paragraph, Subheading } from "./text";
 const sectionNamesMap: { [key: string]: string } = {
   category: "Task Category",
   title: "Task Title",
-  created_at: "Date",
+  deadline: "Date",
   suburb: "Suburb",
   state: "State",
   estimated_time: "Estimated Time", // Missing ERD column name (fix later when db added)
@@ -63,7 +63,7 @@ const TaskDetailsSection = ({
  * const sampleTaskData = {
  *   category: "Cleaning",
  *   title: "Cleaning Up My House",
- *   created_at: "10 Dec, 2022",
+ *   deadline: "10 Dec, 2022",
  *   suburb: "Richmond",
  *   state: "VIC",
  *   estimated_time: "4 Hours",

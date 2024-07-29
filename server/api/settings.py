@@ -10,13 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 import django
 from django.utils.translation import gettext
+
 django.utils.translation.ugettext = gettext
+
 
 load_dotenv()
 
@@ -26,16 +29,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_URL = os.environ.get("FRONTEND_URL")
 
 # LOGGING
-LOG_DIR = os.path.join(BASE_DIR, 'log')
-LOG_FILE = '/api.log'
+LOG_DIR = os.path.join(BASE_DIR, "log")
+LOG_FILE = "/api.log"
 LOG_PATH = LOG_DIR + LOG_FILE
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
 
 if not os.path.exists(LOG_PATH):
-    f = open(LOG_PATH, 'a').close()  # create empty log file
+    f = open(LOG_PATH, "a").close()  # create empty log file
 else:
-    f = open(LOG_PATH, 'w').close()  # clear log file
+    f = open(LOG_PATH, "w").close()  # clear log file
 
 
 # Quick-start development settings - unsuitable for production
@@ -53,6 +56,8 @@ ALLOWED_HOSTS = (
     else []
 )
 
+AUTH_USER_MODEL = "app.Users"
+
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -68,10 +73,44 @@ INSTALLED_APPS = [
     "api.healthcheck",
     "corsheaders",
     "rest_framework",
-    "rest_framework_jwt",
+    "rest_framework_simplejwt",
     "app",
-    'drf_yasg',
+    "drf_yasg",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ),
+}
+
+SIMPLE_JWT = {
+    # Short-term access token lifetime
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=5),
+    # Long-term refresh token lifetime
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    # Rotate refresh tokens
+    "ROTATE_REFRESH_TOKENS": True,
+    # Blacklist old tokens after rotation
+    "BLACKLIST_AFTER_ROTATION": True,
+    # Signing algorithm
+    "ALGORITHM": "HS256",
+    # Secret key for signing tokens
+    "SIGNING_KEY": SECRET_KEY,
+    # Authentication header type
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    # Authentication header name
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    # User ID field
+    "USER_ID_FIELD": "user_id",
+    # User ID claim in the token
+    "USER_ID_CLAIM": "user_id",
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -224,5 +263,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # This is where user uploaded file saved to
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
