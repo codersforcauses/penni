@@ -1,5 +1,6 @@
 from .serializers import BidsSerializer
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
 
 # from rest_framework import permissions
 
@@ -7,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from .models import Tasks, Bids, Users, TaskLocation
+
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import (
@@ -24,8 +28,47 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class UserViewSet(viewsets.ModelViewSet):
     queryset = Users.objects.all()
     serializer_class = UsersSerializer
+
     # permission_classes = [IsCurrentUser]
     permission_classes = [AllowAny]
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "email",
+                openapi.IN_QUERY,
+                description="Email to check for uniqueness",
+                type=openapi.TYPE_STRING,
+                required=True,
+            ),
+        ],
+        responses={
+            200: openapi.Response(
+                description="Email uniqueness check",
+                examples={"application/json": {"is_unique": True}},
+            ),
+            400: openapi.Response(
+                description="Invalid input",
+                examples={"application/json": {"error": "Email parameter is missing"}},
+            ),
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        permission_classes=[AllowAny],
+        url_path="check-email",
+    )
+    def check_email_unique(self, request):
+        email = request.query_params.get("email", None)
+        if email is None:
+            return Response(
+                {"error": "Email parameter is missing"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        is_unique = not Users.objects.filter(email=email).exists()
+        return Response({"is_unique": is_unique})
 
     # def get_queryset(self):
     #     if self.request.user.is_superuser:
