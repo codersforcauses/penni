@@ -16,23 +16,35 @@ import ProfileTag from "../../../components/ui/profile-tags";
 
 const PosterProfilePage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  const [userLoading, setUserLoading] = useState<boolean>(true);
+  const [userError, setUserError] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decoded = jwt.decode(token) as { email: string; user_id: string };
-      setEmail(decoded.email);
+      const decoded = jwt.decode(token) as { user_id: string };
       setUserId(decoded.user_id);
     } else {
       console.error("No token found");
     }
   }, []);
-  const {
-    data: user,
-    loading: userLoading,
-    error: userError,
-  } = useFetchData(`/app/profiles/${userId}/`, true);
+
+  const { data, loading, error } = useFetchData(
+    `/app/users/${userId}/`,
+    userId !== null,
+  );
+
+  useEffect(() => {
+    if (!loading && !error && data) {
+      setUser(data);
+      setUserLoading(false);
+    } else if (error) {
+      setUserError(error);
+      setUserLoading(false);
+    }
+  }, [loading, error, data]);
+
   if (userLoading) return <div>Loading...</div>;
   if (userError) return <div>Error: {userError}</div>;
   // img src needs to change to user.avatar_url later
@@ -44,7 +56,7 @@ const PosterProfilePage: React.FC = () => {
           {user.full_name}
         </p>
         <p className="text-sh font-normal text-penni-text-secondary-light-mode">
-          {email}
+          {user.email}
         </p>
       </div>
       <div className="mt-6">
@@ -76,7 +88,7 @@ const PosterProfilePage: React.FC = () => {
           icon={HelpCircleIcon}
           title="Help Centre"
           description="Lorem ipsum dolor sit amet."
-          link=""
+          link="/poster/profile/help"
         />
 
         <ProfileTag

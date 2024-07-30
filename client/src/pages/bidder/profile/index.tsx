@@ -16,13 +16,13 @@ import ProfileTag from "../../../components/ui/profile-tags";
 
 const BidderProfilePage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  // const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decoded = jwt.decode(token) as { email: string; user_id: string };
-      setEmail(decoded.email);
+      const decoded = jwt.decode(token) as { user_id: string };
+      // setEmail(decoded.email);
       setUserId(decoded.user_id);
     } else {
       console.error("No token found");
@@ -32,7 +32,7 @@ const BidderProfilePage: React.FC = () => {
     data: user,
     loading: userLoading,
     error: userError,
-  } = useFetchData(`/app/profiles/${userId}/`, true);
+  } = useFetchData(`/app/users/${userId}/`, true);
   if (userLoading)
     return (
       <BottomNav>
@@ -54,7 +54,7 @@ const BidderProfilePage: React.FC = () => {
           {user.full_name}
         </p>
         <p className="text-sh font-normal text-penni-text-secondary-light-mode">
-          {email}
+          {user.email}
         </p>
       </div>
       <div className="mt-6">

@@ -29,7 +29,7 @@ export default function TaskDetailPage() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decoded = jwt.decode(token) as { email: string; user_id: string };
+      const decoded = jwt.decode(token) as { user_id: string };
       setUserId(decoded.user_id);
     } else {
       console.error("No token found");
@@ -42,25 +42,18 @@ export default function TaskDetailPage() {
     loading: taskLoading,
     error: taskError,
   } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
-  const {
-    data: bids,
-    loading: bidsLoading,
-    error: bidsError,
-  } = useFetchData(`/app/tasks/${taskid}/bids/`, queryReady);
 
   const {
     data: profile,
     loading: profileLoading,
     error: profileError,
-  } = useFetchData(`/app/profiles/5/`, true);
-  if (bidsLoading || profileLoading || taskLoading)
-    return <div>Loading...</div>;
+  } = useFetchData(`/app/users/${task.poster_id}/`, true);
+  if (profileLoading || taskLoading) return <div>Loading...</div>;
 
-  if (bidsError) return <div>Error: {bidsError}</div>;
   if (profileError) return <div>Error: {profileError}</div>;
   if (taskError) return <div>Error: {taskError}</div>;
-  console.log(bids.data.find((bid: any) => bid.bidder_id === 6)); // hard code for bidder_id
-  const myBid = bids.data.find((bid: any) => bid.bidder_id === userId);
+
+  const myBid = task.bids.find((bid: any) => bid.bidder_id === userId);
 
   if (myBid == undefined)
     return <div>Error: Cannot find bid detail for current user</div>;
@@ -69,8 +62,8 @@ export default function TaskDetailPage() {
     category: task.category,
     title: task.title,
     deadline: task.deadline.slice(0, 10),
-    suburb: "task.suburb", // no task.suburb in api now
-    state: "task.state", // no task.state in api now
+    suburb: task.location.suburb, // no task.suburb in api now
+    state: task.location.state, // no task.state in api now
     estimated_time: task.estimated_time,
     budget: task.budget,
     description: task.description,
@@ -104,7 +97,10 @@ export default function TaskDetailPage() {
           <TaskDetails data={taskData} />
           <div className="flex flex-col gap-4">
             <p className="body-medium">Poster Details</p>
-            <PersonDetail personImg="" personName={profile.full_name} />
+            <PersonDetail
+              personImg={profile.avatar_url}
+              personName={profile.full_name}
+            />
           </div>
           {(task.state === "ONGOING" || task.state === "COMPLETED") && (
             <div className="flex justify-between">
@@ -142,7 +138,7 @@ export default function TaskDetailPage() {
         >
           <div className="p-4">
             <p className="headline">How much would the extra charge be?</p>
-            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.estimatePrice}`}</p>
+            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.budget}`}</p>
             <SingleLineInput
               type="price"
               value={extraOffer}
@@ -162,7 +158,7 @@ export default function TaskDetailPage() {
         <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
           <div className="p-4">
             <p className="headline">Make an offer on this task</p>
-            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.estimatePrice}`}</p>
+            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.budget}`}</p>
             <SingleLineInput
               type="price"
               value={offerValue}

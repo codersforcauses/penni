@@ -32,13 +32,14 @@ export default function TaskList({ userid, states }: TaskListProps) {
   const [tasks, setTasks] = useState<any[]>([]);
   const [error, setError] = useState<string>("");
   console.log("1");
-  const router = useRouter();
   const {
-    data: bids,
-    loading: bidsLoading,
-    error: bidsError,
-  } = useFetchData(`/app/users/${userid}/bids`, true);
-  console.log(bids);
+    data: userInfo,
+    loading: userLoading,
+    error: userError,
+  } = useFetchData(`/app/users/${userid}`, true);
+
+  const router = useRouter();
+
   const {
     data: tasksData,
     loading: tasksLoading,
@@ -46,9 +47,9 @@ export default function TaskList({ userid, states }: TaskListProps) {
   } = useFetchData(`/app/tasks/`, true);
   console.log(tasksData);
   useEffect(() => {
-    if (!bidsLoading && !tasksLoading && bids && tasksData) {
+    if (!userLoading && !tasksLoading && userInfo && tasksData) {
       try {
-        const bidDetails = bids.data.map((bid: any) => {
+        const bidDetails = userInfo.bids.map((bid: any) => {
           const taskDetail = tasksData.find(
             (task: any) => task.task_id === bid.task_id,
           );
@@ -73,11 +74,11 @@ export default function TaskList({ userid, states }: TaskListProps) {
         }
       }
     }
-  }, [bidsLoading, tasksLoading, bids, tasksData]);
+  }, [userLoading, tasksLoading, tasksData]);
 
-  if (bidsLoading || tasksLoading) return <div>Loading...</div>;
-  if (bidsError || tasksError)
-    return <div>Error: {bidsError || tasksError}</div>;
+  if (userLoading || tasksLoading) return <div>Loading...</div>;
+  if (userError || tasksError || error)
+    return <div>Error: {userError || tasksError || error}</div>;
   console.log(tasks);
   console.log(states);
   // use state to filter task
@@ -106,8 +107,8 @@ export default function TaskList({ userid, states }: TaskListProps) {
       return 1;
     } else return 0;
   });
-  // tasks needs to be changed to userTasks later(bc the status cannot be filtered rn)
-  if (tasks.length === 0) {
+
+  if (userTasks.length === 0) {
     return (
       <div className="relative top-36 flex w-full justify-center">
         <EmptyListDisplay
@@ -117,10 +118,9 @@ export default function TaskList({ userid, states }: TaskListProps) {
       </div>
     );
   } else {
-    // tasks needs to be changed to userTasks later(bc the status cannot be filtered rn)
     return (
       <div className="m-4 flex flex-col gap-4">
-        {tasks.map((task, id) => (
+        {userTasks.map((task, id) => (
           <TaskCard
             key={id}
             title={task.title}

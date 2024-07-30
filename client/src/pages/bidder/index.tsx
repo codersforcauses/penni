@@ -38,11 +38,15 @@ export default function Bidder() {
         tabs={[
           {
             name: "My Tasks",
-            content: <TaskList userid={6} states={myTasksStates} />,
+            content: (
+              <TaskList userid={parseInt(userId)} states={myTasksStates} />
+            ),
           },
           {
             name: "My Bids",
-            content: <TaskList userid={6} states={myBidsStates} />,
+            content: (
+              <TaskList userid={parseInt(userId)} states={myBidsStates} />
+            ),
           },
         ]}
       />

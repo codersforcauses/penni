@@ -47,8 +47,8 @@ export default function Card({ isVisible, onClose, children }: CardProps) {
 
   return (
     <>
-      <div className="overlay w-full" onClick={onClose}></div>
-      <div className="card-container z-50 p-2">
+      <div className="overlay z-50 w-full" onClick={onClose}></div>
+      <div className="card-container p-2">
         <div className="card">
           <button className="close-button" onClick={onClose}>
             <Image

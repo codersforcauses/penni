@@ -21,8 +21,14 @@ export default function NewTask() {
 
     const decoded = jwt.decode(token) as { user_id: string };
     const user_id = decoded.user_id;
-    e["owner_id"] = user_id; // "owner_id" in req had error!
-    e["status"] = "ONGOING";
+    e["poster_id"] = user_id;
+    e["status"] = "BIDDING";
+    e["location"] = {
+      suburb: e.suburb,
+      state: e.suburb,
+      task: 0, // pk errors here!!!!
+    };
+    delete e["suburb"]; // API miss this field
     delete e["state"]; // API miss this field
     try {
       const response = await axiosInstance.post("/app/tasks/", e);
@@ -60,7 +66,7 @@ export default function NewTask() {
           <SingleLineInput name="budget" label="Estimated Price" type="price" />
           <h1 className={headingStyle}>Date and Location</h1>
           <SingleLineInput name="deadline" label="Select a date" type="date" />
-          <SingleLineInput name="location" label="Address" type="text" />
+          <SingleLineInput name="suburb" label="Suburb" type="text" />
           <DropdownInput
             name="state"
             label="State"

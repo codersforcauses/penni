@@ -17,27 +17,18 @@ export default function TaskDetailsPage() {
     loading: taskLoading,
     error: taskError,
   } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
-
-  const {
-    data: bids,
-    loading: bidsLoading,
-    error: bidsError,
-  } = useFetchData(`/app/tasks/${taskid}/bids/`, queryReady);
-
   const {
     data: profiles,
     loading: profilesLoading,
     error: profilesError,
-  } = useFetchData(`/app/profiles/`, true);
+  } = useFetchData(`/app/users/`, true);
 
-  if (bidsLoading || profilesLoading || taskLoading)
-    return <div>Loading...</div>;
+  if (profilesLoading || taskLoading) return <div>Loading...</div>;
 
-  if (bidsError) return <div>Error: {bidsError}</div>;
   if (profilesError) return <div>Error: {profilesError}</div>;
   if (taskError) return <div>Error: {taskError}</div>;
 
-  const tasks = bids.data.map((bid: any) => {
+  const tasks = task.data.bids.map((bid: any) => {
     const bidder = profiles.find(
       (profile: any) => profile.user_id === bid.bidder_id,
     );
@@ -50,7 +41,7 @@ export default function TaskDetailsPage() {
   });
 
   const handleOnClick = (task: any) => {
-    router.push(`/poster/tasks/${task.task_id}/${task.bidder_id}/bid-details`);
+    router.push(`/poster/tasks/${task.task_id}/${task.bid_id}/bid-details`);
   };
   const bidderCards = (
     <div>
