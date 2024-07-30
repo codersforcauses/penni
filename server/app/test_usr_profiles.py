@@ -8,12 +8,13 @@ from django.contrib.auth.hashers import make_password
 
 class UsersModelTest(TestCase):
     def setUp(self):
-        self.user = Users.objects.create(
+        self.user = Users.objects.create_user(
+            username="testuser",
             email="testuser@example.com",
             mobile="0450000000",
+            password="secure_password",
             is_poster=True,
         )
-        self.user.set_password("secure_password")
         self.user.save()
 
     def tearDown(self):
