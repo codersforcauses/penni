@@ -40,7 +40,7 @@ const SignUp: React.FC = () => {
         email: emailMobile,
         username: fullName,
         password: password,
-        //avatar: profilePhoto,
+        avatar: profilePhoto,
         //is_active: true,
         //is_staff: false,
         is_poster: isPoster,

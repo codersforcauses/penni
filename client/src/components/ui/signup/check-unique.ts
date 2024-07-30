@@ -13,8 +13,6 @@ export const checkUnique = async (email: string): Promise<string> => {
     );
     // axios automatically parses the response as JSON if the content type is application/json
     const data = response.data;
-    // console.log(data);
-
     if (data[`email_taken`]) {
       return data[`email_error_message`];
     }

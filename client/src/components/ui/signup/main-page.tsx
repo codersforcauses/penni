@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import router, { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -27,14 +28,8 @@ function isValidMobile(mobile: string): boolean {
 }
 
 const errorMessagePreset = "Please enter correct email or mobile";
-const uniqueErrorMessage = (
-  <>
-    Email or Mobile has been registered, please{" "}
-    <Link className="text-penni-main" href="/sign-in">
-      sign in
-    </Link>
-  </>
-);
+const uniqueErrorMessage =
+  "Email or Mobile has been registered, click here to sign in";
 
 export const MainPage: React.FC<SignupTitleProps> = ({
   emailMobile,
@@ -46,14 +41,14 @@ export const MainPage: React.FC<SignupTitleProps> = ({
 }) => {
   //page one
   const [buttonVariant, setButtonVariant] = useState("inactive");
-  const [errorMessage, setErrorMessage] = useState<React.ReactNode>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleEmailMobileChange = (e: ChangeEvent<HTMLTextTargetElement>) => {
     const value = e.target.value;
     setEmailMobile(value);
     setButtonVariant(value ? "default" : "inactive");
     if (isValidEmail(value) || isValidMobile(value)) {
-      setErrorMessage("");
+      setErrorMessage(null);
       setButtonVariant("default");
     } else {
       setErrorMessage(errorMessagePreset);
@@ -78,12 +73,17 @@ export const MainPage: React.FC<SignupTitleProps> = ({
     }
   };
 
+  const errorClick = () => {
+    router.push("/login");
+  };
+
   return (
     <div className="relative flex flex-col items-center p-4">
       {/* title */}
       <ErrorCallout
         className={`duration-2000 fixed left-0 right-0 top-0 transform p-4 transition-transform ${errorMessage ? "translate-y-0" : "-translate-y-full"}`}
         text={errorMessage}
+        onClick={errorMessage === uniqueErrorMessage ? errorClick : undefined}
       />
       <div className="mt-36 flex flex-col items-center gap-4">
         <Image src="/penni-logo.svg" alt="Penni logo" width={87} height={86} />

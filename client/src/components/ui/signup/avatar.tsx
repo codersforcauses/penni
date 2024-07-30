@@ -111,12 +111,12 @@ export const Ava: React.FC<AvaProps> = ({
           Upload a profile photo so others can recognise you!
         </span>
         <div className="mt-2 flex">
-          <div className="relative h-[136px] w-[136px]">
+          <div className="relative h-36 w-36">
             {showCamera ? (
               <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-70 transition-transform">
                 <div className="mt-56 flex flex-col items-center justify-center">
                   <Webcam
-                    className="h-[136px] w-[136px] rounded-full border-2 object-cover"
+                    className="h-36 w-36 rounded-full border-2 object-cover"
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
@@ -180,8 +180,8 @@ export const Ava: React.FC<AvaProps> = ({
         </Button>
       </div>
       {showOptions && (
-        <div className="animation-slide-up fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-70 transition-transform duration-1000">
-          <div className="animation-slide-up w-full space-y-1 rounded-t-lg p-4 duration-1000">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-70 transition-transform duration-1000">
+          <div className="w-full space-y-1 rounded-t-lg p-4 duration-1000">
             <Button
               className="flex h-14 w-full px-4"
               variant="filecard"

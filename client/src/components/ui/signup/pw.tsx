@@ -58,7 +58,7 @@ export const PW: React.FC<PWProps> = ({
     password: string,
     hook: React.Dispatch<React.SetStateAction<string>>,
   ) {
-    if (password.length <= 8) {
+    if (password.length < 8) {
       setErrorMessage(
         "This password is too short. It must contain at least 8 characters.",
       );
@@ -80,6 +80,13 @@ export const PW: React.FC<PWProps> = ({
     setPassword(value);
     setPasswordVariant(e.target.value ? "default" : "inactive");
     inputCheck(value, setPasswordVariant);
+    if (!passwordValidation(repeatPassword, value)) {
+      setErrorMessage("Passwords do not match");
+      setPasswordVariant("inactive");
+    } else {
+      setErrorMessage(null);
+      setPasswordVariant("default");
+    }
   };
 
   const handleRepeatPasswordChange = (
