@@ -40,7 +40,7 @@ export default function SignIn() {
       localStorage.setItem("token", token);
       const decoded = jwt.decode(token) as { user_id: string };
       const userid = decoded.user_id;
-      const response2 = await axiosInstance.get(`/app/users/${userid}`);
+      const response2 = await axiosInstance.get(`/app/users/${userid}/`);
       const isPoster = response2.data.is_poster;
 
       if (isPoster) {
