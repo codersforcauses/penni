@@ -7,17 +7,12 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class BidsSerializer(serializers.ModelSerializer):
     task_id = serializers.PrimaryKeyRelatedField(queryset=Tasks.objects.all())
-    bidder_id = serializers.PrimaryKeyRelatedField(
-        queryset=Users.objects.all())
+    bidder_id = serializers.PrimaryKeyRelatedField(queryset=Users.objects.all())
 
     class Meta:
         model = Bids
         fields = "__all__"
-        read_only_fields = ("bid_id",
-                            "created_at",
-                            "updated_at",
-                            "bidder_id",
-                            "tasks")
+        read_only_fields = ("bid_id", "created_at", "updated_at", "bidder_id", "tasks")
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
