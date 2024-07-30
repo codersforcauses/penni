@@ -5,21 +5,21 @@ from django.utils.timezone import now, timedelta
 # Create user instances
 def create_users():
     if not Users.objects.exists():
-        user1 = Users.objects.create(
+        user1 = Users.objects.create_user(
             email="bidder@example.com",
             username="bidder_test",
             mobile="1234567890",
             password="password1",
-            is_bidder=True,
-            is_poster=False,
+            is_bidder=False,
+            is_poster=True,
         )
-        user2 = Users.objects.create(
+        user2 = Users.objects.create_user(
             email="poster@example.com",
             username="poster_test",
             mobile="0987654321",
             password="password2",
-            is_bidder=False,
-            is_poster=True,
+            is_bidder=True,
+            is_poster=False,
         )
         print("Users created.")
         return [user1, user2]
