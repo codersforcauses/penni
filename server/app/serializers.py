@@ -18,13 +18,7 @@ class BidsSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = (
-            "user_id",
-            "email",
-            "password",
-            "username",
-            "bio",
-        )
+        fields = ("user_id", "email", "password", "username", "bio", "avatar_url")
         extra_kwargs = {
             "password": {"write_only": True},
             "user_id": {"read_only": True},
