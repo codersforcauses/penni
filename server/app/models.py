@@ -169,6 +169,7 @@ class Bids(models.Model):
     price = models.CharField(max_length=50, default="")
     message = models.TextField(blank=True)
     status = models.CharField(max_length=50, default="BIDDING")
+    tips = models.CharField(max_length=50, default="0")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
