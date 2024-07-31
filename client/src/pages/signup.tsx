@@ -5,7 +5,7 @@ import { Ava } from "@/components/ui/signup/avatar";
 import { Bio } from "@/components/ui/signup/bio";
 import { MainPage } from "@/components/ui/signup/main-page";
 import { ProgressBar } from "@/components/ui/signup/progress-bar";
-import { PW } from "@/components/ui/signup/pw";
+import PW from "@/components/ui/signup/pw";
 import { Welcome } from "@/components/ui/signup/welcome";
 import api from "@/lib/api";
 

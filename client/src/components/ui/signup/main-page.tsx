@@ -41,14 +41,14 @@ export const MainPage: React.FC<SignupTitleProps> = ({
 }) => {
   //page one
   const [buttonVariant, setButtonVariant] = useState("inactive");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleEmailMobileChange = (e: ChangeEvent<HTMLTextTargetElement>) => {
     const value = e.target.value;
     setEmailMobile(value);
     setButtonVariant(value ? "default" : "inactive");
     if (isValidEmail(value) || isValidMobile(value)) {
-      setErrorMessage(null);
+      setErrorMessage("");
       setButtonVariant("default");
     } else {
       setErrorMessage(errorMessagePreset);

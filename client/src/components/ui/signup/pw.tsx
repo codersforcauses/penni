@@ -19,21 +19,24 @@ interface PWProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function passwordValidation(password: string, repeatPassword: string): boolean {
+const passwordValidation = (
+  password: string,
+  repeatPassword: string,
+): boolean => {
   return repeatPassword === password;
-}
+};
 
-export const PW: React.FC<PWProps> = ({
+export default function PW({
   currentStep,
   setCurrentStep,
   password,
   setPassword,
-}) => {
+}: PWProps) {
   const [passwordVariant, setPasswordVariant] = useState("inactive");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [repeatPasswordVariant, setRepeatPasswordVariant] =
     useState("inactive");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   async function passwordCommonCheck(
     password: string,
@@ -69,7 +72,7 @@ export const PW: React.FC<PWProps> = ({
       hook("inactive");
       return false;
     } else {
-      setErrorMessage(null);
+      setErrorMessage("");
       hook("default");
       return true;
     }
@@ -84,7 +87,7 @@ export const PW: React.FC<PWProps> = ({
       setErrorMessage("Passwords do not match");
       setPasswordVariant("inactive");
     } else {
-      setErrorMessage(null);
+      setErrorMessage("");
       setPasswordVariant("default");
     }
   };
@@ -101,7 +104,7 @@ export const PW: React.FC<PWProps> = ({
     } else if (!inputCheck(password, setPasswordVariant)) {
       inputCheck(password, setPasswordVariant);
     } else {
-      setErrorMessage(null);
+      setErrorMessage("");
       setRepeatPasswordVariant("default");
     }
   };
@@ -181,4 +184,4 @@ export const PW: React.FC<PWProps> = ({
       </span>
     </div>
   );
-};
+}

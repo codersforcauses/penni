@@ -27,14 +27,14 @@ export const Welcome: React.FC<WelcomeProps> = ({
   setTitle,
 }) => {
   const [buttonVariant, setButtonVariant] = useState("inactive");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleFullNameChange = (e: ChangeEvent<HTMLTextTargetElement>) => {
     const value = e.target.value;
     setFullName(value);
     setButtonVariant(value ? "default" : "inactive");
     if (isValidUserName(value)) {
-      setErrorMessage(null);
+      setErrorMessage("");
       setButtonVariant("default");
     } else if (value.length >= 150) {
       //impossible boundary maybe
