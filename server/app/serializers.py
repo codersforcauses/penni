@@ -12,7 +12,6 @@ class BidsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bids
         fields = "__all__"
-        read_only_fields = ("bid_id", "created_at", "updated_at", "bidder_id", "tasks")
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

@@ -99,7 +99,7 @@ class BidsViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        task_id = self.kwargs.get("task_id")
+        task_id = request.data.get("task_id")
         try:
             task = Tasks.objects.get(task_id=task_id)
         except Tasks.DoesNotExist:
