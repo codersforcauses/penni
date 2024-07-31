@@ -13,6 +13,7 @@ import { axiosInstance, LocalBaseURL } from "@/lib/api";
 // can only sign in with email for now bc this is what the db is designed
 export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isPoster, setIsPoster] = useState(false);
   const LOGIN_URL = LocalBaseURL.concat("/app/token/");
   const router = useRouter();
 
@@ -38,10 +39,6 @@ export default function SignIn() {
 
       // Store the token in localStorage
       localStorage.setItem("token", token);
-      const decoded = jwt.decode(token) as { user_id: string };
-      const userid = decoded.user_id;
-      const response2 = await axiosInstance.get(`/app/users/${userid}`);
-      const isPoster = response2.data.is_poster;
 
       if (isPoster) {
         router.push("/poster");
@@ -117,7 +114,11 @@ export default function SignIn() {
               <ErrorCallout className="pb-4" text={errorMessage} />
             )}
 
-            <Button type="submit" size="penni">
+            <Button
+              type="submit"
+              size="penni"
+              onClick={() => setIsPoster(true)}
+            >
               <span className="headline">Poster Login</span>
             </Button>
             <Button type="submit" size="penni">

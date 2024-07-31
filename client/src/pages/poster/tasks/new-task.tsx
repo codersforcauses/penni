@@ -41,7 +41,7 @@ export default function NewTask() {
   const onSubmit = (e: FormData) => {
     handleSubmit(e);
     console.log(e); // test
-    // router.push(`/poster`);   // test
+    router.push(`/poster`); // test
   };
   const headingStyle = "body-medium w-full text-penni-text-regular-light-mode";
 

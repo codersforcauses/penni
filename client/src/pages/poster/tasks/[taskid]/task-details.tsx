@@ -6,12 +6,22 @@ import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import TaskDetails from "@/components/ui/task-details";
 import TopNavtab from "@/components/ui/top-navtab";
 import useFetchData from "@/hooks/use-fetch-data";
+import useUserId from "@/hooks/use-user-id";
 
 export default function TaskDetailsPage() {
   const router = useRouter();
   const { taskid } = router.query;
   const queryReady = typeof taskid === "string";
+  // const { userId, loading: userIdLoading, error: userIdError } = useUserId();
+  // const {
+  //   data: user,
+  //   loading: userLoading,
+  //   error: userError,
+  // } = useFetchData(`/app/users/${userId}/`, !!userId);
 
+  // if (userIdLoading || userLoading) return <div>Loading...</div>;
+  // if (userIdError || userError)
+  //   return <div>Error: {userIdError || userError}</div>;
   const {
     data: task,
     loading: taskLoading,
@@ -28,7 +38,7 @@ export default function TaskDetailsPage() {
   if (profilesError) return <div>Error: {profilesError}</div>;
   if (taskError) return <div>Error: {taskError}</div>;
 
-  const tasks = task.data.bids.map((bid: any) => {
+  const tasks = task.bids.map((bid: any) => {
     const bidder = profiles.find(
       (profile: any) => profile.user_id === bid.bidder_id,
     );
@@ -64,9 +74,9 @@ export default function TaskDetailsPage() {
   const taskData = {
     category: task?.category,
     title: task?.title,
-    created_at: task?.created_at.slice(0, 10),
-    suburb: task?.location,
-    state: task?.location, // Adjust as needed
+    deadline: task?.deadline.slice(0, 10),
+    suburb: task?.location.suburb,
+    state: task?.location.state, // Adjust as needed
     estimated_time: task?.estimated_time,
     budget: task?.budget,
     description: task?.description,

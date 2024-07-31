@@ -1,7 +1,5 @@
-import jwt from "jsonwebtoken";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
@@ -10,7 +8,8 @@ import PosterTaskCard, {
   PosterTaskCardProps,
 } from "@/components/ui/poster/task-card";
 import TaskTopBar from "@/components/ui/poster/task-top-bar";
-import { axiosInstance } from "@/lib/api";
+import useFetchData from "@/hooks/use-fetch-data";
+import useUserId from "@/hooks/use-user-id";
 
 export function Create() {
   const router = useRouter();
@@ -68,44 +67,21 @@ function TaskList({ className, tasks }: TaskListProp) {
 }
 
 export default function PosterTasksPage() {
-  const [tasks, setTasks] = useState<object[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axiosInstance.get("/app/tasks/");
-        const jsonResponse = response.data;
+  const { userId, loading: userIdLoading, error: userIdError } = useUserId();
 
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("No token found");
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useFetchData(`/app/users/${userId}/`, !!userId);
 
-        const decoded = jwt.decode(token) as { user_id: string };
-        const user_id = decoded.user_id;
+  if (userIdLoading || userLoading) return <div>Loading...</div>;
+  if (userIdError || userError)
+    return <div>Error: {userIdError || userError}</div>;
 
-        const filteredTasks = jsonResponse.filter(
-          (item: any) => item.owner_id === user_id,
-        );
-
-        setTasks(filteredTasks);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserData();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  const hasTask = tasks.length > 0;
+  const hasTask = user.tasks.length > 0;
 
   return (
     <div>
@@ -114,7 +90,7 @@ export default function PosterTasksPage() {
       ) : !hasTask ? (
         <Create />
       ) : (
-        <TaskList tasks={tasks} />
+        <TaskList tasks={user && user.tasks} />
       )}
     </div>
   );
