@@ -31,7 +31,7 @@ interface TaskListProps {
 export default function TaskList({ userid, states }: TaskListProps) {
   const [tasks, setTasks] = useState<any[]>([]);
   const [error, setError] = useState<string>("");
-  console.log("1");
+
   const {
     data: userInfo,
     loading: userLoading,
@@ -45,7 +45,7 @@ export default function TaskList({ userid, states }: TaskListProps) {
     loading: tasksLoading,
     error: tasksError,
   } = useFetchData(`/app/tasks/`, true);
-  console.log(tasksData);
+
   useEffect(() => {
     if (!userLoading && !tasksLoading && userInfo && tasksData) {
       try {
@@ -58,13 +58,12 @@ export default function TaskList({ userid, states }: TaskListProps) {
             category: taskDetail.category,
             title: taskDetail.title,
             date: taskDetail.deadline.slice(0, 10),
-            location: taskDetail.location,
+            location: `${taskDetail.location.suburb},${taskDetail.location.state}`,
             duration: taskDetail.estimated_time,
             estimatePrice: taskDetail.budget,
           };
         });
         setTasks(bidDetails);
-        console.log(bidDetails);
       } catch (error: unknown) {
         if (error instanceof Error) {
           setError(error.message);
@@ -79,8 +78,7 @@ export default function TaskList({ userid, states }: TaskListProps) {
   if (userLoading || tasksLoading) return <div>Loading...</div>;
   if (userError || tasksError || error)
     return <div>Error: {userError || tasksError || error}</div>;
-  console.log(tasks);
-  console.log(states);
+
   // use state to filter task
   const filterTasks = (tasks: any[], states: string[]) => {
     return tasks.filter((task) => states.includes(task.status));

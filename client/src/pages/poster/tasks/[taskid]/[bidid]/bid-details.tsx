@@ -41,10 +41,12 @@ export default function BidDetail() {
     // delete e["suburb"]; // API miss this field
     // delete e["state"]; // API miss this field
     try {
-      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}`, {
+      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
+        task_id: taskid,
         status: "ONGOING",
       });
-      const response2 = await axiosInstance.patch(`/app/bids/${bidid}`, {
+      const response2 = await axiosInstance.patch(`/app/bids/${bidid}/`, {
+        bid_id: bidid,
         status: "ONGOING",
       });
       console.log("Update successful:", response1.data, response2.data);

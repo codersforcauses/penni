@@ -18,7 +18,7 @@ import { axiosInstance } from "@/lib/api";
 export default function TaskDetailPage() {
   const router = useRouter();
   const [isCardVisible, setIsCardVisible] = useState(false);
-  const [isExtraCardVisible, setIsExtraCardVisible] = useState(false);
+  const [isOfferVisible, setIsOfferVisible] = useState(false);
 
   const [offerValue, setOfferValue] = useState("");
   const [extraOffer, setExtraOffer] = useState("");
@@ -70,6 +70,10 @@ export default function TaskDetailPage() {
   if (profileLoading || taskLoading) return <div>Loading...</div>;
   if (profileError) return <div>ProfileError: {profileError}</div>;
   if (taskError) return <div>TaskError: {taskError}</div>;
+  const myBid = task.bids.find((bid: any) => bid.bidder_id === userId);
+  console.log("myBid:", myBid);
+  console.log(myBid == undefined);
+  console.log(myBid != undefined);
 
   const onSubmitOffer = async () => {
     try {
@@ -84,19 +88,38 @@ export default function TaskDetailPage() {
       throw new Error(error);
     }
     setIsCardVisible(!isCardVisible);
+    setIsOfferVisible(true);
+  };
+  const onSubmitEdit = async () => {
+    try {
+      const response = await axiosInstance.patch(`/app/bids/${myBid.bid_id}/`, {
+        bid_id: myBid.bid_id,
+        // task_id: taskId,
+        // bidder_id: userId,
+        price: offerValue,
+      });
+    } catch (error: any) {
+      console.error("Unexpected error:", error.message);
+      throw new Error(error);
+    }
+    setIsCardVisible(!isCardVisible);
+    setIsOfferVisible(true);
   };
   const onSubmitTip = async () => {
     try {
       const bid = task.bids.filter((bid: any) => bid.bidder_id === userId)[0];
       const orginalOffer = bid.price;
       const newOffer = orginalOffer + extraOffer;
-      const response1 = await axiosInstance.patch("/app/bids/", {
-        task_id: taskId,
-        // bidder_id: userId,
-        price: newOffer,
-        status: "BIDDING",
-      });
-      const response2 = await axiosInstance.patch("/app/tasks/", {
+      const response1 = await axiosInstance.patch(
+        `/app/bids/${myBid.bid_id}/`,
+        {
+          bid_id: myBid.bid_id,
+          task_id: taskId,
+          // bidder_id: userId,
+          price: newOffer,
+        },
+      );
+      const response2 = await axiosInstance.patch(`/app/tasks/${taskId}/`, {
         task_id: taskId,
         status: "PRICE UPDATE",
       });
@@ -104,10 +127,10 @@ export default function TaskDetailPage() {
       console.error("Unexpected error:", error.message);
       throw new Error(error);
     }
-    setIsExtraCardVisible(!isExtraCardVisible);
+    setIsCardVisible(!isCardVisible);
+    setIsOfferVisible(true);
   };
 
-  const myBid = task.bids.find((bid: any) => bid.bidder_id === userId);
   let myOfferValue = 0;
   if (myBid == undefined) {
     console.log("Cannot find bid detail for current user");
@@ -128,26 +151,37 @@ export default function TaskDetailPage() {
   return (
     <div className="mb-8">
       <Header title="Task Details" />
-      {task.state != "ONGOING" &&
-        task.state != "COMPLETED" &&
+      {myBid != undefined &&
+        myBid.status != "ONGOING" &&
+        myBid.status != "COMPLETED" &&
         today > task.deadline && (
           <ErrorCallout text="Bid is no longer available" />
         )}
-      {task.state === "ONGOING" || task.state === "COMPLETED"
-        ? extraOffer != "" && (
+      {myBid != undefined ? (
+        myBid.status === "ONGOING" || myBid.status === "COMPLETED" ? (
+          isOfferVisible && (
             <MyOffer
               text="Request for extra charge"
-              value={extraOffer}
-              onClick={() => setIsExtraCardVisible(!isExtraCardVisible)}
-            />
-          )
-        : offerValue != "" && (
-            <MyOffer
-              text="My Offer"
-              value={offerValue}
+              value={extraOffer == "" ? "0" : extraOffer}
               onClick={toggleCardVisibility}
             />
-          )}
+          )
+        ) : (
+          <MyOffer
+            text="My Offer"
+            value={offerValue == "" ? myBid.price : offerValue}
+            onClick={toggleCardVisibility}
+          />
+        )
+      ) : (
+        isOfferVisible && (
+          <MyOffer
+            text="My Offer"
+            value={offerValue}
+            onClick={toggleCardVisibility}
+          />
+        )
+      )}
       <div className="mx-4 flex flex-col gap-4">
         <div className="flex flex-col gap-8">
           <TaskDetails data={taskData} />
@@ -158,25 +192,29 @@ export default function TaskDetailPage() {
               personName={profile.username}
             />
           </div>
-          {(task.state === "ONGOING" || task.state === "COMPLETED") && (
-            <div className="flex justify-between">
-              <p className="body-medium">My Price</p>
-              <p className="title2">${myOfferValue}</p>
-            </div>
-          )}
+          {myBid != undefined &&
+            (myBid.status === "ONGOING" || myBid.status === "COMPLETED") && (
+              <div className="flex justify-between">
+                <p className="body-medium">My Price</p>
+                <p className="title2">${myOfferValue}</p>
+              </div>
+            )}
         </div>
 
-        {task.state === "ONGOING" || task.state === "COMPLETED" ? (
-          <>
-            <Button
-              className="headline h-14 w-full"
-              variant="cutout"
-              onClick={() => setIsExtraCardVisible(!isExtraCardVisible)}
-            >
-              Request Extra Charge
-            </Button>
-            <Button className="headline h-14 w-full">Contact</Button>
-          </>
+        {myBid != undefined ? (
+          myBid.status === "ONGOING" ||
+          (myBid.status === "COMPLETED" && (
+            <>
+              <Button
+                className="headline h-14 w-full"
+                variant="cutout"
+                onClick={toggleCardVisibility}
+              >
+                Request Extra Charge
+              </Button>
+              <Button className="headline h-14 w-full">Contact</Button>
+            </>
+          ))
         ) : (
           <Button
             className="headline h-14 w-full"
@@ -187,30 +225,31 @@ export default function TaskDetailPage() {
         )}
       </div>
 
-      {task.state === "ONGOING" || task.state === "COMPLETED" ? (
-        <Card
-          isVisible={isExtraCardVisible}
-          onClose={() => setIsExtraCardVisible(!isExtraCardVisible)}
-        >
-          <div className="p-4">
-            <p className="headline">How much would the extra charge be?</p>
-            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.budget}`}</p>
-            <SingleLineInput
-              type="price"
-              value={extraOffer}
-              onChange={(e) => setExtraOffer(e.target.value)}
-            />
+      {myBid != undefined &&
+        (myBid.status === "ONGOING" ||
+          (myBid.status === "COMPLETED" && (
+            <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
+              <div className="p-4">
+                <p className="headline">How much would the extra charge be?</p>
+                <p className="subheadline mb-4 mt-2">{`Original Price: ${task.budget}`}</p>
+                <SingleLineInput
+                  type="price"
+                  value={extraOffer}
+                  onChange={(e) => setExtraOffer(e.target.value)}
+                />
 
-            <Button
-              disabled={extraOffer === ""}
-              className="headline mt-6 h-14 w-full"
-              onClick={onSubmitTip}
-            >
-              Confirm
-            </Button>
-          </div>
-        </Card>
-      ) : (
+                <Button
+                  disabled={extraOffer === ""}
+                  className="headline mt-6 h-14 w-full"
+                  onClick={onSubmitTip}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </Card>
+          )))}
+
+      {myBid == undefined && (
         <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
           <div className="p-4">
             <p className="headline">Make an offer on this task</p>
@@ -225,6 +264,27 @@ export default function TaskDetailPage() {
               disabled={offerValue === ""}
               className="headline mt-6 h-14 w-full"
               onClick={onSubmitOffer}
+            >
+              Confirm
+            </Button>
+          </div>
+        </Card>
+      )}
+      {myBid != undefined && myBid.status === "BIDDING" && (
+        <Card isVisible={isCardVisible} onClose={toggleCardVisibility}>
+          <div className="p-4">
+            <p className="headline">Edit your offer</p>
+            <p className="subheadline mb-4 mt-2">{`Original Price: ${task.budget}`}</p>
+            <SingleLineInput
+              type="price"
+              value={offerValue}
+              onChange={(e) => setOfferValue(e.target.value)}
+            />
+
+            <Button
+              disabled={offerValue === ""}
+              className="headline mt-6 h-14 w-full"
+              onClick={onSubmitEdit}
             >
               Confirm
             </Button>
