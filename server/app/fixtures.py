@@ -39,7 +39,6 @@ def create_tasks(users):
             budget="100.00",
             estimated_time="2 hours",
             deadline=now() + timedelta(days=10),
-
         )
         task2 = Tasks.objects.create(
             poster_id=users[0],
@@ -49,7 +48,6 @@ def create_tasks(users):
             budget="200.00",
             estimated_time="4 hours",
             deadline=now() + timedelta(days=5),
-
         )
         TaskLocation.objects.create(
             task=task1,
@@ -76,14 +74,12 @@ def create_bids(tasks, users):
             bidder_id=users[1],
             price="150.00",
             message="I can do this task.",
-
         )
         Bids.objects.create(
             task_id=tasks[1],
             bidder_id=users[1],
             price="180.00",
             message="I have experience with this.",
-
         )
         print("Bids created.")
     else:
