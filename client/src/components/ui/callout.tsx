@@ -1,3 +1,5 @@
+import React from "react";
+
 import { EditIcon, InfoIcon } from "./icons";
 
 interface CalloutProps {
