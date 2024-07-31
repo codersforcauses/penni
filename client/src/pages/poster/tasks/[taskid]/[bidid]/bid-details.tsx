@@ -19,13 +19,13 @@ export default function BidDetail() {
     data: bidInfo,
     loading: bidLoading,
     error: bidError,
-  } = useFetchData(`/app/bid/${bidid}`, queryReady);
+  } = useFetchData(`/app/bid/${bidid}/`, queryReady);
   // Fetch profile
   const {
     data: bidderProfile,
     loading: profilesLoading,
     error: profilesError,
-  } = useFetchData(`/app/users/${bidInfo.bidder_id}`, true);
+  } = useFetchData(`/app/users/${bidInfo.bidder_id}/`, true);
 
   if (bidLoading || profilesLoading) return <div>Loading...</div>;
 
