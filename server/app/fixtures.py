@@ -5,21 +5,21 @@ from django.utils.timezone import now, timedelta
 # Create user instances
 def create_users():
     if not Users.objects.exists():
-        user1 = Users.objects.create(
+        user1 = Users.objects.create_user(
             email="bidder@example.com",
             username="bidder_test",
             mobile="1234567890",
             password="password1",
-            is_bidder=True,
-            is_poster=False,
+            is_bidder=False,
+            is_poster=True,
         )
-        user2 = Users.objects.create(
+        user2 = Users.objects.create_user(
             email="poster@example.com",
             username="poster_test",
             mobile="0987654321",
             password="password2",
-            is_bidder=False,
-            is_poster=True,
+            is_bidder=True,
+            is_poster=False,
         )
         print("Users created.")
         return [user1, user2]
@@ -39,7 +39,7 @@ def create_tasks(users):
             budget="100.00",
             estimated_time="2 hours",
             deadline=now() + timedelta(days=10),
-            status="open",
+
         )
         task2 = Tasks.objects.create(
             poster_id=users[0],
@@ -49,7 +49,7 @@ def create_tasks(users):
             budget="200.00",
             estimated_time="4 hours",
             deadline=now() + timedelta(days=5),
-            status="open",
+
         )
         TaskLocation.objects.create(
             task=task1,
@@ -76,14 +76,14 @@ def create_bids(tasks, users):
             bidder_id=users[1],
             price="150.00",
             message="I can do this task.",
-            status="pending",
+
         )
         Bids.objects.create(
             task_id=tasks[1],
             bidder_id=users[1],
             price="180.00",
             message="I have experience with this.",
-            status="pending",
+
         )
         print("Bids created.")
     else:

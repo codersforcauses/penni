@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .serializers import BidsSerializer
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
 
 # from rest_framework import permissions
 from django.contrib.auth.password_validation import CommonPasswordValidator
@@ -10,6 +11,9 @@ from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
 from .models import Tasks, Bids, Users, TaskLocation
+
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import (
@@ -27,8 +31,47 @@ from rest_framework_simplejwt.tokens import RefreshToken
 class UserViewSet(viewsets.ModelViewSet):
     queryset = Users.objects.all()
     serializer_class = UsersSerializer
+
     # permission_classes = [IsCurrentUser]
     permission_classes = [AllowAny]
+
+    @swagger_auto_schema(
+        manual_parameters=[
+            openapi.Parameter(
+                "email",
+                openapi.IN_QUERY,
+                description="Email to check for uniqueness",
+                type=openapi.TYPE_STRING,
+                required=True,
+            ),
+        ],
+        responses={
+            200: openapi.Response(
+                description="Email uniqueness check",
+                examples={"application/json": {"is_unique": True}},
+            ),
+            400: openapi.Response(
+                description="Invalid input",
+                examples={"application/json": {"error": "Email parameter is missing"}},
+            ),
+        },
+    )
+    @action(
+        detail=False,
+        methods=["get"],
+        permission_classes=[AllowAny],
+        url_path="check-email",
+    )
+    def check_email_unique(self, request):
+        email = request.query_params.get("email", None)
+        if email is None:
+            return Response(
+                {"error": "Email parameter is missing"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        is_unique = not Users.objects.filter(email=email).exists()
+        return Response({"is_unique": is_unique})
 
     # def get_queryset(self):
     #     if self.request.user.is_superuser:
@@ -46,32 +89,6 @@ class TasksViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    # @action(detail=False, methods=['post'])
-    # def post_task(self, request):
-    #     serializer = self.get_serializer(data=request.data)
-    #     if serializer.is_valid():
-    #         task = serializer.save(status='open')
-    #         owner_data = UsersSerializer(task.user_id).data
-    #         response_data = {
-    #             'task_id': task.task_id,
-    #             'user': owner_data,
-    #             'status': 'success',
-    #             'message': 'Task created successfully.'
-    #         }
-    #         return Response(response_data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=st
-    # atus.HTTP_400_BAD_REQUEST)
-
-    # @action(detail=True, methods=['get'])
-    # def get_user_tasks(self, request, user_id=None):
-    #     if user_id:
-    #         tasks = Tasks.objects.filter(user_id=user_id)
-    #         serializer = TasksSerializer(tasks, many=True)
-    #         return Response({'status': 'success',
-    # 'data': serializer.data}, status=status.HTTP_200_OK)
-    #     return Response({'status': 'error', 'messa
-    # ge': 'User ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class TaskLocationViewSet(viewsets.ModelViewSet):
     queryset = TaskLocation.objects.all()
@@ -85,7 +102,7 @@ class BidsViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        task_id = self.kwargs.get("task_id")
+        task_id = request.data.get("task_id")
         try:
             task = Tasks.objects.get(task_id=task_id)
         except Tasks.DoesNotExist:
@@ -135,57 +152,6 @@ class BidsViewSet(viewsets.ModelViewSet):
                 "status": "success",
                 "message": f"bid_id:{bid.bid_id} bid status: {status_code}",
             }
-        )
-
-    @action(detail=True, methods=["get"])
-    def get_task_bids(self, request, task_id=None):
-        if task_id:
-            bids = Bids.objects.filter(task_id=task_id)
-            serializer = BidsSerializer(bids, many=True)
-            return Response(
-                {"status": "success", "data": serializer.data},
-                status=status.HTTP_200_OK,
-            )
-        return Response(
-            {"status": "error", "message": "Task ID is required."},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-
-    @action(detail=True, methods=["post"])
-    def change_bid_status(self, request, pk=None):
-        valid_statuses = ["accepted", "rejected", "pending"]
-        status = request.data.get("status")
-
-        if status not in valid_statuses:
-            return Response(
-                {"status": "error", "message": "Invalid action type."},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        bid = self.get_object()
-        bid.status = status
-        bid.save()
-
-        action_messages = {
-            "accepted": "Bid accepted.",
-            "rejected": "Bid rejected.",
-            "pending": "Bid pending.",
-        }
-
-        return Response({"status": "success", "message": action_messages[status]})
-
-    @action(detail=True, methods=["get"])
-    def get_user_bids(self, request, user_id=None):
-        if user_id:
-            bids = Bids.objects.filter(bidder_id=user_id)
-            serializer = BidsSerializer(bids, many=True)
-            return Response(
-                {"status": "success", "data": serializer.data},
-                status=status.HTTP_200_OK,
-            )
-        return Response(
-            {"status": "error", "message": "User ID is required."},
-            status=status.HTTP_400_BAD_REQUEST,
         )
 
 
