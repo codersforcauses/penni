@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from .serializers import BidsSerializer
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
 
 # from rest_framework import permissions
 from django.contrib.auth.password_validation import CommonPasswordValidator
@@ -192,27 +191,37 @@ class UserValidationView(APIView):
 
     def get(self, request):
         try:
-            email = request.GET.get('email')
+            email = request.GET.get("email")
             data = {
-                'email_taken': False,
+                "email_taken": False,
             }
 
             if email and Users.objects.filter(email__iexact=email).exists():
-                data['email_taken'] = True
-                data['email_error_message'] = 'Email address has been registered, please enter another email'
+                data["email_taken"] = True
+                data["email_error_message"] = (
+                    "Email address has been registered, please enter another email"
+                )
 
             return Response(data, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
     # check the password strength
 
     def post(self, request):
         try:
-            password = request.data.get('password')
+            password = request.data.get("password")
             if password:
                 validator = CommonPasswordValidator()
                 validator.validate(password)
-                return Response({'valid': True}, status=status.HTTP_200_OK)
-            return Response({'errors': 'empty password'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"valid": True}, status=status.HTTP_200_OK)
+            return Response(
+                {"errors": "empty password"}, status=status.HTTP_400_BAD_REQUEST
+            )
         except ValidationError as e:
-            return Response({'valid': False, 'errors': e.messages}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"valid": False, "errors": e.messages},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
