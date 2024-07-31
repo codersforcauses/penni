@@ -7,11 +7,13 @@ import { Task } from "@/components/ui/bidder/mytasks-list";
 import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
 import Card from "@/components/ui/card";
+import { FormData } from "@/components/ui/form";
 import Header from "@/components/ui/header";
 import { SingleLineInput } from "@/components/ui/inputs";
 import PersonDetail from "@/components/ui/person-detail";
 import TaskDetails from "@/components/ui/task-details";
 import useFetchData from "@/hooks/use-fetch-data";
+import { axiosInstance } from "@/lib/api";
 
 export default function TaskDetailPage() {
   const router = useRouter();
@@ -21,10 +23,15 @@ export default function TaskDetailPage() {
   const [offerValue, setOfferValue] = useState("");
   const [extraOffer, setExtraOffer] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
+  const [taskId, setTaskId] = useState<string | null>(null);
+  const [posterId, setPosterId] = useState<string | null>(null);
 
+  const { taskid } = router.query;
+  // const queryReady = typeof taskid === "string";
   const toggleCardVisibility = () => {
     setIsCardVisible(!isCardVisible);
   };
+
   const today = new Date().toISOString().slice(0, 10); //get today's date in string "2024-7-17" to check if the task is expired
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,30 +41,79 @@ export default function TaskDetailPage() {
     } else {
       console.error("No token found");
     }
-  }, []);
-  const { taskid } = router.query;
-  const queryReady = typeof taskid === "string";
+    if (typeof taskid === "string") {
+      setTaskId(taskid);
+    }
+  }, [taskid, router]);
+
   const {
     data: task,
     loading: taskLoading,
     error: taskError,
-  } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
+  } = useFetchData(taskId ? `/app/tasks/${taskId}/` : null, Boolean(taskId));
+
+  useEffect(() => {
+    if (task && task.poster_id) {
+      setPosterId(task.poster_id);
+    }
+  }, [task]);
 
   const {
     data: profile,
     loading: profileLoading,
     error: profileError,
-  } = useFetchData(`/app/users/${task.poster_id}/`, true);
-  if (profileLoading || taskLoading) return <div>Loading...</div>;
+  } = useFetchData(
+    posterId ? `/app/users/${posterId}/` : null,
+    Boolean(posterId),
+  );
 
-  if (profileError) return <div>Error: {profileError}</div>;
-  if (taskError) return <div>Error: {taskError}</div>;
+  if (profileLoading || taskLoading) return <div>Loading...</div>;
+  if (profileError) return <div>ProfileError: {profileError}</div>;
+  if (taskError) return <div>TaskError: {taskError}</div>;
+
+  const onSubmitOffer = async () => {
+    try {
+      const response = await axiosInstance.post("/app/bids/", {
+        task_id: taskId,
+        bidder_id: userId,
+        price: offerValue,
+        status: "BIDDING",
+      });
+    } catch (error: any) {
+      console.error("Unexpected error:", error.message);
+      throw new Error(error);
+    }
+    setIsCardVisible(!isCardVisible);
+  };
+  const onSubmitTip = async () => {
+    try {
+      const bid = task.bids.filter((bid: any) => bid.bidder_id === userId)[0];
+      const orginalOffer = bid.price;
+      const newOffer = orginalOffer + extraOffer;
+      const response1 = await axiosInstance.patch("/app/bids/", {
+        task_id: taskId,
+        // bidder_id: userId,
+        price: newOffer,
+        status: "BIDDING",
+      });
+      const response2 = await axiosInstance.patch("/app/tasks/", {
+        task_id: taskId,
+        status: "PRICE UPDATE",
+      });
+    } catch (error: any) {
+      console.error("Unexpected error:", error.message);
+      throw new Error(error);
+    }
+    setIsExtraCardVisible(!isExtraCardVisible);
+  };
 
   const myBid = task.bids.find((bid: any) => bid.bidder_id === userId);
-
-  if (myBid == undefined)
-    return <div>Error: Cannot find bid detail for current user</div>;
-  const myOfferValue = myBid.price;
+  let myOfferValue = 0;
+  if (myBid == undefined) {
+    console.log("Cannot find bid detail for current user");
+  } else {
+    myOfferValue = myBid.price;
+  }
   const taskData = {
     category: task.category,
     title: task.title,
@@ -98,8 +154,8 @@ export default function TaskDetailPage() {
           <div className="flex flex-col gap-4">
             <p className="body-medium">Poster Details</p>
             <PersonDetail
-              personImg={profile.avatar_url}
-              personName={profile.full_name}
+              personImg="" // {profile.avatar_url}
+              personName={profile.username}
             />
           </div>
           {(task.state === "ONGOING" || task.state === "COMPLETED") && (
@@ -148,7 +204,7 @@ export default function TaskDetailPage() {
             <Button
               disabled={extraOffer === ""}
               className="headline mt-6 h-14 w-full"
-              onClick={() => setIsExtraCardVisible(!isExtraCardVisible)}
+              onClick={onSubmitTip}
             >
               Confirm
             </Button>
@@ -168,7 +224,7 @@ export default function TaskDetailPage() {
             <Button
               disabled={offerValue === ""}
               className="headline mt-6 h-14 w-full"
-              onClick={toggleCardVisibility}
+              onClick={onSubmitOffer}
             >
               Confirm
             </Button>

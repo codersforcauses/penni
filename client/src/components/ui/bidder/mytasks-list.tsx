@@ -36,7 +36,7 @@ export default function TaskList({ userid, states }: TaskListProps) {
     data: userInfo,
     loading: userLoading,
     error: userError,
-  } = useFetchData(`/app/users/${userid}`, true);
+  } = useFetchData(`/app/users/${userid}/`, true);
 
   const router = useRouter();
 

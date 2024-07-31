@@ -68,7 +68,7 @@ const MarketPage: NextPageWithLayout = () => {
               title={task.title}
               category={task.category}
               date={task.deadline.slice(0, 10)}
-              location={task.location}
+              location={`${task.location.suburb}, ${task.location.state}`}
               duration={task.estimated_time}
               estimatePrice={task.budget}
               priceType="Estimated Price"
