@@ -1,10 +1,19 @@
 import Image from "next/image";
 import React, { ReactNode, useEffect } from "react";
 
+import { Button } from "./button";
+
 interface CardProps {
   isVisible: boolean;
   onClose: () => void;
   children?: ReactNode;
+}
+
+interface OptionProps {
+  isVisible: boolean;
+  onClose: () => void;
+  onClickCancelTask?: () => void;
+  onClickDuplicate?: () => void;
 }
 
 /**
@@ -64,6 +73,49 @@ export default function Card({ isVisible, onClose, children }: CardProps) {
           </button>
         </div>
         {children}
+      </div>
+    </>
+  );
+}
+
+export function Option({
+  isVisible,
+  onClickCancelTask,
+  onClickDuplicate,
+  onClose,
+}: OptionProps) {
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden"; // Prevent background scroll when the card is open
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // Cleanup on unmount
+    };
+  }, [isVisible]);
+
+  if (!isVisible) {
+    return null;
+  }
+
+  return (
+    <>
+      <div className="overlay w-full"></div>
+      <div className="option-container z-50 p-2">
+        <div className="mb-4 rounded-lg bg-penni-background-file-card">
+          <Button size="penni" variant="optioncard" onClick={onClickCancelTask}>
+            Cancel Task
+          </Button>
+          <hr className="h-px w-full" />
+          <Button size="penni" variant="optioncard" onClick={onClickDuplicate}>
+            Duplicate
+          </Button>
+        </div>
+        <Button size="penni" variant="optioncard" onClick={onClose}>
+          Cancel
+        </Button>
       </div>
     </>
   );
