@@ -1,142 +1,168 @@
-import axios from "axios";
-import Image from "next/image";
-import { FormEvent, ReactElement, useState } from "react";
+import router from "next/router";
+import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  InputEmailPhone,
-  InputImage,
-  InputName,
-} from "@/components/ui/signup/multi-step-form";
+import { Ava } from "@/components/ui/signup/avatar";
+import { Bio } from "@/components/ui/signup/bio";
+import { MainPage } from "@/components/ui/signup/main-page";
 import { ProgressBar } from "@/components/ui/signup/progress-bar";
-import { MultistepForm, useMultistepForm } from "@/hooks/use-multistep-form";
+import PW from "@/components/ui/signup/pw";
+import { Welcome } from "@/components/ui/signup/welcome";
+import api from "@/lib/api";
 
-interface FormData {
-  email?: string;
-  phone?: string;
-  contactMethod: string;
-  fullname: string;
-  avatarSrc: string;
-}
+const BIDDER = "Bidder";
+const POSTER = "Poster";
+const BIDDER_URL = "/bidder";
+const POSTER_URL = "/poster";
 
-const INIT_FORM_DATA: FormData = {
-  email: "",
-  phone: "",
-  contactMethod: "",
-  fullname: "",
-  avatarSrc: "",
-};
+const SignUp: React.FC = () => {
+  const [client, setClient] = useState(POSTER);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [emailMobile, setEmailMobile] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
+  const [profilePhoto, setProfilePhoto] = useState<string | undefined>(
+    undefined,
+  );
+  const [isPoster, setIsPoster] = useState<boolean>(true);
+  const [isBidder, setIsBidder] = useState<boolean>(false);
+  const [bio, setBio] = useState("");
+  const [submit, setSubmit] = useState(false);
+  const [title, setTitle] = useState("Welcome!");
 
-const POSTER: string = "Poster";
-const BIDDER: string = "Bidder";
+  useEffect(() => {
+    const onFinish = async () => {
+      if (client === POSTER) {
+        setIsPoster(true);
+      } else {
+        setIsBidder(false);
+      }
+      const data = {
+        email: emailMobile,
+        username: fullName,
+        password: password,
+        avatar: profilePhoto,
+        //is_active: true,
+        //is_staff: false,
+        is_poster: isPoster,
+        is_bidder: isBidder,
+        bio: bio,
+      };
 
-function SignUp() {
-  const BackArrow = "/back-arrow.svg";
-  const [user, setUser] = useState(POSTER);
-  const [data, setData] = useState(INIT_FORM_DATA);
-  function updateFields(fields: Partial<FormData>) {
-    setData((curFormData) => {
-      return { ...curFormData, ...fields };
-    });
-  }
+      try {
+        const response = await api.post("/app/register/", data);
 
-  let forms: ReactElement[] = [
-    <InputEmailPhone {...data} updateFields={updateFields} />,
-    <InputName {...data} updateFields={updateFields} />,
-    <InputImage {...data} updateFields={updateFields} />,
-  ];
-  const multistepForm: MultistepForm = useMultistepForm(forms);
+        if (response.status === 200) {
+          console.log("Successfully sent the message");
+        } else if (response.status === 201) {
+          //refresh datas
+          setEmailMobile("");
+          setFullName("");
+          setPassword("");
+          setProfilePhoto("");
+          setIsBidder(false);
+          setIsPoster(true);
+          setTitle("Welcome!");
+          setClient("Poster");
+          const token = response.data.access_token;
+          localStorage.setItem("token", token);
 
-  function onSubmit(e: FormEvent) {
-    // prevent default action: refreshing the page.
-    e.preventDefault();
-    console.log(
-      "curIdx",
-      multistepForm.stepIdx,
-      "steps:",
-      multistepForm.steps.length,
-      "is last step:",
-      multistepForm.isLastStep,
-    );
-    if (!multistepForm.isLastStep) {
-      multistepForm.Continue();
-    } else {
-      // axios.post("api");
-      console.log(data);
+          console.log("Successfully created a new user");
+
+          if (client === POSTER) {
+            router.push(POSTER_URL);
+          } else {
+            router.push(BIDDER_URL);
+          }
+        } else {
+          console.log("There is an issue when sending a message");
+        }
+      } catch (error) {
+        console.log(data);
+        console.error("Error occurs when ", error);
+      }
+    };
+    if (submit) {
+      onFinish();
+      setSubmit(false);
     }
-  }
-
-  function SwitchUser() {
-    setUser((curUser) => {
-      return curUser === POSTER ? BIDDER : POSTER;
-    });
-  }
-
-  function DisplaySwitchText() {
-    return user === POSTER ? BIDDER : POSTER;
-  }
+  }, [submit]);
 
   return (
-    <div className="fixed top-0 flex h-lvh w-full flex-col items-center border-b-8">
-      <form onSubmit={onSubmit} className="relative top-20 h-full w-screen">
-        {multistepForm.step}
-        {multistepForm.stepIdx > 0 && (
-          <div>
-            <Button
-              type="button"
-              onClick={multistepForm.Back}
-              className="fixed left-5 top-10 rounded-lg bg-blue-700"
-            >
-              <Image
-                src={BackArrow}
-                alt="Back Arrow"
-                width={20}
-                height={20}
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
-              />
-            </Button>
-            <Button
-              className="font-bod fixed right-5 top-10 bg-slate-100 font-mono text-2xl text-blue-700"
-              onClick={multistepForm.Continue}
-            >
-              Skip
-            </Button>
+    <div className="relative flex h-screen flex-col items-center justify-center overflow-hidden px-4">
+      <div
+        className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 1 ? "translate-x-0" : "pointer-events-none -translate-x-full opacity-0"}`}
+      >
+        <MainPage
+          emailMobile={emailMobile}
+          currentStep={currentStep}
+          client={client}
+          setCurrentStep={setCurrentStep}
+          setEmailMobile={setEmailMobile}
+          setClient={setClient}
+        />
+      </div>
+      <div
+        className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 2 ? "translate-x-0" : "pointer-events-none translate-x-full opacity-0"}`}
+      >
+        <PW
+          emailMobile={emailMobile}
+          currentStep={currentStep}
+          password={password}
+          setPassword={setPassword}
+          setCurrentStep={setCurrentStep}
+        />
+      </div>
+      {currentStep !== 1 && currentStep !== 2 && (
+        <div className="absolute left-0 right-0 top-[80px] flex flex-col gap-4 p-0">
+          <div className="px-4">
+            <h1 className="title1 text-primary">{title}</h1>
+            {client === POSTER ? (
+              <ProgressBar steps={2} currentStep={currentStep - 2} />
+            ) : (
+              <ProgressBar steps={3} currentStep={currentStep - 2} />
+            )}{" "}
+            {/*We have totally 4 pages for poster, 5 pages for bidder, 2 for register and 2 or 3 for profile filling*/}
           </div>
-        )}
-        <div className="flex justify-center">
-          <Button
-            type={multistepForm.isLastStep ? "submit" : "button"}
-            onClick={multistepForm.Continue}
-            className="mt-10 flex w-10/12 self-center rounded-lg bg-blue-700 text-center font-mono text-2xl font-bold"
-          >
-            {multistepForm.isLastStep ? "Finish" : "Continue"}
-          </Button>
         </div>
-        {multistepForm.isFirstStep && (
-          <div className="flex justify-center">
-            <Button
-              type="button"
-              className="mt-5 flex w-10/12 self-center rounded-lg bg-slate-200 text-center font-mono text-2xl font-bold text-blue-600"
-              onClick={SwitchUser}
-            >
-              Switch to {DisplaySwitchText()}
-            </Button>
-          </div>
-        )}
-      </form>
-      <div className="absolute top-36 w-11/12">
-        {multistepForm.stepIdx !== 0 && (
-          <ProgressBar
-            steps={multistepForm.steps.length}
-            currentStep={multistepForm.stepIdx}
-          />
-        )}
+      )}
+      <div
+        className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 3 ? "translate-x-0" : "pointer-events-none translate-x-full opacity-0"}`}
+      >
+        <Welcome
+          fullName={fullName}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          setFullName={setFullName}
+          setTitle={setTitle}
+        />
+      </div>
+      <div
+        className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 4 ? "translate-x-0" : "pointer-events-none translate-x-full opacity-0"}`}
+      >
+        <Ava
+          profilePhoto={profilePhoto}
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+          setProfilePhoto={setProfilePhoto}
+          client={client}
+          setSubmit={setSubmit}
+          setTitle={setTitle}
+        />
+      </div>
+      <div
+        className={`duration-800 absolute inset-0 transform transition-transform ${currentStep === 5 && client == BIDDER ? "translate-x-0" : "pointer-events-none translate-x-full opacity-0"}`}
+      >
+        <Bio
+          setCurrentStep={setCurrentStep}
+          setTitle={setTitle}
+          currentStep={currentStep}
+          setSubmit={setSubmit}
+          bio={bio}
+          setBio={setBio}
+        />
       </div>
     </div>
   );
-}
+};
 
 export default SignUp;

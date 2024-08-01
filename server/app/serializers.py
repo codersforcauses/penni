@@ -12,6 +12,10 @@ class BidsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bids
         fields = "__all__"
+        extra_kwargs = {
+            "created_at": {"read_only": True},
+            "updated_at": {"read_only": True},
+        }
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

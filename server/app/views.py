@@ -1,9 +1,11 @@
+from rest_framework.views import APIView
+from rest_framework.decorators import action
 from .serializers import BidsSerializer
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
 
 # from rest_framework import permissions
-
+from django.contrib.auth.password_validation import CommonPasswordValidator
+from django.core.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -170,3 +172,56 @@ class RegistrationView(CreateAPIView):
         }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+# class ProfileViewSet(viewsets.ModelViewSet):
+#     queryset = Profiles.objects.all()
+#     serializer_class = ProfleSerializer
+#     parser_classes = (MultiPartParser, FormParser)
+#     permission_classes = [
+#         permissions.IsAuthenticatedOrReadOnly]
+
+#     def perform_create(self, serializer):
+#         serializer.save(author=self.request.user)
+
+
+class UserValidationView(APIView):
+    permission_classes = [AllowAny]
+    # check the unique key email
+
+    def get(self, request):
+        try:
+            email = request.GET.get("email")
+            data = {
+                "email_taken": False,
+            }
+
+            if email and Users.objects.filter(email__iexact=email).exists():
+                data["email_taken"] = True
+                data["email_error_message"] = (
+                    "Email address has been registered, please enter another email"
+                )
+
+            return Response(data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+    # check the password strength
+
+    def post(self, request):
+        try:
+            password = request.data.get("password")
+            if password:
+                validator = CommonPasswordValidator()
+                validator.validate(password)
+                return Response({"valid": True}, status=status.HTTP_200_OK)
+            return Response(
+                {"errors": "empty password"}, status=status.HTTP_400_BAD_REQUEST
+            )
+        except ValidationError as e:
+            return Response(
+                {"valid": False, "errors": e.messages},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
