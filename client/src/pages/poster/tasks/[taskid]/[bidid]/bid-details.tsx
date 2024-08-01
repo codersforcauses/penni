@@ -30,12 +30,6 @@ const BidDetailsPage = () => {
   console.log(bidIdList);
   // update status of task and bid
   const OnClickHire = async (e: any) => {
-    // e["task_id"] = taskid;
-    // e["bidder_id"] = bidid;
-    // e["status"] = "ONGOING";
-
-    // delete e["suburb"]; // API miss this field
-    // delete e["state"]; // API miss this field
     try {
       const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
         task_id: taskid,
@@ -58,6 +52,7 @@ const BidDetailsPage = () => {
     } catch (error) {
       console.error("Error during update:", error);
     }
+    alert("Bid hired successfully");
     router.push(`/poster/tasks/${taskid}/task-details`);
     // router.push(`/poster/payment`); //link to payment detail page
   };
@@ -69,7 +64,7 @@ const BidDetailsPage = () => {
         <Button
           size="penni"
           onClick={OnClickHire}
-          className="absolute -bottom-4 w-full"
+          className="absolute bottom-4 w-full"
         >
           Hire for {bidInfo.price}
         </Button>
