@@ -24,6 +24,7 @@ const BidDetailsPage = () => {
   if (taskLoading) return <div>Loading...</div>;
   if (taskError) return <div>Error: {taskError}</div>;
   const bidInfo = task.bids.find((bid: any) => bid.bid_id === bidid);
+  console.log(bidInfo);
   const bidIdList = task.bids.map((bid: any) => bid.bid_id);
   // update status of task and bid
   const OnClickHire = async (e: any) => {

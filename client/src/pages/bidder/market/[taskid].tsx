@@ -72,8 +72,6 @@ export default function TaskDetailPage() {
   if (taskError) return <div>TaskError: {taskError}</div>;
   const myBid = task.bids.find((bid: any) => bid.bidder_id === userId);
   console.log("myBid:", myBid);
-  console.log(myBid == undefined);
-  console.log(myBid != undefined);
 
   const onSubmitOffer = async () => {
     try {

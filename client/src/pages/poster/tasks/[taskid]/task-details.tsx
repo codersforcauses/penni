@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import BidDetail from "@/components/ui/bidder/bid-detail";
 import { Button } from "@/components/ui/button";
 import { PayCallout } from "@/components/ui/callout";
+import { Option } from "@/components/ui/card";
 import Header from "@/components/ui/header";
 import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import TaskDetails from "@/components/ui/task-details";
@@ -100,10 +101,22 @@ export default function TaskDetailsPage() {
 
   const onClickPay = async (e: any) => {
     try {
+      const newOfferPrice =
+        parseFloat(hiredBid.price) + parseFloat(hiredBid.tips);
+
       const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
         task_id: taskid,
         status: "ONGOING",
       });
+      const response2 = await axiosInstance.patch(
+        `/app/bids/${hiredBid.bid_id}/`,
+        {
+          bid_id: hiredBid.bid_id,
+          tips: "0", // the best way maybe is add a new field to check if tip is paid
+          price: `${newOfferPrice}`,
+          status: hiredBid.status,
+        },
+      );
       console.log("Update successful:", response1.data);
     } catch (error) {
       console.error("Error during update:", error);
@@ -161,10 +174,50 @@ export default function TaskDetailsPage() {
     },
     { name: "Task details", content: taskDetail },
   ];
+  const [optionVisible, setOptionVisible] = useState(false);
+
+  const handleCancelTask = async (e: any) => {
+    try {
+      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
+        task_id: taskid,
+        status: "CANCELLED",
+      });
+      let response2;
+      let deleteBid: any;
+      for (deleteBid in task.bids) {
+        response2 = await axiosInstance.patch(
+          `/app/bids/${deleteBid.bid_id}/`,
+          {
+            bid_id: deleteBid.bid_id,
+            status: "EXPIRED",
+          },
+        );
+      }
+      console.log("Update successful:");
+      router.push("/poster"); // better to add alert then push
+    } catch (error) {
+      console.error("Error during update:", error);
+    }
+  };
+
   return (
     <div>
-      <Header title={task.title} className="sticky top-0 z-10 w-full" />
+      {hiredBid == undefined ? (
+        <Header
+          title={task.title}
+          className="sticky top-0 z-10 w-full"
+          hideOptionButton={false}
+          onClickOption={() => setOptionVisible(!optionVisible)}
+        />
+      ) : (
+        <Header title={task.title} className="sticky top-0 z-10 w-full" />
+      )}
       <TopNavtab tabs={tabData} />
+      <Option
+        isVisible={optionVisible}
+        onClose={() => setOptionVisible(!optionVisible)}
+        onClickCancelTask={() => handleCancelTask} // miss duplicate
+      />
     </div>
   );
 }
