@@ -36,17 +36,6 @@ export default function BidDetail({ bidid }: BidDetailProps) {
   if (bidError) return <div>Error: {bidError}</div>;
   if (profilesError) return <div>Error: {profilesError}</div>;
 
-  // if (typeof bidid != "string") {
-  //   return <div>Loading...</div>;
-  // } else {
-  //   const bidInfo = bid.data.filter(
-  //     (bid: any) => bid.bid_id === parseInt(bidid),
-  //   )[0];
-  //   // filter profile of this bidder
-  //   // const bidderProfile = profiles.filter(
-  //   //   (profile: any) => profile.user_id === parseInt(bidderid),
-  //   // )[0];
-
   bidInfo["avatar_url"] = ""; // source of img has error. needs to change to bidderProfile.avatar_url later
   bidInfo["username"] = bidderProfile.username;
   bidInfo["bio"] = bidderProfile.bio;
