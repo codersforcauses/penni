@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
 
 import { Button } from "@/components/ui/button";
 
@@ -9,6 +9,8 @@ interface HeaderProps {
   title: string; // Prop to pass the title of the header
   className?: string; // Optional prop to pass extra classnames to the main div
   hideBackButton?: boolean; // Optional prop to hide the back button
+  hideOptionButton?: boolean; // Optional prop to hide the option button
+  onClickOption?: () => void;
 }
 
 /**
@@ -27,6 +29,8 @@ export default function Header({
   title,
   className,
   hideBackButton = false,
+  hideOptionButton = true,
+  onClickOption,
 }: HeaderProps) {
   const router = useRouter();
 
@@ -50,6 +54,23 @@ export default function Header({
         </Button>
       )}
       <h2 className="body-medium">{title}</h2>
+      {!hideOptionButton && (
+        <div
+          className="absolute right-4 cursor-pointer"
+          onClick={onClickOption}
+        >
+          <Image
+            src="/icons/more-horizontal.svg"
+            alt="More options"
+            width={24}
+            height={24}
+            style={{
+              maxWidth: "100%",
+              height: "auto",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

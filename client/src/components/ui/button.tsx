@@ -21,6 +21,7 @@ const buttonVariants = cva(
         finish: `bg-penni-grey-finished text-penni-text-finish body-medium rounded-penni-special`,
         cutout: `bg-white text-penni-main headline border border-2 border-penni-main rounded-lg border-solid`,
         filecard: `bg-penni-background-file-card text-primary opacity-60 rounded-penni-select body-medium `,
+        optioncard: `bg-penni-background-file-card text-penni-text-regular-light-mode  rounded-penni-select body-medium `,
       },
       size: {
         default: "h-10 px-4 py-2",

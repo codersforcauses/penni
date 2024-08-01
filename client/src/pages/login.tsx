@@ -1,4 +1,5 @@
 import axios from "axios";
+import jwt from "jsonwebtoken";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -7,11 +8,13 @@ import { Button } from "@/components/ui/button";
 import { ErrorCallout } from "@/components/ui/callout";
 import { Form, FormData } from "@/components/ui/form";
 import { SingleLineInput } from "@/components/ui/inputs";
-import { LocalBaseURL } from "@/lib/api";
+import { axiosInstance, LocalBaseURL } from "@/lib/api";
 
+// can only sign in with email for now bc this is what the db is designed
 export default function SignIn() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const LOGIN_URL = LocalBaseURL.concat("/app/login/");
+  const [isPoster, setIsPoster] = useState(false);
+  const LOGIN_URL = LocalBaseURL.concat("/app/token/");
   const router = useRouter();
 
   const handleLogin = async (formData: FormData) => {
@@ -32,13 +35,20 @@ export default function SignIn() {
         email,
         password,
       });
-      const { token } = response.data;
+      const token = response.data.access;
 
       // Store the token in localStorage
       localStorage.setItem("token", token);
+      // const decoded = jwt.decode(token) as { user_id: string };
+      // const userid = decoded.user_id;
+      // const response2 = await axiosInstance.get(`/app/users/${userid}/`);
+      // const isPoster = response2.data.is_poster;
 
-      console.log("Login successful");
-      router.push("/poster");
+      if (isPoster) {
+        router.push("/poster");
+      } else {
+        router.push("/bidder");
+      }
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -107,8 +117,16 @@ export default function SignIn() {
             {errorMessage && (
               <ErrorCallout className="pb-4" text={errorMessage} />
             )}
+
+            <Button
+              type="submit"
+              size="penni"
+              onClick={() => setIsPoster(true)}
+            >
+              <span className="headline">Poster Login</span>
+            </Button>
             <Button type="submit" size="penni">
-              <span className="headline">Login</span>
+              <span className="headline">Bidder Login</span>
             </Button>
           </Form>
         </div>

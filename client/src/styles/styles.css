@@ -89,6 +89,12 @@ body {
   animation: slide-up 0.3s ease-out;
 }
 
+/* Card Container */
+.option-container {
+  @apply fixed bottom-4 left-1/2 w-full -translate-x-1/2 transform rounded-t-lg bg-transparent shadow-lg;
+  animation: slide-up 0.3s ease-out;
+}
+
 /* Card */
 .card {
   @apply relative p-4;

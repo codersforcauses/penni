@@ -30,7 +30,7 @@ const MarketPage: NextPageWithLayout = () => {
       </BottomNav>
     );
   const taskList = tasks.filter(
-    (task: any) => task.status === "open", // now the task api doesn't have correct status "BIDDING", need to change later
+    (task: any) => task.status === "BIDDING", // now the task api doesn't have correct status "BIDDING", need to change later
   );
   const categories = ["All Category"].concat(
     Array.from(new Set(taskList.map((task: any) => task.category))),
@@ -68,7 +68,7 @@ const MarketPage: NextPageWithLayout = () => {
               title={task.title}
               category={task.category}
               date={task.deadline.slice(0, 10)}
-              location={task.location}
+              location={`${task.location.suburb}, ${task.location.state}`}
               duration={task.estimated_time}
               estimatePrice={task.budget}
               priceType="Estimated Price"

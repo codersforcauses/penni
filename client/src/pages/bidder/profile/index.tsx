@@ -16,13 +16,13 @@ import ProfileTag from "../../../components/ui/profile-tags";
 
 const BidderProfilePage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  // const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decoded = jwt.decode(token) as { email: string; user_id: string };
-      setEmail(decoded.email);
+      const decoded = jwt.decode(token) as { user_id: string };
+      // setEmail(decoded.email);
       setUserId(decoded.user_id);
     } else {
       console.error("No token found");
@@ -32,7 +32,7 @@ const BidderProfilePage: React.FC = () => {
     data: user,
     loading: userLoading,
     error: userError,
-  } = useFetchData(`/app/profiles/${userId}/`, true);
+  } = useFetchData(userId ? `/app/users/${userId}/` : null, Boolean(userId));
   if (userLoading)
     return (
       <BottomNav>
@@ -51,10 +51,10 @@ const BidderProfilePage: React.FC = () => {
       <div className="mt-20 flex flex-col items-center">
         <PersonImg personImg="/penni-logo.svg" size={120} />
         <p className="mt-4 text-t3 font-semibold text-penni-text-regular-light-mode">
-          {user.full_name}
+          {user.username}
         </p>
         <p className="text-sh font-normal text-penni-text-secondary-light-mode">
-          {email}
+          {user.email}
         </p>
       </div>
       <div className="mt-6">

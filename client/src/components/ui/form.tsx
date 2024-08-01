@@ -23,7 +23,7 @@ interface FormProps {
 
 // Each field is returned by form as a name-value pair
 export interface FormData {
-  [name: string]: string;
+  [name: string]: string | object;
 }
 
 /**

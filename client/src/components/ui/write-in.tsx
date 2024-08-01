@@ -85,7 +85,7 @@ export default function WriteIn({
           id="subject"
           name="subject"
           placeholder="Subject"
-          className="w-full px-2 py-4 text-penni-text-regular-light-mode"
+          className="w-full px-2 py-4 text-penni-text-regular-light-mode focus:outline-none"
           value={formData.subject}
           onChange={handleChange}
         />
@@ -96,7 +96,7 @@ export default function WriteIn({
           id="description"
           name="description"
           placeholder="Description"
-          className="w-full flex-grow resize-none px-2 py-4 text-penni-text-regular-light-mode"
+          className="w-full flex-grow resize-none px-2 py-4 text-penni-text-regular-light-mode focus:outline-none"
           value={formData.description}
           onChange={handleChange}
         />

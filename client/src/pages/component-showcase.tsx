@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   ErrorCallout,
   InfoCallout,
+  PayCallout,
   SuccessCallout,
   WarningCallout,
 } from "@/components/ui/callout";
@@ -120,6 +121,7 @@ export default function ComponentShowcase() {
             <SuccessCallout text="Success callout" />,
             <WarningCallout text="Warning callout" />,
             <ErrorCallout text="Error callout" />,
+            <PayCallout text="Error callout" colour="penni-main" />,
           ].map((callout, index) => {
             return (
               <div key={index} className="w-full px-4 py-3">
