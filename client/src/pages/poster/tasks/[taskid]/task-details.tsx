@@ -1,12 +1,16 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
+import BidDetail from "@/components/ui/bidder/bid-detail";
+import { Button } from "@/components/ui/button";
+import { PayCallout } from "@/components/ui/callout";
 import Header from "@/components/ui/header";
 import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import TaskDetails from "@/components/ui/task-details";
 import TopNavtab from "@/components/ui/top-navtab";
 import useFetchData from "@/hooks/use-fetch-data";
 import useUserId from "@/hooks/use-user-id";
+import { axiosInstance } from "@/lib/api";
 
 export default function TaskDetailsPage() {
   const router = useRouter();
@@ -49,6 +53,9 @@ export default function TaskDetailsPage() {
       bio: bidder?.bio,
     };
   });
+  console.log(tasks);
+  const hiredBid = tasks.filter((bid: any) => bid.status === "ONGOING")[0];
+  console.log(hiredBid);
 
   const handleOnClick = (task: any) => {
     router.push(`/poster/tasks/${task.task_id}/${task.bid_id}/bid-details`);
@@ -70,6 +77,66 @@ export default function TaskDetailsPage() {
       ))}
     </div>
   );
+
+  const OnClickEnd = async (e: any) => {
+    try {
+      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
+        task_id: taskid,
+        status: "COMPLETED",
+      });
+      const response2 = await axiosInstance.patch(
+        `/app/bids/${hiredBid.bid_id}/`,
+        {
+          bid_id: hiredBid.bid_id,
+          status: "COMPLETED",
+        },
+      );
+
+      console.log("Update successful:", response1.data, response2.data);
+    } catch (error) {
+      console.error("Error during update:", error);
+    }
+  };
+
+  const onClickPay = async (e: any) => {
+    try {
+      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
+        task_id: taskid,
+        status: "ONGOING",
+      });
+      console.log("Update successful:", response1.data);
+    } catch (error) {
+      console.error("Error during update:", error);
+    }
+
+    // router.push(`/poster/payment`); //link to payment detail page
+  };
+
+  const bidderInfo = (
+    <div className="p-4">
+      {hiredBid != undefined && (
+        <>
+          {hiredBid.tips != "" && (
+            <PayCallout
+              text={`Request from Jackson for extra charge: $${hiredBid.tips}`}
+              onClick={onClickPay}
+            />
+          )}
+          <BidDetail bidid={hiredBid.bid_id} />
+          <p className="body-medium">Price: {hiredBid.price}</p>
+          <div className="absolute -bottom-4 flex flex-col gap-4">
+            <Button size="penni" variant="cutout">
+              Contact
+            </Button>
+            <Button size="penni" onClick={OnClickEnd}>
+              End Task
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
   // task detail
   const taskData = {
     category: task?.category,
@@ -88,7 +155,10 @@ export default function TaskDetailsPage() {
   );
 
   const tabData = [
-    { name: "Bidder Offers", content: bidderCards },
+    {
+      name: "Bidder Offers",
+      content: hiredBid == undefined ? bidderCards : bidderInfo,
+    },
     { name: "Task details", content: taskDetail },
   ];
   return (

@@ -1,3 +1,4 @@
+import { Button } from "./button";
 import { EditIcon, InfoIcon } from "./icons";
 
 interface CalloutProps {
@@ -8,7 +9,7 @@ interface CalloutProps {
 }
 
 interface GenericCalloutProps extends CalloutProps {
-  colour: string;
+  colour?: string;
 }
 
 function GenericCallout({
@@ -36,6 +37,35 @@ function GenericCallout({
             <EditIcon strokeColour={colour} />
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+//the color of the icon cannot be changed to penni-main
+export function PayCallout({
+  text,
+  colour = "penni-main",
+  onClick,
+  className,
+}: GenericCalloutProps) {
+  return (
+    <div
+      className={`${className} ${onClick ? "hover:cursor-pointer" : ""}`}
+      onClick={onClick}
+    >
+      <div
+        className={`flex h-14 w-full flex-row items-center rounded-penni-border bg-${colour} bg-opacity-5 p-4`}
+      >
+        <div className="mr-4 size-6">
+          <InfoIcon strokeColour="penni-text-regular-light-mode" />
+        </div>
+        <span className={`w-full text-sm font-medium text-${colour}`}>
+          {text}
+        </span>
+        <Button size="pay" variant="pay" onClick={() => onClick}>
+          Pay
+        </Button>
       </div>
     </div>
   );

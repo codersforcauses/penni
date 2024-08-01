@@ -90,13 +90,13 @@ export default function TaskDetailPage() {
     setIsCardVisible(!isCardVisible);
     setIsOfferVisible(true);
   };
+
   const onSubmitEdit = async () => {
     try {
       const response = await axiosInstance.patch(`/app/bids/${myBid.bid_id}/`, {
         bid_id: myBid.bid_id,
-        // task_id: taskId,
-        // bidder_id: userId,
         price: offerValue,
+        status: myBid.status,
       });
     } catch (error: any) {
       console.error("Unexpected error:", error.message);
@@ -105,18 +105,15 @@ export default function TaskDetailPage() {
     setIsCardVisible(!isCardVisible);
     setIsOfferVisible(true);
   };
+
   const onSubmitTip = async () => {
     try {
-      const bid = task.bids.filter((bid: any) => bid.bidder_id === userId)[0];
-      const orginalOffer = bid.price;
-      const newOffer = orginalOffer + extraOffer;
       const response1 = await axiosInstance.patch(
         `/app/bids/${myBid.bid_id}/`,
         {
           bid_id: myBid.bid_id,
-          task_id: taskId,
-          // bidder_id: userId,
-          price: newOffer,
+          tips: extraOffer,
+          status: myBid.status,
         },
       );
       const response2 = await axiosInstance.patch(`/app/tasks/${taskId}/`, {
@@ -159,13 +156,11 @@ export default function TaskDetailPage() {
         )}
       {myBid != undefined ? (
         myBid.status === "ONGOING" || myBid.status === "COMPLETED" ? (
-          isOfferVisible && (
-            <MyOffer
-              text="Request for extra charge"
-              value={extraOffer == "" ? "0" : extraOffer}
-              onClick={toggleCardVisibility}
-            />
-          )
+          <MyOffer
+            text="Request for extra charge"
+            value={extraOffer == "" ? myBid.tips : extraOffer}
+            onClick={toggleCardVisibility}
+          />
         ) : (
           <MyOffer
             text="My Offer"
