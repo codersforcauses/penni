@@ -32,7 +32,7 @@ const BidderProfilePage: React.FC = () => {
     data: user,
     loading: userLoading,
     error: userError,
-  } = useFetchData(`/app/users/${userId}/`, true);
+  } = useFetchData(userId ? `/app/users/${userId}/` : null, Boolean(userId));
   if (userLoading)
     return (
       <BottomNav>
@@ -51,7 +51,7 @@ const BidderProfilePage: React.FC = () => {
       <div className="mt-20 flex flex-col items-center">
         <PersonImg personImg="/penni-logo.svg" size={120} />
         <p className="mt-4 text-t3 font-semibold text-penni-text-regular-light-mode">
-          {user.full_name}
+          {user.username}
         </p>
         <p className="text-sh font-normal text-penni-text-secondary-light-mode">
           {user.email}

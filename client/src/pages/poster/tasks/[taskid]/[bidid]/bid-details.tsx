@@ -23,9 +23,11 @@ const BidDetailsPage = () => {
   } = useFetchData(`/app/tasks/${taskid}/`, queryReady);
   if (taskLoading) return <div>Loading...</div>;
   if (taskError) return <div>Error: {taskError}</div>;
-  const bidInfo = task.bids.find((bid: any) => bid.bid_id === bidid);
-  console.log(bidInfo);
+
+  const bidInfo = task.bids.find((bid: any) => bid.bid_id == bidid);
+
   const bidIdList = task.bids.map((bid: any) => bid.bid_id);
+  console.log(bidIdList);
   // update status of task and bid
   const OnClickHire = async (e: any) => {
     // e["task_id"] = taskid;
@@ -45,8 +47,8 @@ const BidDetailsPage = () => {
       });
 
       for (const id in bidIdList) {
-        if (id != bidid) {
-          await axiosInstance.patch(`/app/bids/${id}/`, {
+        if (bidIdList[id] != bidid) {
+          await axiosInstance.patch(`/app/bids/${bidIdList[id]}/`, {
             bid_id: bidid,
             status: "EXPIRED",
           });
@@ -56,12 +58,12 @@ const BidDetailsPage = () => {
     } catch (error) {
       console.error("Error during update:", error);
     }
-
+    router.push(`/poster/tasks/${taskid}/task-details`);
     // router.push(`/poster/payment`); //link to payment detail page
   };
   return (
-    <div className="w-screenbg-green-400 h-lvh">
-      <Header title="Bid Details" className="sticky top-0 z-10 w-full" />
+    <div className="h-lvh w-screen">
+      <Header title="Bid Details" className="sticky top-0 z-10" />
       <div className="p-4">
         {typeof bidid === "string" && <BidDetail bidid={bidid} />}
         <Button

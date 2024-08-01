@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { PayCallout } from "@/components/ui/callout";
 import { Option } from "@/components/ui/card";
 import Header from "@/components/ui/header";
+import PersonDetail from "@/components/ui/person-detail";
 import BidderOfferCard from "@/components/ui/poster/bidder-offer-card";
 import TaskDetails from "@/components/ui/task-details";
+import { Heading, Paragraph, Subheading } from "@/components/ui/text";
 import TopNavtab from "@/components/ui/top-navtab";
 import useFetchData from "@/hooks/use-fetch-data";
 import useUserId from "@/hooks/use-user-id";
@@ -17,16 +19,8 @@ export default function TaskDetailsPage() {
   const router = useRouter();
   const { taskid } = router.query;
   const queryReady = typeof taskid === "string";
-  // const { userId, loading: userIdLoading, error: userIdError } = useUserId();
-  // const {
-  //   data: user,
-  //   loading: userLoading,
-  //   error: userError,
-  // } = useFetchData(`/app/users/${userId}/`, !!userId);
+  const [optionVisible, setOptionVisible] = useState(false);
 
-  // if (userIdLoading || userLoading) return <div>Loading...</div>;
-  // if (userIdError || userError)
-  //   return <div>Error: {userIdError || userError}</div>;
   const {
     data: task,
     loading: taskLoading,
@@ -50,24 +44,28 @@ export default function TaskDetailsPage() {
     return {
       ...bid,
       avatar_url: "", // src has issue, need to change to bidder?.avatar_url later
-      full_name: bidder?.full_name,
+      username: bidder?.username,
       bio: bidder?.bio,
     };
   });
   console.log(tasks);
-  const hiredBid = tasks.filter((bid: any) => bid.status === "ONGOING")[0];
+  const hiredBid = tasks.filter(
+    (bid: any) => bid.status === "ONGOING" || bid.status === "COMPLETED",
+  )[0];
+
   console.log(hiredBid);
 
   const handleOnClick = (task: any) => {
     router.push(`/poster/tasks/${task.task_id}/${task.bid_id}/bid-details`);
   };
+  console.log(tasks.length);
   const bidderCards = (
     <div>
       {tasks.map((task: any, id: number) => (
         <div key={id}>
           <BidderOfferCard
             profile={task.avatar_url}
-            name={task.full_name}
+            name={task.username}
             price={task.price}
             bio={task.bio}
             onClick={() => {
@@ -78,6 +76,8 @@ export default function TaskDetailsPage() {
       ))}
     </div>
   );
+
+  const noBidder = <div>No bidder offers for now</div>;
 
   const OnClickEnd = async (e: any) => {
     try {
@@ -97,6 +97,8 @@ export default function TaskDetailsPage() {
     } catch (error) {
       console.error("Error during update:", error);
     }
+    alert("Task ended successfully");
+    router.push(`/poster`);
   };
 
   const onClickPay = async (e: any) => {
@@ -121,23 +123,23 @@ export default function TaskDetailsPage() {
     } catch (error) {
       console.error("Error during update:", error);
     }
-
+    alert("Tips paid successfully");
     // router.push(`/poster/payment`); //link to payment detail page
   };
 
   const bidderInfo = (
-    <div className="p-4">
+    <div>
       {hiredBid != undefined && (
         <>
-          {hiredBid.tips != "" && (
+          {hiredBid.tips != "0" && (
             <PayCallout
               text={`Request from Jackson for extra charge: $${hiredBid.tips}`}
               onClick={onClickPay}
             />
           )}
           <BidDetail bidid={hiredBid.bid_id} />
-          <p className="body-medium">Price: {hiredBid.price}</p>
-          <div className="absolute -bottom-4 flex flex-col gap-4">
+          <p className="body-medium mt-4">Price: {hiredBid.price}</p>
+          <div className="mt-12 flex w-full flex-col gap-4">
             <Button size="penni" variant="cutout">
               Contact
             </Button>
@@ -167,6 +169,30 @@ export default function TaskDetailsPage() {
     </div>
   );
 
+  const handleCancelTask = async (e: any) => {
+    try {
+      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
+        task_id: taskid,
+        status: "CANCELLED",
+      });
+
+      const bidPromises = task.bids.map((bid: any) =>
+        axiosInstance.patch(`/app/bids/${bid.bid_id}/`, {
+          bid_id: bid.bid_id,
+          status: "EXPIRED",
+        }),
+      );
+      await Promise.all(bidPromises);
+      console.log("Bids updated to expired.");
+
+      alert("Task cancelled successfully");
+
+      router.push("/poster");
+    } catch (error) {
+      console.error("Error during update:", error);
+    }
+  };
+
   const tabData = [
     {
       name: "Bidder Offers",
@@ -174,49 +200,54 @@ export default function TaskDetailsPage() {
     },
     { name: "Task details", content: taskDetail },
   ];
-  const [optionVisible, setOptionVisible] = useState(false);
 
-  const handleCancelTask = async (e: any) => {
-    try {
-      const response1 = await axiosInstance.patch(`/app/tasks/${taskid}/`, {
-        task_id: taskid,
-        status: "CANCELLED",
-      });
-      let response2;
-      let deleteBid: any;
-      for (deleteBid in task.bids) {
-        response2 = await axiosInstance.patch(
-          `/app/bids/${deleteBid.bid_id}/`,
-          {
-            bid_id: deleteBid.bid_id,
-            status: "EXPIRED",
-          },
-        );
-      }
-      console.log("Update successful:");
-      router.push("/poster"); // better to add alert then push
-    } catch (error) {
-      console.error("Error during update:", error);
-    }
-  };
+  const tabNoData = [
+    {
+      name: "Bidder Offers",
+      content: hiredBid == undefined ? noBidder : bidderInfo,
+    },
+    { name: "Task details", content: taskDetail },
+  ];
 
   return (
     <div>
-      {hiredBid == undefined ? (
-        <Header
-          title={task.title}
-          className="sticky top-0 z-10 w-full"
-          hideOptionButton={false}
-          onClickOption={() => setOptionVisible(!optionVisible)}
-        />
-      ) : (
-        <Header title={task.title} className="sticky top-0 z-10 w-full" />
+      <div>
+        {hiredBid == undefined ||
+        (hiredBid != undefined && hiredBid.status != "COMPLETED") ? (
+          <div>
+            <Header
+              title={task.title}
+              className="sticky top-0 z-10 w-full"
+              hideOptionButton={false}
+              onClickOption={() => setOptionVisible(!optionVisible)}
+            />
+            <TopNavtab tabs={tasks.length == 0 ? tabNoData : tabData} />
+          </div>
+        ) : (
+          <Header title={task.title} className="sticky top-0 z-10 w-full" />
+        )}
+      </div>
+      {hiredBid != undefined && hiredBid.status == "COMPLETED" && (
+        <div className="p-4">
+          <TaskDetails data={taskData} />
+          <div className="flex flex-col gap-4">
+            <p className="body-medium mt-8">Poster Details</p>
+            <PersonDetail
+              personImg={hiredBid.avatar_url} // {profile.avatar_url}
+              personName={hiredBid.username}
+            />
+          </div>
+          <p className="mb-8">{hiredBid.bio}</p>
+          <Heading text="Payment"></Heading>
+          <Subheading text="Price">
+            <Paragraph text={hiredBid.price} />
+          </Subheading>
+        </div>
       )}
-      <TopNavtab tabs={tabData} />
       <Option
         isVisible={optionVisible}
         onClose={() => setOptionVisible(!optionVisible)}
-        onClickCancelTask={() => handleCancelTask} // miss duplicate
+        onClickCancelTask={handleCancelTask} // miss duplicate
       />
     </div>
   );

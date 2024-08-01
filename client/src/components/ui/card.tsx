@@ -12,8 +12,8 @@ interface CardProps {
 interface OptionProps {
   isVisible: boolean;
   onClose: () => void;
-  onClickCancelTask?: () => void;
-  onClickDuplicate?: () => void;
+  onClickCancelTask?: (e: any) => Promise<void>;
+  onClickDuplicate?: (e: any) => Promise<void>;
 }
 
 /**

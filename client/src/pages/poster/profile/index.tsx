@@ -16,9 +16,6 @@ import ProfileTag from "../../../components/ui/profile-tags";
 
 const PosterProfilePage: React.FC = () => {
   const [userId, setUserId] = useState<string | null>(null);
-  const [userLoading, setUserLoading] = useState<boolean>(true);
-  const [userError, setUserError] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -30,30 +27,21 @@ const PosterProfilePage: React.FC = () => {
     }
   }, []);
 
-  const { data, loading, error } = useFetchData(
-    `/app/users/${userId}/`,
-    userId !== null,
-  );
-
-  useEffect(() => {
-    if (!loading && !error && data) {
-      setUser(data);
-      setUserLoading(false);
-    } else if (error) {
-      setUserError(error);
-      setUserLoading(false);
-    }
-  }, [loading, error, data]);
-
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useFetchData(userId ? `/app/users/${userId}/` : null, Boolean(userId));
   if (userLoading) return <div>Loading...</div>;
   if (userError) return <div>Error: {userError}</div>;
+
   // img src needs to change to user.avatar_url later
   return (
     <div className="m-0">
       <div className="mt-20 flex flex-col items-center">
         <PersonImg personImg="" size={120} />
         <p className="mt-4 text-t3 font-semibold text-penni-text-regular-light-mode">
-          {user.full_name}
+          {user.username}
         </p>
         <p className="text-sh font-normal text-penni-text-secondary-light-mode">
           {user.email}

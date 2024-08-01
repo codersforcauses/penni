@@ -20,13 +20,16 @@ export default function BidDetail({ bidid }: BidDetailProps) {
     data: bidInfo,
     loading: bidLoading,
     error: bidError,
-  } = useFetchData(`/app/bid/${bidid}/`, queryReady);
+  } = useFetchData(`/app/bids/${bidid}/`, queryReady);
   // Fetch profile
   const {
     data: bidderProfile,
     loading: profilesLoading,
     error: profilesError,
-  } = useFetchData(`/app/users/${bidInfo.bidder_id}/`, true);
+  } = useFetchData(
+    bidInfo ? `/app/users/${bidInfo.bidder_id}/` : null,
+    Boolean(bidInfo),
+  );
 
   if (bidLoading || profilesLoading) return <div>Loading...</div>;
 
@@ -45,13 +48,13 @@ export default function BidDetail({ bidid }: BidDetailProps) {
   //   // )[0];
 
   bidInfo["avatar_url"] = ""; // source of img has error. needs to change to bidderProfile.avatar_url later
-  bidInfo["full_name"] = bidderProfile.full_name;
+  bidInfo["username"] = bidderProfile.username;
   bidInfo["bio"] = bidderProfile.bio;
 
   return (
-    <div className="absolute flex h-5/6 w-full flex-col border-t border-penni-grey-border-light-mode">
+    <div className="flex w-full flex-col border-t border-penni-grey-border-light-mode">
       <PersonDetail
-        personName={bidInfo.full_name}
+        personName={bidInfo.username}
         personImg={bidInfo.avatar_url}
       />
       <p className="mt-4">{bidInfo.bio}</p>
