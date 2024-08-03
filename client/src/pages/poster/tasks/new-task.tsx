@@ -26,7 +26,6 @@ export default function NewTask() {
     e["location"] = {
       suburb: e.suburb,
       state: e.suburb,
-      task: 0, // pk errors here!!!!
     };
     delete e["suburb"]; // API miss this field
     delete e["state"]; // API miss this field
@@ -56,26 +55,49 @@ export default function NewTask() {
             name="category"
             label="Task Category"
             options={["Cleaning", "Delivery", "Handyman", "Moving"]}
+            required={true}
           />
-          <SingleLineInput name="title" label="Task Title" type="text" />
+          <SingleLineInput
+            name="title"
+            label="Task Title"
+            type="text"
+            required={true}
+          />
           <SingleLineInput
             name="estimated_time"
             label="Estimated Time"
             type="text"
           />
-          <SingleLineInput name="budget" label="Estimated Price" type="price" />
+          <SingleLineInput
+            name="budget"
+            label="Estimated Price"
+            type="price"
+            required={true}
+          />
           <h1 className={headingStyle}>Date and Location</h1>
-          <SingleLineInput name="deadline" label="Select a date" type="date" />
-          <SingleLineInput name="suburb" label="Suburb" type="text" />
+          <SingleLineInput
+            name="deadline"
+            label="Select a date"
+            type="date"
+            required={true}
+          />
+          <SingleLineInput
+            name="suburb"
+            label="Suburb"
+            type="text"
+            required={true}
+          />
           <DropdownInput
             name="state"
             label="State"
             options={["VIC", "NSW", "QLD", "NT", "WA", "SA", "TAS", "ACT"]}
+            required={true}
           />
           <h1 className={headingStyle}>Task Details</h1>
           <ParagraphInput
             name="description"
             placeholder="What is your task about?"
+            required={true}
           />
           <Button
             variant="default"

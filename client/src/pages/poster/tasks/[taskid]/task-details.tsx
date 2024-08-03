@@ -184,12 +184,34 @@ export default function TaskDetailsPage() {
       );
       await Promise.all(bidPromises);
       console.log("Bids updated to expired.");
-
       alert("Task cancelled successfully");
-
       router.push("/poster");
     } catch (error) {
       console.error("Error during update:", error);
+    }
+  };
+
+  const handleDuplicateTask = async (e: any) => {
+    const duplicateData = {
+      location: {
+        suburb: task.location.suburb,
+        state: task.location.state,
+      },
+      title: task.title,
+      category: task.category,
+      description: task.description,
+      budget: task.budget,
+      estimated_time: task.estimated_time,
+      deadline: task.deadline,
+      status: task.status,
+      poster_id: task.poster_id,
+    };
+    try {
+      const response = await axiosInstance.post(`/app/tasks/`, duplicateData);
+      alert("Task duplicated successfully");
+      router.push("/poster");
+    } catch (error) {
+      console.error("Error during duplicate:", error);
     }
   };
 
@@ -233,7 +255,7 @@ export default function TaskDetailsPage() {
           <div className="flex flex-col gap-4">
             <p className="body-medium mt-8">Poster Details</p>
             <PersonDetail
-              personImg={hiredBid.avatar_url} // {profile.avatar_url}
+              personImg={hiredBid.avatar_url}
               personName={hiredBid.username}
             />
           </div>
@@ -247,7 +269,8 @@ export default function TaskDetailsPage() {
       <Option
         isVisible={optionVisible}
         onClose={() => setOptionVisible(!optionVisible)}
-        onClickCancelTask={handleCancelTask} // miss duplicate
+        onClickCancelTask={handleCancelTask}
+        onClickDuplicate={handleDuplicateTask}
       />
     </div>
   );

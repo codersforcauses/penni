@@ -110,7 +110,7 @@ export function Option({
           </Button>
           <hr className="h-px w-full" />
           <Button size="penni" variant="optioncard" onClick={onClickDuplicate}>
-            Duplicate
+            Duplicate Task
           </Button>
         </div>
         <Button size="penni" variant="optioncard" onClick={onClose}>
