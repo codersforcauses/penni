@@ -27,7 +27,7 @@ If you're in the dev container, this should be done already. You can run `poetry
 
 ### Editing Docker stuff
 
-If you modify anything in the `docker` folder, you need to add the `--build` flag or Docker won't give you the latest changes.
+If you modify anything in the `docker` folder or add any dependencies, you need to add the `--build` flag (`docker compose up --build`) or Docker won't give you the latest changes.
 
 ### Custom env vars
 
