@@ -26,7 +26,6 @@ export default function NewTask() {
     e["location"] = {
       suburb: e.suburb,
       state: e.suburb,
-      task: 0, // pk errors here!!!!
     };
     delete e["suburb"]; // API miss this field
     delete e["state"]; // API miss this field

@@ -192,21 +192,22 @@ export default function TaskDetailsPage() {
   };
 
   const handleDuplicateTask = async (e: any) => {
+    const duplicateData = {
+      location: {
+        suburb: task.location.suburb,
+        state: task.location.state,
+      },
+      title: task.title,
+      category: task.category,
+      description: task.description,
+      budget: task.budget,
+      estimated_time: task.estimated_time,
+      deadline: task.deadline,
+      status: task.status,
+      poster_id: task.poster_id,
+    };
     try {
-      const response1 = await axiosInstance.post(`/app/tasks/`, {
-        location: {
-          suburb: task.suburb,
-          state: task.state,
-        },
-        title: task.title,
-        category: task.category,
-        description: task.description,
-        budget: task.budget,
-        estimated_time: task.estimated_time,
-        deadline: task.deadline,
-        status: task.status,
-        poster_id: task.poster_id,
-      });
+      const response = await axiosInstance.post(`/app/tasks/`, duplicateData);
       alert("Task duplicated successfully");
       router.push("/poster");
     } catch (error) {
