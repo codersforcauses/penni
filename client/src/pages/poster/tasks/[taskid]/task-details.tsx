@@ -16,6 +16,7 @@ import useUserId from "@/hooks/use-user-id";
 import { axiosInstance } from "@/lib/api";
 
 export default function TaskDetailsPage() {
+  const defaultSatus: string = "ONGOING";
   const router = useRouter();
   const { taskid } = router.query;
   const queryReady = typeof taskid === "string";
@@ -202,7 +203,7 @@ export default function TaskDetailsPage() {
       description: task.description,
       budget: task.budget,
       estimated_time: task.estimated_time,
-      deadline: task.deadline,
+      deadline: defaultSatus,
       status: task.status,
       poster_id: task.poster_id,
     };
