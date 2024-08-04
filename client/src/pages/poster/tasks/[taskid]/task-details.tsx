@@ -16,7 +16,7 @@ import useUserId from "@/hooks/use-user-id";
 import { axiosInstance } from "@/lib/api";
 
 export default function TaskDetailsPage() {
-  const defaultSatus: string = "ONGOING";
+  const defaultSatus: string = "BIDDING";
   const router = useRouter();
   const { taskid } = router.query;
   const queryReady = typeof taskid === "string";
