@@ -1,0 +1,52 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "lint:fix",
+      "path": "client",
+      "group": "none",
+      "problemMatcher": ["$eslint-stylish"],
+      "label": "npm run lint:fix - client",
+      "detail": "eslint --fix"
+    },
+    {
+      "type": "npm",
+      "script": "typecheck",
+      "path": "client",
+      "group": "none",
+      "problemMatcher": ["$tsc"],
+      "label": "npm run typecheck - client",
+      "detail": "tsc --noEmit"
+    },
+    {
+      "type": "shell",
+      "command": "cd server && flake8",
+      "label": "flake8 - server",
+      "detail": "cd server && flake8",
+      // https://github.com/aslafy-z/problem-matchers/blob/master/src/flake8.json
+      "problemMatcher": [
+        {
+          "owner": "flake8",
+          "pattern": [
+            {
+              "regexp": "^([^:]*):(\\d+):(\\d+): (error|warning): (\\w\\d\\d\\d) (.*)$",
+              "file": 1,
+              "line": 2,
+              "column": 3,
+              "severity": 4,
+              "message": 6
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "shell",
+      "command": "cd server && ./nuke.sh",
+      "label": "nuke db - server",
+      "detail": "cd server && nuke.sh",
+      "problemMatcher": []
+    }
+  ]
+}

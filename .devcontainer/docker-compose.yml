@@ -1,0 +1,25 @@
+services:
+  app:
+    image: ghcr.io/codersforcauses/cfc-devenv@sha256:a739aeff96bdb2b9beb09f9dd14ca8cb5d84045e0896841535114481a59760c7
+    volumes:
+      - ..:/workspace:cached
+      # Gives access to host's Docker, but requires sudo for everything
+      # - /var/run/docker.sock:/var/run/docker.sock
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    network_mode: service:db
+    user: vscode
+
+  db:
+    image: postgres
+    restart: unless-stopped
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    ports:
+      - 5432:5432

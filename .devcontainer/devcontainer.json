@@ -6,19 +6,23 @@
   "name": "CFC - Devenv",
   // You can get the sha256 here https://github.com/codersforcauses/automated-setups/pkgs/container/cfc-devenv
   // Pin it to a specific version to avoid unnecessary breaking changes
-  "image": "ghcr.io/codersforcauses/cfc-devenv@sha256:5f061666489f9023c4cf7eb95cfd67bebccdfacdc0a0bc6607c185e9c3d65fe1",
+  // "image": "ghcr.io/codersforcauses/cfc-devenv@sha256:a739aeff96bdb2b9beb09f9dd14ca8cb5d84045e0896841535114481a59760c7",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "app",
+  // ! Always make sure that if you change this, change all other mentions of it in this file
+  "workspaceFolder": "/workspace",
 
   "features": {},
 
   // Use this environment variable if you need to bind mount your local source code into a new container.
   "remoteEnv": {
-    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder:-.}"
+    "WORKSPACE_FOLDER": "${workspaceFolder:/workspace}"
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [3000, 8000, 8080],
+  "forwardPorts": [3000, 8000, 5432],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   // Note: Useful for when they open it and want everything to just start
-  "postCreateCommand": "./.devcontainer/setup.sh"
+  "postCreateCommand": "git config --global --add safe.directory /workspace && ./.devcontainer/setup.sh"
 }
