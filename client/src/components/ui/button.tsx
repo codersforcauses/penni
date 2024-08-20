@@ -4,34 +4,26 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const hoverStyles =
-  "hover:bg-white hover:text-penni-main hover:headline hover:border hover:border-2 hover:border-penni-main hover:rounded-lg hover:border-solid";
-// rounded-lg corresponds to 8px border radius
-// added hover variant
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        default: `bg-penni-main text-white headline rounded-lg ${hoverStyles}`, // Default blue
-        link: `bg-white text-penni-main headline rounded-lg`,
-        inactive: `bg-penni-grey-inactive text-white text-opacity-50 headline rounded-lg disabled:opacity-100`,
-        floating: `bg-penni-main text-white subheadline-medium rounded-penni-special`,
-        pay: `bg-penni-main text-white subheadline rounded-penni-special`,
-        finish: `bg-penni-grey-finished text-penni-text-finish body-medium rounded-penni-special`,
-        cutout: `bg-white text-penni-main headline border border-2 border-penni-main rounded-lg border-solid`,
-        filecard: `bg-penni-background-file-card text-primary opacity-60 rounded-penni-select body-medium `,
-        optioncard: `bg-penni-background-file-card text-penni-text-regular-light-mode  rounded-penni-select body-medium `,
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",
-        penni: "w-full h-14", // Penni Default Size
-        sm: "w-32 h-10",
+        sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
-        floating: "w-32 h-10",
-        pay: "w-14 h-6",
-        finish: "w-full h-14",
       },
     },
     defaultVariants: {
@@ -45,24 +37,17 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
-  label?: string; // Optional label for the button
-  children?: React.ReactNode; // If there is no label, use children
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    { className, variant, size, asChild = false, label, children, ...props },
-    ref,
-  ) => {
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      >
-        {label ? label : children}
-      </Comp>
+      />
     );
   },
 );
