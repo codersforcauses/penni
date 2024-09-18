@@ -1,6 +1,6 @@
-# django-nextjs-template
+# Tech Stack
 
-Django + Nextjs Template: Standardised CFC Tech Stack
+Django + Nextjs +Tailwind CSS + PostgreSQL
 
 ## Get started
 
