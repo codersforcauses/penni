@@ -39,15 +39,13 @@ Edit the `.env` file in the respective directory (client or server).
 
 #### [1] Modify client environment parameter
 
-1. make a copy of "./client/.env.example" and rename the copy file to `.env.prod` :
-2. modify the value in `.env.prod`: `APP_ENV=PRODUCTION`
+1. make a copy of "./client/.env.example" and rename the copy file to `.env.prod`:
+2. modify the value in `.env.prod`: `APP_ENV=PRODUCTION`;  `NEXT_PUBLIC_BACKEND_URL="http://{YOUR PUBLIC IP ADRESS}:8000/api"`
 
 #### [2] Modify server environment parameter
 
-Change the `.env.example` in `./server/.env.example`:
-
-1. `API_ALLOWED_HOSTS=".localhost 127.0.0.1 [::1] {YOUR PUBLIC IP ADRESS}"` and remain the APP_ENV to "DEVELOPMENT"
-2. change the file name from `.env.example` to `.env.prod`
+1. make a copy of "./server/.env.example" and rename the copy file to `.env.prod`:
+2. modify the value in `.env.prod`: `API_ALLOWED_HOSTS=".localhost 127.0.0.1 [::1] {YOUR PUBLIC IP ADRESS}"` and remain the APP_ENV as "DEVELOPMENT"
 
 #### [3] Modify the URL in `./client/src/lib/api.ts`
 
