@@ -34,6 +34,7 @@ If you modify anything in the `docker` folder, you need to add the `--build` fla
 Edit the `.env` file in the respective directory (client or server).
 
 ### Production
+#### [0] Install git and docker on the VPS
 
 #### [1] Modify client environment parameter
 
@@ -46,7 +47,7 @@ Change the `.env.example` in `./client/.env.example`:
 
 Change the `.env.example` in `./server/.env.example`:
 
-1. `API_ALLOWED_HOSTS=".localhost 127.0.0.1 [::1] 170.64.220.156"` and remain the APP_ENV to "DEVELOPMENT"
+1. `API_ALLOWED_HOSTS=".localhost 127.0.0.1 [::1] {YOUR PUBLIC IP ADRESS}"` and remain the APP_ENV to "DEVELOPMENT"
 2. change the file name from `.env.example` to `.env.prod`
 
 #### [3] Modify the URL in `./client/src/lib/api.ts`
