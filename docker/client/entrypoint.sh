@@ -57,7 +57,7 @@ if [ "${APP_ENV^^}" = "DEVELOPMENT" ]; then
     exit
 fi
 
-if [ "${APP_ENV^^}" = "PRODUCTION"]; then
+if [[ "${APP_ENV^^}" = "PRODUCTION" ]]; then
     npm install
     echo "  "
     echo "======= Starting inbuilt nextjs webserver ==================================================================="
