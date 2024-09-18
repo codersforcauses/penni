@@ -51,11 +51,11 @@ Change the `.env.example` in `./server/.env.example`:
 
 #### [3] Modify the URL in `./client/src/lib/api.ts`
 
-Change the value of `LocalBaseURL` from "http://localhost:8000/api" to "http://170.64.220.156:8000/api"
+Change the value of `LocalBaseURL` from "http://localhost:8000/api" to "http://{YOUR PUBLIC IP ADRESS}:8000/api"
 
 ```bash
 -- const LocalBaseURL = "http://localhost:8000/api";
-++ const LocalBaseURL = "http://170.64.220.156:8000/api";
+++ const LocalBaseURL = "http://{YOUR PUBLIC IP ADRESS}/api";
 ```
 
 #### [4] Change the `./docker-compose.yml` to production mode:
