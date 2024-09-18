@@ -34,14 +34,13 @@ If you modify anything in the `docker` folder, you need to add the `--build` fla
 Edit the `.env` file in the respective directory (client or server).
 
 ### Production
+
 #### [0] Install git and docker on the VPS
 
 #### [1] Modify client environment parameter
 
-Change the `.env.example` in `./client/.env.example`:
-
-1. `APP_ENV=PRODUCTION`
-2. change the file name from `.env.example` to `.env.prod`
+1. make a copy of "./client/.env.example" and rename the copy file to `.env.prod` :
+2. modify the value in `.env.prod`: `APP_ENV=PRODUCTION`
 
 #### [2] Modify server environment parameter
 
