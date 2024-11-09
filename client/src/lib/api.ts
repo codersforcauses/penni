@@ -4,7 +4,8 @@ const api = axios.create({ baseURL: process.env.NEXT_PUBLIC_BACKEND_URL });
 
 export default api;
 
-const LocalBaseURL = "http://170.64.220.156:8000/api"; // local use
+const LocalBaseURL =
+  process.env.NEXT_PUBLIC_LOCAL_BASE_URL || "http://localhost:8000/api"; // local use
 export { LocalBaseURL };
 
 const axiosInstance = axios.create({
